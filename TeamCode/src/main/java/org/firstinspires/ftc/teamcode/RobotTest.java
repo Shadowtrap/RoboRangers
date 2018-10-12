@@ -47,7 +47,7 @@ public class RobotTest extends OpMode {
         telemetry.addLine("topLeft power : " + driver.getPower().topLeft);
         telemetry.addLine("topRight power : " + driver.getPower().topRight);
         telemetry.addLine("botLeft power : " + driver.getPower().botLeft);
-        telemetry.addLine("botRight power : " + driver.getPower().topLeft + "tamim is sorta cute");
+        telemetry.addLine("botRight power : " + driver.getPower().topLeft);
         bot.move(driver.getPower());
     }
 
