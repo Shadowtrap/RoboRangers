@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.helper.Robot;
 import org.firstinspires.ftc.teamcode.helper.Driver;
+import org.firstinspires.ftc.teamcode.helper.TeleBot;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,12 +12,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class RobotTest extends OpMode {
     /* Declare OpMode members. */
     Robot bot;
+    TeleBot botbot;
     Driver driver;    
     @Override
     public void init() {
         //elemetry.addData("Status", "Initialized");
         telemetry.addLine("init");
         bot = new Robot(hardwareMap,telemetry);
+        botbot = new TeleBot(hardwareMap,telemetry);
         driver = new Driver(gamepad1);
         bot.setUpWheels();
     }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.helper.misc;
+package org.firstinspires.ftc.teamcode.helper;
 
 public class Timer {
 

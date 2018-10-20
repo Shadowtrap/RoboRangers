@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.helper;
 
-import org.firstinspires.ftc.teamcode.helper.misc.Timer;
+import org.firstinspires.ftc.teamcode.helper.Timer;
 
 public class Power {
 
