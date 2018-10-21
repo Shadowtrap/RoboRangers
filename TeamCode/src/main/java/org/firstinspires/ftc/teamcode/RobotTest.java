@@ -13,7 +13,8 @@ public class RobotTest extends OpMode {
     /* Declare OpMode members. */
     Robot bot;
     TeleBot botbot;
-    Driver driver;    
+    Driver driver;
+
     @Override
     public void init() {
         //elemetry.addData("Status", "Initialized");
@@ -52,7 +53,6 @@ public class RobotTest extends OpMode {
         telemetry.addLine("topRight power : " + driver.getPower().topRight);
         telemetry.addLine("botLeft power : " + driver.getPower().botLeft);
         telemetry.addLine("botRight power : " + driver.getPower().topLeft);
-        telemetry.addLine("Marko is sezzy");
         bot.move(driver.getPower());
     }
 
