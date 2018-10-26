@@ -15,6 +15,7 @@ public class Robot {
     private DcMotor topRight;
     private DcMotor botLeft;
     private DcMotor botRight;
+    private DcMotor arm;
     
     public Robot(HardwareMap hardwareMap, Telemetry tele){
         hwm = hardwareMap;
@@ -25,49 +26,45 @@ public class Robot {
         t.addLine(s);
     }
     
-    public void setUpWheels(){
+    public void setUpWheels() {
         Display("Setting up the wheels");
-        
+
         try {
             topLeft = hwm.get(DcMotor.class, "topLeft");
             topLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             topLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             Display("topLeft : OK");
-        } 
-        catch(Exception e) {
+        } catch (Exception e) {
             Display("topLeft : ERROR");
         }
-        
+
         try {
             topRight = hwm.get(DcMotor.class, "topRight");
             topRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             topRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             Display("topRight : OK");
-        } 
-        catch(Exception e) {
+        } catch (Exception e) {
             Display("topRight : ERROR");
         }
-        
+
         try {
             botLeft = hwm.get(DcMotor.class, "botLeft");
             botLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             botLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             Display("botLeft : OK");
-        } 
-        catch(Exception e) {
+        } catch (Exception e) {
             Display("botLeft : ERROR");
         }
-        
+
         try {
             botRight = hwm.get(DcMotor.class, "botRight");
             botRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             botRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             Display("botRight : OK");
-        } 
-        catch(Exception e) {
+        } catch (Exception e) {
             Display("botRight : ERROR");
         }
-        
+
     }
     
     public void move(Power power) {
@@ -75,6 +72,22 @@ public class Robot {
         topRight.setPower(power.topRight);
         botLeft.setPower(power.botLeft);
         botRight.setPower(power.botRight);
+    }
+
+    public void setUpArm(){
+        try {
+            arm = hwm.get(DcMotor.class, "arm");
+            arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            Display("arm : OK");
+        }
+        catch(Exception e) {
+            Display("arm: is broken");
+        }
+    }
+
+    public void armMovement(Power power){
+        arm.setPower(power.arm);
     }
 
 }

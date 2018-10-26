@@ -8,6 +8,7 @@ public class Power {
     public final double topRight;
     public final double botLeft;
     public final double botRight;
+    public final double arm;
 
     public static boolean reduce = false;
     private static Timer time = new Timer();
@@ -31,6 +32,7 @@ public class Power {
         topRight = (vD * Math.cos(theta) - rX) * reduction;
         botLeft  = -1*(vD * Math.cos(theta) + rX) * reduction;
         botRight = (vD * Math.sin(theta) - rX) * reduction;
+        arm = (vD * Math.cos(theta) - rX) * reduction;
 
     }
 }

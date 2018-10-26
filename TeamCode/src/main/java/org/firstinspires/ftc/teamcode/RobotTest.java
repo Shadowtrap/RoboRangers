@@ -17,11 +17,12 @@ public class RobotTest extends OpMode {
 
     @Override
     public void init() {
-        //elemetry.addData("Status", "Initialized");
+        telemetry.addData("Status", "Initialized");
         telemetry.addLine("init");
         bot = new Robot(hardwareMap,telemetry);
         botbot = new TeleBot(hardwareMap,telemetry);
         driver = new Driver(gamepad1);
+        bot.setUpArm();
         bot.setUpWheels();
     }
 
@@ -49,11 +50,13 @@ public class RobotTest extends OpMode {
     @Override
     public void loop() {
         telemetry.addLine("loop");
-        telemetry.addLine("topLeft power : " + driver.getPower().topLeft);
-        telemetry.addLine("topRight power : " + driver.getPower().topRight);
-        telemetry.addLine("botLeft power : " + driver.getPower().botLeft);
-        telemetry.addLine("botRight power : " + driver.getPower().topLeft);
-        bot.move(driver.getPower());
+        telemetry.addLine("topLeft power : " + driver.getPowerDriver().topLeft);
+        telemetry.addLine("topRight power : " + driver.getPowerDriver().topRight);
+        telemetry.addLine("botLeft power : " + driver.getPowerDriver().botLeft);
+        telemetry.addLine("botRight power : " + driver.getPowerDriver().topLeft);
+        telemetry.addLine("arm power : " + driver.getPowerArm().arm);
+        bot.move(driver.getPowerDriver());
+        bot.armMovement(driver.getPowerArm());
     }
 
     /*
