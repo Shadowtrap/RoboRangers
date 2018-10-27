@@ -18,7 +18,4 @@ public class Driver {
     public Power getPowerDriver(){
         return new Power(gamepad.left_stick_x,gamepad.left_stick_y,gamepad.right_stick_x);
     }
-    public Power getPowerArm(){
-        return new Power(gamepad.right_stick_x,gamepad.right_stick_y,gamepad.left_stick_x);
-    }
 }

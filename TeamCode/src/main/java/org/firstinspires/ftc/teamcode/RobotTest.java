@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class RobotTest extends OpMode {
     /* Declare OpMode members. */
     Robot bot;
-    TeleBot botbot;
+    //TeleBot botbot;
     Driver driver;
 
     @Override
@@ -20,7 +20,7 @@ public class RobotTest extends OpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.addLine("init");
         bot = new Robot(hardwareMap,telemetry);
-        botbot = new TeleBot(hardwareMap,telemetry);
+        //botbot = new TeleBot(hardwareMap,telemetry);
         driver = new Driver(gamepad1);
         bot.setUpArm();
         bot.setUpWheels();
@@ -54,9 +54,9 @@ public class RobotTest extends OpMode {
         telemetry.addLine("topRight power : " + driver.getPowerDriver().topRight);
         telemetry.addLine("botLeft power : " + driver.getPowerDriver().botLeft);
         telemetry.addLine("botRight power : " + driver.getPowerDriver().topLeft);
-        telemetry.addLine("arm power : " + driver.getPowerArm().arm);
+        telemetry.addLine("arm position : " + bot.getArmPosition());
+        bot.armMovement(driver.gamepad);
         bot.move(driver.getPowerDriver());
-        bot.armMovement(driver.getPowerArm());
     }
 
     /*

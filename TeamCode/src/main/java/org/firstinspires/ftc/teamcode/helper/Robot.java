@@ -3,7 +3,10 @@ package org.firstinspires.ftc.teamcode.helper;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+
 import org.firstinspires.ftc.teamcode.helper.Power;
 public class Robot {
     
@@ -15,7 +18,8 @@ public class Robot {
     private DcMotor topRight;
     private DcMotor botLeft;
     private DcMotor botRight;
-    private DcMotor arm;
+    //Servo for Arm
+    private Servo arm;
     
     public Robot(HardwareMap hardwareMap, Telemetry tele){
         hwm = hardwareMap;
@@ -74,20 +78,31 @@ public class Robot {
         botRight.setPower(power.botRight);
     }
 
+    //Code for Servos
     public void setUpArm(){
+        Display("Setting up the Servo");
         try {
-            arm = hwm.get(DcMotor.class, "arm");
-            arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            arm = hwm.get(Servo.class, "arm");
+            arm.setPosition(0);
             Display("arm : OK");
         }
         catch(Exception e) {
-            Display("arm: is broken");
+            Display("arm is broken");
         }
     }
 
-    public void armMovement(Power power){
-        arm.setPower(power.arm);
+    public void armMovement(Gamepad gamepad1){
+        if(gamepad1.dpad_up) {
+            arm.setPosition(0);
+        }
+        else if(gamepad1.dpad_down){
+            arm.setPosition(1);
+        }
+
+    }
+
+    public double getArmPosition(){
+        return arm.getPosition();
     }
 
 }
