@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.helper.TeleBot;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 @TeleOp(name = "RobotTest")
 
@@ -55,7 +56,7 @@ public class RobotTest extends OpMode {
         telemetry.addLine("botLeft power : " + driver.getPowerDriver().botLeft);
         telemetry.addLine("botRight power : " + driver.getPowerDriver().topLeft);
         telemetry.addLine("arm position : " + bot.getArmPosition());
-        bot.armMovement(driver.gamepad);
+        bot.armMovement(gamepad1);
         bot.move(driver.getPowerDriver());
     }
 
