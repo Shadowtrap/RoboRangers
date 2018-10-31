@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import org.firstinspires.ftc.teamcode.helper.Robot;
 import org.firstinspires.ftc.teamcode.helper.Driver;
 import org.firstinspires.ftc.teamcode.helper.TeleBot;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 @TeleOp(name = "RobotTest")
 
@@ -14,15 +14,17 @@ public class RobotTest extends OpMode {
     Robot bot;
     //TeleBot botbot;
     Driver driver;
+	Gamepad gamepad1;
 
     @Override
     public void init() {
         telemetry.addData("Status", "Initialized");
         telemetry.addLine("init");
         bot = new Robot(hardwareMap,telemetry);
-        //botbot = new TeleBot(hardwareMap,telemetry);
         driver = new Driver(gamepad1);
-        bot.setUpArm();
+		gamepad1 = new Gamepad();
+        bot.setUpArmServo();
+		bot.setUpArmMotor();
         bot.setUpWheels();
     }
 
@@ -54,8 +56,10 @@ public class RobotTest extends OpMode {
         telemetry.addLine("topRight power : " + driver.getPowerDriver().topRight);
         telemetry.addLine("botLeft power : " + driver.getPowerDriver().botLeft);
         telemetry.addLine("botRight power : " + driver.getPowerDriver().topLeft);
-        telemetry.addLine("arm position : " + bot.getArmPosition());
-        bot.armMovement(driver.gamepad);
+		telemetry.addLine("armMotor power : " + bot.getArmMotorPower());
+        telemetry.addLine("armServo position : " + bot.getArmServoPosition());
+		bot.armMotorMovement(gamepad1);
+        bot.armServoMovement(gamepad1);
         bot.move(driver.getPowerDriver());
     }
 

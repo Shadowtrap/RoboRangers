@@ -18,8 +18,10 @@ public class Robot {
     private DcMotor topRight;
     private DcMotor botLeft;
     private DcMotor botRight;
+    //Motor for Arm
+	private DcMotor armMotor;
     //Servo for Arm
-    private Servo arm;
+    private Servo armServo;
     
     public Robot(HardwareMap hardwareMap, Telemetry tele){
         hwm = hardwareMap;
@@ -78,31 +80,67 @@ public class Robot {
         botRight.setPower(power.botRight);
     }
 
-    //Code for Servos
-    public void setUpArm(){
+    //code for armMotor
+	public void setUpArmMotor(){
+		Display("Setting up the armMotor");
+        try {
+            armMotor = hwm.get(DcMotor.class, "armMotor");
+            armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            Display("armMotor : OK");
+        } catch (Exception e) {
+            Display("armMotor : ERROR");
+        }
+	}
+	
+	public void armMotorMovement(Gamepad gamepad1) {
+        boolean left = gamepad1.dpad_left;
+		boolean right = gamepad1.dpad_right;
+		if(left){
+			armMotor.setPower(1);
+		}
+		else if(right){
+			armMotor.setPower(-1);
+		}
+		else{
+			armMotor.setPower(0);
+		}
+    }
+	
+	public double getArmMotorPower(){
+		return armMotor.getPower();
+	}
+
+    //Code for armServo
+    public void setUpArmServo(){
         Display("Setting up the Servo");
         try {
-            arm = hwm.get(Servo.class, "arm");
-            arm.setPosition(0);
-            Display("arm : OK");
+            armServo = hwm.get(Servo.class, "armServo");
+            armServo.setPosition(0);
+            Display("armServo : OK");
         }
         catch(Exception e) {
-            Display("arm is broken");
+            Display("armServo is broken");
         }
     }
 
-    public void armMovement(Gamepad gamepad1){
-        if(gamepad1.dpad_up) {
-            arm.setPosition(0);
+    public void armServoMovement(Gamepad gamepad1){
+		boolean up = gamepad1.dpad_up;
+		boolean down = gamepad1.dpad_down;
+        if(up) {
+            armServo.setPosition(0);
         }
-        else if(gamepad1.dpad_down){
-            arm.setPosition(1);
+        else if(down){
+            armServo.setPosition(1);
         }
+		else{
+			armServo.setPosition(0.5);
+		}
 
     }
 
-    public double getArmPosition(){
-        return arm.getPosition();
+    public double getArmServoPosition(){
+        return armServo.getPosition();
     }
 
 }
