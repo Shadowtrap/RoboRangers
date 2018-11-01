@@ -6,23 +6,25 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-
 import org.firstinspires.ftc.teamcode.helper.Power;
+
 public class Robot {
     
     private final HardwareMap hwm;
     private final Telemetry t;
     
-    //motors for wheels
+    //Motors for Wheels
     private DcMotor topLeft;
     private DcMotor topRight;
     private DcMotor botLeft;
     private DcMotor botRight;
+
     //Motor for Arm
 	private DcMotor armMotor;
+
     //Servo for Arm
     private Servo armServo;
-    
+
     public Robot(HardwareMap hardwareMap, Telemetry tele){
         hwm = hardwareMap;
         t = tele;
@@ -31,7 +33,8 @@ public class Robot {
     public void Display(String s){
         t.addLine(s);
     }
-    
+
+    //Code for Wheels
     public void setUpWheels() {
         Display("Setting up the wheels");
 
@@ -80,7 +83,7 @@ public class Robot {
         botRight.setPower(power.botRight);
     }
 
-    //code for armMotor
+    //Code for armMotor
 	public void setUpArmMotor(){
 		Display("Setting up the armMotor");
         try {
