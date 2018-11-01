@@ -20,7 +20,8 @@ public class Robot {
     private DcMotor botRight;
 
     //Motor for Arm
-	private DcMotor armMotor;
+	private DcMotor armMotor1;
+	private DcMotor armMotor2;
 
     //Servo for Arm
     private Servo armServo;
@@ -87,31 +88,49 @@ public class Robot {
 	public void setUpArmMotor(){
 		Display("Setting up the armMotor");
         try {
-            armMotor = hwm.get(DcMotor.class, "armMotor");
-            armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            Display("armMotor : OK");
+            armMotor1 = hwm.get(DcMotor.class, "armMotor1");
+            armMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            armMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            Display("armMotor1 : OK");
         } catch (Exception e) {
-            Display("armMotor : ERROR");
+            Display("armMotor1 : ERROR");
+        }
+
+        try {
+           armMotor2 = hwm.get(DcMotor.class, "armMotor2");
+           armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+           armMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            Display("armMotor2 : OK");
+        } catch (Exception e) {
+            Display("armMotor2 : ERROR");
         }
 	}
 	
 	public void armMotorMovement(Gamepad gamepad1) {
         boolean left = gamepad1.dpad_left;
 		boolean right = gamepad1.dpad_right;
-		if(left){
-			armMotor.setPower(1);
+        boolean x= gamepad1.x;
+        boolean b = gamepad1.b;
+		if(x){
+		    armMotor2.setPower(-1);
+        }
+        else if(b){
+		    armMotor2.setPower(1);
+        }
+		else if(left){
+			armMotor1.setPower(1);
 		}
 		else if(right){
-			armMotor.setPower(-1);
+			armMotor1.setPower(-1);
 		}
 		else{
-			armMotor.setPower(0);
+			armMotor1.setPower(0);
+			armMotor2.setPower(0);
 		}
     }
 	
 	public double getArmMotorPower(){
-		return armMotor.getPower();
+		return armMotor1.getPower();
 	}
 
     //Code for armServo

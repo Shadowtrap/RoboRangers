@@ -56,6 +56,7 @@ public class GoldAlignDetector extends DogeCVDetector {
     /**
      * Simple constructor
      */
+    public Rect temp = new Rect();
     public GoldAlignDetector() {
         super();
         detectorName = "Gold Align Detector"; // Set the detector name
@@ -97,6 +98,7 @@ public class GoldAlignDetector extends DogeCVDetector {
             if(score < bestDiffrence){
                 bestDiffrence = score;
                 bestRect = rect;
+                temp = bestRect;
             }
         }
 
@@ -128,6 +130,7 @@ public class GoldAlignDetector extends DogeCVDetector {
             // Draw Current X
             Imgproc.putText(displayMat,"Current X: " + bestRect.x,new Point(10,getAdjustedSize().height - 10),0,0.5, new Scalar(255,255,255),1);
             found = true;
+
         }else{
             found = false;
             aligned = false;

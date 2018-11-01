@@ -14,7 +14,7 @@ public class RobotTest extends OpMode {
     Robot bot;
     //TeleBot botbot;
     Driver driver;
-	Gamepad gamepad1;
+
 
     @Override
     public void init() {
