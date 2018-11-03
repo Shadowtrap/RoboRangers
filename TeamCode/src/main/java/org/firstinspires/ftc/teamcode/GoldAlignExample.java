@@ -35,6 +35,8 @@ import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.helper.Robot;
+
 
 @TeleOp(name="GoldAlign Example", group="DogeCV")
 
@@ -42,6 +44,7 @@ public class GoldAlignExample extends OpMode
 {
     // Detector object
     private GoldAlignDetector detector;
+    private Robot bot;
 
 
     @Override
@@ -64,6 +67,8 @@ public class GoldAlignExample extends OpMode
 
         detector.ratioScorer.weight = 5; //
         detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
+
+        bot.setUpWheels();//Setting up wheels
 
         detector.enable(); // Start the detector!
 
@@ -91,8 +96,31 @@ public class GoldAlignExample extends OpMode
     @Override
     public void loop() {
         telemetry.addData("IsAligned" , detector.getAligned()); // Is the bot aligned with the gold mineral?
-        telemetry.addData("Center X Pos" , detector.getXPosition()); // Gold X position.
-        telemetry.addLine("Rect Edge X Pos: " +  detector.temp.x);
+        telemetry.addData("Center X Pos" , detector.getXPosition()); // Gold center X position.
+        telemetry.addLine("Rect Edge X Pos: " +  detector.temp.x); // Gold right side X position
+        double cX = detector.getXPosition();
+        double sX = detector.temp.x;
+        while(cX != 0){
+            if(sX < 250){
+                bot.getTopLeft().setPower(-1.0);
+                bot.getTopRight().setPower(1.0);
+                bot.getBotLeft().setPower(1.0);
+                bot.getBotRight().setPower(-1.0);
+            }
+            else if(sX > 250){
+                bot.getTopLeft().setPower(-1.0);
+                bot.getTopRight().setPower(1.0);
+                bot.getBotLeft().setPower(1.0);
+                bot.getBotRight().setPower(-1.0);
+            }
+            else{
+                bot.getTopLeft().setPower(0);
+                bot.getTopRight().setPower(0);
+                bot.getBotLeft().setPower(0);
+                bot.getBotRight().setPower(0);
+            }
+            cX = detector.getXPosition();
+        }
     }
 
     /*

@@ -84,6 +84,22 @@ public class Robot {
         botRight.setPower(power.botRight);
     }
 
+    public DcMotor getTopLeft() {
+        return topLeft;
+    }
+
+    public DcMotor getTopRight() {
+        return topRight;
+    }
+
+    public DcMotor getBotLeft() {
+        return botLeft;
+    }
+
+    public DcMotor getBotRight() {
+        return botRight;
+    }
+
     //Code for armMotor
 	public void setUpArmMotor(){
 		Display("Setting up the armMotor");
@@ -146,6 +162,16 @@ public class Robot {
         }
     }
 
+    public DcMotor getArmMotor1() {
+        return armMotor1;
+    }
+
+    public DcMotor getArmMotor2() {
+        return armMotor2;
+    }
+
+    //Servo Code
+
     public void armServoMovement(Gamepad gamepad1){
 		boolean up = gamepad1.dpad_up;
 		boolean down = gamepad1.dpad_down;
@@ -165,4 +191,7 @@ public class Robot {
         return armServo.getPosition();
     }
 
+    public Servo getArmServo() {
+        return armServo;
+    }
 }
