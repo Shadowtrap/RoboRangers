@@ -95,32 +95,44 @@ public class GoldAlignExample extends OpMode
      */
     @Override
     public void loop() {
-        telemetry.addData("IsAligned" , detector.getAligned()); // Is the bot aligned with the gold mineral?
-        telemetry.addData("Center X Pos" , detector.getXPosition()); // Gold center X position.
-        telemetry.addLine("Rect Edge X Pos: " +  detector.temp.x); // Gold right side X position
+        telemetry.addData("IsAligned", detector.getAligned()); // Is the bot aligned with the gold mineral?
+        telemetry.addData("Center X Pos", detector.getXPosition()); // Gold center X position.
+        telemetry.addLine("Rect Edge X Pos: " + detector.temp.x); // Gold right side X position
         double cX = detector.getXPosition();
         double sX = detector.temp.x;
-        while(cX != 0){
-            if(sX < 250){
-                bot.getTopLeft().setPower(-1.0);
-                bot.getTopRight().setPower(1.0);
-                bot.getBotLeft().setPower(1.0);
-                bot.getBotRight().setPower(-1.0);
+        boolean found = detector.isFound();
+        if (found){
+            while (cX != 0) {
+                if (sX < 250) {
+                    bot.getTopLeft().setPower(-1.0);
+                    bot.getTopRight().setPower(1.0);
+                    bot.getBotLeft().setPower(1.0);
+                    bot.getBotRight().setPower(-1.0);
+                } else if (sX > 250) {
+                    bot.getTopLeft().setPower(1.0);
+                    bot.getTopRight().setPower(-1.0);
+                    bot.getBotLeft().setPower(-1.0);
+                    bot.getBotRight().setPower(1.0);
+                } else {
+                    bot.getTopLeft().setPower(0);
+                    bot.getTopRight().setPower(0);
+                    bot.getBotLeft().setPower(0);
+                    bot.getBotRight().setPower(0);
+                }
+
+                cX = detector.getXPosition();
             }
-            else if(sX > 250){
-                bot.getTopLeft().setPower(-1.0);
-                bot.getTopRight().setPower(1.0);
-                bot.getBotLeft().setPower(1.0);
-                bot.getBotRight().setPower(-1.0);
-            }
-            else{
-                bot.getTopLeft().setPower(0);
-                bot.getTopRight().setPower(0);
-                bot.getBotLeft().setPower(0);
-                bot.getBotRight().setPower(0);
-            }
-            cX = detector.getXPosition();
         }
+        else{
+            while(!found){
+                bot.getTopLeft().setPower(-0.75);
+                bot.getTopRight().setPower(0.75);
+                bot.getBotLeft().setPower(-0.75);
+                bot.getBotRight().setPower(0.75);
+                found = detector.isFound();
+            }
+        }
+
     }
 
     /*
