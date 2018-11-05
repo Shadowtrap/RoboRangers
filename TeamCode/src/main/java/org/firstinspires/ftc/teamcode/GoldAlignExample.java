@@ -35,6 +35,7 @@ import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.helper.AutoBot;
 import org.firstinspires.ftc.teamcode.helper.Robot;
 
 
@@ -44,13 +45,14 @@ public class GoldAlignExample extends OpMode
 {
     // Detector object
     private GoldAlignDetector detector;
-    private Robot bot;
-
+    //private Robot bot;
+    private AutoBot autoBot;
 
     @Override
     public void init() {
         telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
 
+        /*
         // Set up detector
         detector = new GoldAlignDetector(); // Create detector
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize it with the app context and camera
@@ -71,7 +73,10 @@ public class GoldAlignExample extends OpMode
         bot.setUpWheels();//Setting up wheels
 
         detector.enable(); // Start the detector!
-
+        */
+        autoBot = new AutoBot(hardwareMap,telemetry,detector);
+        autoBot.setUpWheels();
+        autoBot.setUpDetector(detector);
 
     }
 
@@ -104,20 +109,20 @@ public class GoldAlignExample extends OpMode
         if (found){
             while (cX != 0) {
                 if (sX < 250) {
-                    bot.getTopLeft().setPower(-1.0);
-                    bot.getTopRight().setPower(1.0);
-                    bot.getBotLeft().setPower(1.0);
-                    bot.getBotRight().setPower(-1.0);
+                    autoBot.topLeft.setPower(-1.0);
+                    autoBot.topRight.setPower(1.0);
+                    autoBot.botRight.setPower(1.0);
+                    autoBot.botLeft.setPower(-1.0);
                 } else if (sX > 250) {
-                    bot.getTopLeft().setPower(1.0);
-                    bot.getTopRight().setPower(-1.0);
-                    bot.getBotLeft().setPower(-1.0);
-                    bot.getBotRight().setPower(1.0);
+                    autoBot.topLeft.setPower(1.0);
+                    autoBot.topRight.setPower(-1.0);
+                    autoBot.botLeft.setPower(-1.0);
+                    autoBot.botRight.setPower(1.0);
                 } else {
-                    bot.getTopLeft().setPower(0);
-                    bot.getTopRight().setPower(0);
-                    bot.getBotLeft().setPower(0);
-                    bot.getBotRight().setPower(0);
+                    autoBot.topLeft.setPower(0);
+                    autoBot.topRight.setPower(0);
+                    autoBot.botLeft.setPower(0);
+                    autoBot.botRight.setPower(0);
                 }
 
                 cX = detector.getXPosition();
@@ -125,10 +130,10 @@ public class GoldAlignExample extends OpMode
         }
         else{
             while(!found){
-                bot.getTopLeft().setPower(-0.75);
-                bot.getTopRight().setPower(0.75);
-                bot.getBotLeft().setPower(-0.75);
-                bot.getBotRight().setPower(0.75);
+                autoBot.topLeft.setPower(-0.75);
+                autoBot.topRight.setPower(0.75);
+                autoBot.botLeft.setPower(-0.75);
+                autoBot.botRight.setPower(0.75);
                 found = detector.isFound();
             }
         }
