@@ -41,7 +41,7 @@ import org.firstinspires.ftc.teamcode.helper.Robot;
 
 @TeleOp(name="GoldAlign Example", group="DogeCV")
 
-public class GoldAlignExample extends OpMode
+public class RobotTestAuto extends OpMode
 {
     // Detector object
     private GoldAlignDetector detector;
@@ -107,7 +107,7 @@ public class GoldAlignExample extends OpMode
         double sX = detector.temp.x;
         boolean found = detector.isFound();
         if (found){
-            while (cX != 0) {
+            while (cX > 50) {
                 if (sX < 250) {
                     autoBot.topLeft.setPower(-1.0);
                     autoBot.topRight.setPower(1.0);

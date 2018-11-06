@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-@TeleOp(name = "RobotTest")
+@TeleOp(name = "RobotTestTele")
 
-public class RobotTest extends OpMode {
+public class RobotTestTele extends OpMode {
     /* Declare OpMode members. */
     Robot bot;
     TeleBot teleBot;
