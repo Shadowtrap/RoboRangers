@@ -16,19 +16,23 @@ public class TeleBot extends Robot {
     public void armMotorMovement(Gamepad gamepad1) {
         boolean left = gamepad1.dpad_left;
         boolean right = gamepad1.dpad_right;
-        boolean x= gamepad1.x;
-        boolean b = gamepad1.b;
+        //boolean x = gamepad1.x;
+        //boolean b = gamepad1.b;
+        /*
         if(x){
             armMotor2.setPower(-1);
         }
         else if(b){
             armMotor2.setPower(1);
         }
-        else if(left){
+        */
+        if(left){
             armMotor1.setPower(1);
+            armMotor2.setPower(1);
         }
         else if(right){
             armMotor1.setPower(-1);
+            armMotor2.setPower(-1);
         }
         else{
             armMotor1.setPower(0);

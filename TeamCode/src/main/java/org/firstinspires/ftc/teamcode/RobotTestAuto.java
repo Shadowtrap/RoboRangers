@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -39,20 +40,22 @@ import org.firstinspires.ftc.teamcode.helper.AutoBot;
 import org.firstinspires.ftc.teamcode.helper.Robot;
 
 
-@TeleOp(name="GoldAlign Example", group="DogeCV")
+@Autonomous(name="RobotTestAuto", group="DogeCV")
 
 public class RobotTestAuto extends OpMode
 {
     // Detector object
     private GoldAlignDetector detector;
     //private Robot bot;
-    private AutoBot autoBot;
+    //private AutoBot autoBot;
+    private Robot bot;
 
     @Override
     public void init() {
         telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
+        bot = new Robot(hardwareMap,telemetry);
+        bot.setUpWheels();//Setting up wheels
 
-        /*
         // Set up detector
         detector = new GoldAlignDetector(); // Create detector
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize it with the app context and camera
@@ -70,13 +73,12 @@ public class RobotTestAuto extends OpMode
         detector.ratioScorer.weight = 5; //
         detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
 
-        bot.setUpWheels();//Setting up wheels
+
 
         detector.enable(); // Start the detector!
-        */
-        autoBot = new AutoBot(hardwareMap,telemetry,detector);
-        autoBot.setUpWheels();
-        autoBot.setUpDetector(detector);
+
+        //autoBot = new AutoBot(hardwareMap,telemetry,detector);
+        //autoBot.setUpDetector();
 
     }
 
@@ -107,33 +109,37 @@ public class RobotTestAuto extends OpMode
         double sX = detector.temp.x;
         boolean found = detector.isFound();
         if (found){
-            while (cX > 50) {
+            bot.topLeft.setPower(0);
+            bot.topRight.setPower(0);
+            bot.botRight.setPower(0);
+            bot.botLeft.setPower(0);
+            /*
+            if(cX > 50) {
                 if (sX < 250) {
-                    autoBot.topLeft.setPower(-1.0);
-                    autoBot.topRight.setPower(1.0);
-                    autoBot.botRight.setPower(1.0);
-                    autoBot.botLeft.setPower(-1.0);
+                    bot.topLeft.setPower(-1.0);
+                    bot.topRight.setPower(1.0);
+                    bot.botRight.setPower(1.0);
+                    bot.botLeft.setPower(-1.0);
                 } else if (sX > 250) {
-                    autoBot.topLeft.setPower(1.0);
-                    autoBot.topRight.setPower(-1.0);
-                    autoBot.botLeft.setPower(-1.0);
-                    autoBot.botRight.setPower(1.0);
+                    bot.topLeft.setPower(1.0);
+                    bot.topRight.setPower(-1.0);
+                    bot.botLeft.setPower(-1.0);
+                    bot.botRight.setPower(1.0);
                 } else {
-                    autoBot.topLeft.setPower(0);
-                    autoBot.topRight.setPower(0);
-                    autoBot.botLeft.setPower(0);
-                    autoBot.botRight.setPower(0);
+                    bot.topLeft.setPower(0);
+                    bot.topRight.setPower(0);
+                    bot.botLeft.setPower(0);
+                    bot.botRight.setPower(0);
                 }
-
-                cX = detector.getXPosition();
-            }
+            }*/
         }
         else{
-            while(!found){
-                autoBot.topLeft.setPower(-0.75);
-                autoBot.topRight.setPower(0.75);
-                autoBot.botLeft.setPower(-0.75);
-                autoBot.botRight.setPower(0.75);
+
+            if(!found){
+                bot.topLeft.setPower(-0.5);
+                bot.topRight.setPower(-0.5);
+                bot.botLeft.setPower(-0.5);
+                bot.botRight.setPower(-0.5);
                 found = detector.isFound();
             }
         }

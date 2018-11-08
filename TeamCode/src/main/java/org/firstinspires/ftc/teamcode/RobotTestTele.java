@@ -23,7 +23,7 @@ public class RobotTestTele extends OpMode {
         bot = new Robot(hardwareMap,telemetry);
         teleBot = new TeleBot(hardwareMap,telemetry);
         driver = new Driver(gamepad1);
-		gamepad1 = new Gamepad();
+
         //bot.setUpArmServo();
 		//bot.setUpArmMotor();
         //bot.setUpWheels();
@@ -55,6 +55,7 @@ public class RobotTestTele extends OpMode {
      */
     @Override
     public void loop() {
+        /*
         telemetry.addLine("loop");
         telemetry.addLine("topLeft power : " + driver.getPowerDriver().topLeft);
         telemetry.addLine("topRight power : " + driver.getPowerDriver().topRight);
@@ -62,7 +63,7 @@ public class RobotTestTele extends OpMode {
         telemetry.addLine("botRight power : " + driver.getPowerDriver().topLeft);
 		telemetry.addLine("armMotor power : " + bot.getArmMotorPower());
         telemetry.addLine("armServo position : " + bot.getArmServoPosition());
-
+        */
         teleBot.armMotorMovement(gamepad1);
         teleBot.armServoMovement(gamepad1);
         teleBot.move(driver.getPowerDriver());

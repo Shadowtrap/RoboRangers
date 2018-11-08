@@ -9,26 +9,26 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class AutoBot extends Robot {
 
-    private GoldAlignDetector detector;
+    public GoldAlignDetector detector;
     public AutoBot(HardwareMap hardwareMap, Telemetry tele, GoldAlignDetector d) {
         super(hardwareMap, tele);
-        d = detector;
+        detector = d;
 
     }
 
-    public void setUpDetector(GoldAlignDetector d){
-        d.init(hwm.appContext, CameraViewDisplay.getInstance());
-        d.useDefaults();
+    public void setUpDetector(){
+        detector.init(hwm.appContext, CameraViewDisplay.getInstance());
+        detector.useDefaults();
 
-        d.alignSize = 100;
-        d.alignPosOffset = 0;
-        d.downscale = 0.4;
+        detector.alignSize = 100;
+        detector.alignPosOffset = 0;
+        detector.downscale = 0.4;
 
-        d.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA;
-        d.maxAreaScorer.weight = 0.005;
+        detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA;
+        detector.maxAreaScorer.weight = 0.005;
 
-        d.ratioScorer.weight = 5;
-        d.ratioScorer.perfectRatio = 1;
-        d.enable();
+        detector.ratioScorer.weight = 5;
+        detector.ratioScorer.perfectRatio = 1;
+        detector.enable();
     }
 }
