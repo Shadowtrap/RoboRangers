@@ -108,41 +108,47 @@ public class RobotTestAuto extends OpMode
         double cX = detector.getXPosition();
         double sX = detector.temp.x;
         boolean found = detector.isFound();
-        if (found){
-            bot.topLeft.setPower(0);
-            bot.topRight.setPower(0);
-            bot.botRight.setPower(0);
-            bot.botLeft.setPower(0);
+        //Goes Down using arm (Need encoders)
+
+        //Lets Go (Set position for servo)
+
+        //Moves back a little (Need encoders)
+
+        //Trying to find gold mineral (Maybe do code for moving other teams gold mineral)
+        if(found){
+            bot.topLeft.setPower(0.0);
+            bot.topRight.setPower(0.0);
+            bot.botRight.setPower(0.0);
+            bot.botLeft.setPower(0.0);
             /*
-            if(cX > 50) {
+            if(cX > 100) {
                 if (sX < 250) {
-                    bot.topLeft.setPower(-1.0);
-                    bot.topRight.setPower(1.0);
-                    bot.botRight.setPower(1.0);
-                    bot.botLeft.setPower(-1.0);
+                    bot.topLeft.setPower(-0.5);
+                    bot.topRight.setPower(-0.5);
+                    bot.botRight.setPower(0.5);
+                    bot.botLeft.setPower(0.5);
                 } else if (sX > 250) {
-                    bot.topLeft.setPower(1.0);
-                    bot.topRight.setPower(-1.0);
-                    bot.botLeft.setPower(-1.0);
-                    bot.botRight.setPower(1.0);
+                    bot.topLeft.setPower(0.5);
+                    bot.topRight.setPower(0.5);
+                    bot.botLeft.setPower(-0.5);
+                    bot.botRight.setPower(-0.5);
                 } else {
-                    bot.topLeft.setPower(0);
-                    bot.topRight.setPower(0);
-                    bot.botLeft.setPower(0);
-                    bot.botRight.setPower(0);
+                    bot.topLeft.setPower(0.0);
+                    bot.topRight.setPower(0.0);
+                    bot.botLeft.setPower(0.0);
+                    bot.botRight.setPower(0.0);
                 }
             }*/
         }
         else{
-
-            if(!found){
-                bot.topLeft.setPower(-0.5);
-                bot.topRight.setPower(-0.5);
-                bot.botLeft.setPower(-0.5);
-                bot.botRight.setPower(-0.5);
-                found = detector.isFound();
-            }
+            bot.topLeft.setPower(-0.5);
+            bot.topRight.setPower(-0.5);
+            bot.botLeft.setPower(-0.5);
+            bot.botRight.setPower(-0.5);
         }
+        //After moving mineral dropping team marker in square(code for servo)
+
+        //Code to end off
 
     }
 
