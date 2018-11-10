@@ -120,25 +120,25 @@ public class RobotTestAuto extends OpMode
             bot.topRight.setPower(0.0);
             bot.botRight.setPower(0.0);
             bot.botLeft.setPower(0.0);
-            /*
-            if(cX > 100) {
-                if (sX < 250) {
-                    bot.topLeft.setPower(-0.5);
-                    bot.topRight.setPower(-0.5);
-                    bot.botRight.setPower(0.5);
-                    bot.botLeft.setPower(0.5);
+
+            if(cX > 10) {
+                if (sX < 25) {
+                    bot.topLeft.setPower(0.75);
+                    bot.topRight.setPower(0.75);
+                    bot.botRight.setPower(-0.75);
+                    bot.botLeft.setPower(-0.75);
                 } else if (sX > 250) {
-                    bot.topLeft.setPower(0.5);
-                    bot.topRight.setPower(0.5);
-                    bot.botLeft.setPower(-0.5);
-                    bot.botRight.setPower(-0.5);
+                    bot.topLeft.setPower(-0.75);
+                    bot.topRight.setPower(-0.75);
+                    bot.botLeft.setPower(0.75);
+                    bot.botRight.setPower(0.75);
                 } else {
                     bot.topLeft.setPower(0.0);
                     bot.topRight.setPower(0.0);
                     bot.botLeft.setPower(0.0);
                     bot.botRight.setPower(0.0);
                 }
-            }*/
+            }
         }
         else{
             bot.topLeft.setPower(-0.5);
