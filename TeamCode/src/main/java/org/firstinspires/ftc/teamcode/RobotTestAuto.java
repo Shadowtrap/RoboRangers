@@ -46,7 +46,7 @@ public class RobotTestAuto extends OpMode
     // Detector object
     private GoldAlignDetector detector;
     private Robot bot;
-    private double currentServoPos;
+   //private double currentServoPos;
     private int counter;
 
     @Override
@@ -54,8 +54,8 @@ public class RobotTestAuto extends OpMode
         telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
         bot = new Robot(hardwareMap,telemetry);
         AutoBot aB = new AutoBot(hardwareMap, telemetry);
-        aB.setUpMotors();
-        currentServoPos = bot.getArmServoPosition();
+        //aB.setUpMotors();
+        //currentServoPos = bot.getArmServoPosition();
         counter = 0;
 
         // Set up detector
@@ -100,11 +100,18 @@ public class RobotTestAuto extends OpMode
         telemetry.addData("IsAligned", detector.getAligned()); // Is the bot aligned with the gold mineral?
         telemetry.addData("Center X Pos", detector.getXPosition()); // Gold center X position.
         telemetry.addLine("Rect Edge X Pos: " + detector.temp.x); // Gold right side X position
+
+        telemetry.addLine("heirarchy " + detector.hierarchy.width());
+        telemetry.addLine("Equation " + (50 * 3.2)/detector.hierarchy.width());
+
+
         double cX = detector.getXPosition();
         double sX = detector.temp.x;
         boolean found = detector.isFound();
 
-        if(currentServoPos == 0 && counter == 0){
+
+        /*
+        if(counter == 0){
             //Moving arm when auto starts
             if(bot.armMotor1.getCurrentPosition() < 1600 && counter == 0)
                 bot.armMotor1.setPower(-1);
@@ -124,8 +131,9 @@ public class RobotTestAuto extends OpMode
                     bot.botRight.setPower(-0.75);
             }
             counter++;
+            */
             //Rotating robot to find gold piece
-            if(counter == 2){
+            //if(counter == 2){
                 if(!found){
                     bot.topLeft.setPower(-0.5);
                     bot.topRight.setPower(-0.5);
@@ -138,10 +146,10 @@ public class RobotTestAuto extends OpMode
                     bot.botRight.setPower(0.0);
                     bot.botLeft.setPower(0.0);
                 }
-            }
+            //}
             counter++;
             //Making the robot strafe to align
-            if(counter == 3) {
+            //if(counter == 3) {
             /*
                 if(cX > 10) {
                     if (sX < 250) {
@@ -162,9 +170,9 @@ public class RobotTestAuto extends OpMode
                         bot.botLeft.setPower(0.0);
                         bot.botRight.setPower(0.0);
                     }
-                    */
+
             }
-        }
+        }*/
     }
 
         //After moving mineral dropping team marker in square(code for servo)

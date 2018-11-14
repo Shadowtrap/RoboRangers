@@ -26,6 +26,8 @@ public class Robot {
     //Servo for Arm
     public Servo armServo;
 
+    //Motor for scoring
+    public DcMotor scoreMotor;
     public Robot(HardwareMap hardwareMap, Telemetry tele){
         hwm = hardwareMap;
         t = tele;
@@ -76,15 +78,6 @@ public class Robot {
         }
 
     }
-    
-    public void move(Power power) {
-        topLeft.setPower(power.topLeft);
-        topRight.setPower(power.topRight);
-        botLeft.setPower(power.botLeft);
-        botRight.setPower(power.botRight);
-    }
-
-
 
     //Code for armMotor
 	public void setUpArmMotor(){
@@ -121,12 +114,21 @@ public class Robot {
         }
     }
 
-    public double getArmMotorPower(){
-        return armMotor1.getPower();
+    public void setUpScoreMotor(){
+        try {
+            botRight = hwm.get(DcMotor.class, "scoreMotor");
+            botRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            Display("scoremotor : OK");
+        } catch (Exception e) {
+            Display("scoremotor : ERROR");
+        }
     }
 
-    public double getArmServoPosition(){
-        return armServo.getPosition();
+    public void move(Power power) {
+        topLeft.setPower(power.topLeft);
+        topRight.setPower(power.topRight);
+        botLeft.setPower(power.botLeft);
+        botRight.setPower(power.botRight);
     }
-
 }

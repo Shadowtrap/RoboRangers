@@ -28,10 +28,10 @@ import java.util.List;
 public class GoldAlignDetector extends DogeCVDetector {
 
     // Defining Mats to be used.
-    private Mat displayMat = new Mat(); // Display debug info to the screen (this is what is returned)
-    private Mat workingMat = new Mat(); // Used for preprocessing and working with (blurring as an example)
-    private Mat maskYellow = new Mat(); // Yellow Mask returned by color filter
-    private Mat hierarchy  = new Mat(); // hierarchy used by coutnours
+    public Mat displayMat = new Mat(); // Display debug info to the screen (this is what is returned)
+    public Mat workingMat = new Mat(); // Used for preprocessing and working with (blurring as an example)
+    public Mat maskYellow = new Mat(); // Yellow Mask returned by color filter
+    public Mat hierarchy  = new Mat(); // hierarchy used by coutnours
 
     // Results of the detector
     private boolean found    = false; // Is the gold mineral found

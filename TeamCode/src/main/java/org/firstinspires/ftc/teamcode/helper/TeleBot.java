@@ -55,9 +55,16 @@ public class TeleBot extends Robot {
 
     }
 
-    public double getArmMotorPower(){
-        return armMotor1.getPower();
-    }
-
     //scoring mechanism TBI
+
+    public void armMech(Gamepad gamepad1){
+        boolean rb = gamepad1.right_bumper;
+        boolean lb = gamepad1.left_bumper;
+        if(rb){
+            scoreMotor.setPower(.25);
+        }
+        else if(lb){
+            scoreMotor.setPower(-.25);
+        }
+    }
 }

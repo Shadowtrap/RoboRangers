@@ -30,6 +30,7 @@ public class RobotTestTele extends OpMode {
         teleBot.setUpArmMotor();
         teleBot.setUpArmServo();
         teleBot.setUpWheels();
+        teleBot.setUpScoreMotor();
     }
 
     /*
@@ -67,6 +68,8 @@ public class RobotTestTele extends OpMode {
         teleBot.armMotorMovement(gamepad1);
         teleBot.armServoMovement(gamepad1);
         teleBot.move(driver.getPowerDriver());
+        teleBot.armMech(gamepad1);
+        telemetry.addLine("MotorPos : " + teleBot.scoreMotor.getCurrentPosition());
     }
 
     /*
