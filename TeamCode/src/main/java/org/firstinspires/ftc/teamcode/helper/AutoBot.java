@@ -37,6 +37,46 @@ public class AutoBot extends Robot {
         }
     }
 
+    public void setUpWheels() {
+        Display("Setting up the wheels");
+
+        try {
+            topLeft = hwm.get(DcMotor.class, "topLeft");
+            topLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            Display("topLeft : OK");
+        } catch (Exception e) {
+            Display("topLeft : ERROR");
+        }
+
+        try {
+            topRight = hwm.get(DcMotor.class, "topRight");
+            topRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            Display("topRight : OK");
+        } catch (Exception e) {
+            Display("topRight : ERROR");
+        }
+
+        try {
+            botLeft = hwm.get(DcMotor.class, "botLeft");
+            botLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            Display("botLeft : OK");
+        } catch (Exception e) {
+            Display("botLeft : ERROR");
+        }
+
+        try {
+            botRight = hwm.get(DcMotor.class, "botRight");
+            botRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            Display("botRight : OK");
+        } catch (Exception e) {
+            Display("botRight : ERROR");
+        }
+    }
+
     public void setUpDetector(GoldAlignDetector detector){
         // Set up detector
         detector = new GoldAlignDetector(); // Create detector
@@ -61,14 +101,59 @@ public class AutoBot extends Robot {
 
         /*VALUES NEED TO BE DETERMINED
         99999 needs to be set to whatever position we find using enconders
-        setpower needs to be adjusted for optimal use
+        setPower needs to be adjusted for optimal use
          */
-        if(armMotor1.getCurrentPosition() < 9999  && armMotor2.getCurrentPosition() < 9999){
-            armMotor1.setPower(-.5);
-            armMotor2.setPower(-.5);
+        if(armMotor1.getCurrentPosition() < 10000  && armMotor2.getCurrentPosition() < 10000){
+            armMotor1.setPower(-0.75);
+            armMotor2.setPower(-0.75);
         }
     }
 
+    public void moveBack(){
+        if(topLeft.getCurrentPosition() < 5000){
+            topLeft.setPower(1);
+        }
+        if(topRight.getCurrentPosition() < 5000){
+            topRight.setPower(-1);
+        }
+        if(botLeft.getCurrentPosition() < 5000){
+            botLeft.setPower(1);
+        }
+        if(botRight.getCurrentPosition() < 5000){
+            botRight.setPower(-1);
+        }
+    }
+
+    public void seekAndDestroy(boolean found, double x, boolean aligned){
+        if(!found){
+            topLeft.setPower(-0.4);
+            topRight.setPower(-0.4);
+            botLeft.setPower(-0.4);
+            botRight.setPower(-0.4);
+        }
+        else{
+            topLeft.setPower(0.0);
+            topRight.setPower(0.0);
+            botRight.setPower(0.0);
+            botLeft.setPower(0.0);
+        }
+
+        if(found && aligned){
+            if(topLeft.getCurrentPosition() < 10000){
+                topLeft.setPower(-1);
+            }
+            if(topRight.getCurrentPosition() < 10000){
+                topRight.setPower(-1);
+            }
+            if(botLeft.getCurrentPosition() < 10000){
+                botLeft.setPower(-1);
+            }
+            if(botRight.getCurrentPosition() < 10000){
+                botRight.setPower(-1);
+            }
+        }
+    }
+/*
     public void seekAndDestroy(boolean found, Timer t, double x, GoldAlignDetector detector){
 
         if(!found){
@@ -119,7 +204,7 @@ public class AutoBot extends Robot {
             botLeft.setPower(-0.5);
         }
     }
-
+*/
     //motor values MAY NEED FIXING both for neg/pos + speed val
     public void align(double x, boolean aligned){
         if(!aligned && x  < 9999){

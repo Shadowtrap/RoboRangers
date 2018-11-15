@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.helper.AutoBot;
 import org.firstinspires.ftc.teamcode.helper.Robot;
+import org.firstinspires.ftc.teamcode.helper.Timer;
 
 @Autonomous(name="RobotTestAuto", group="DogeCV")
 
@@ -46,16 +47,18 @@ public class RobotTestAuto extends OpMode
     // Detector object
     private GoldAlignDetector detector;
     private Robot bot;
-   //private double currentServoPos;
+    private AutoBot aB;
+    private Timer timer;
     private int counter;
+   //private double currentServoPos;
 
     @Override
     public void init() {
         telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
         bot = new Robot(hardwareMap,telemetry);
-        AutoBot aB = new AutoBot(hardwareMap, telemetry);
-        //aB.setUpMotors();
-        //currentServoPos = bot.getArmServoPosition();
+        aB = new AutoBot(hardwareMap, telemetry);
+        aB.setUpDropMotor();
+        aB.setUpWheels();
         counter = 0;
 
         // Set up detector
@@ -101,83 +104,23 @@ public class RobotTestAuto extends OpMode
         telemetry.addData("Center X Pos", detector.getXPosition()); // Gold center X position.
         telemetry.addLine("Rect Edge X Pos: " + detector.temp.x); // Gold right side X position
 
-        telemetry.addLine("heirarchy " + detector.hierarchy.width());
-        telemetry.addLine("Equation " + (50 * 3.2)/detector.hierarchy.width());
-
-
         double cX = detector.getXPosition();
         double sX = detector.temp.x;
         boolean found = detector.isFound();
-
-
-        /*
-        if(counter == 0){
-            //Moving arm when auto starts
-            if(bot.armMotor1.getCurrentPosition() < 1600 && counter == 0)
-                bot.armMotor1.setPower(-1);
-            if(bot.armMotor2.getCurrentPosition() < 1600 && counter == 0)
-                bot.armMotor2.setPower(-1);
-            bot.armServo.setPosition(1);
+        boolean aligned = detector.getAligned();
+        if(counter == 0) {
+            aB.drop();
             counter++;
-            //Moving robot back
-            if(counter == 1) {
-                if (bot.topLeft.getCurrentPosition() < 2500)
-                    bot.topLeft.setPower(0.75);
-                if (bot.topRight.getCurrentPosition() < 2500)
-                    bot.topRight.setPower(-0.75);
-                if (bot.botLeft.getCurrentPosition() < 2500)
-                    bot.botLeft.setPower(0.75);
-                if (bot.botRight.getCurrentPosition() < 2500)
-                    bot.botRight.setPower(-0.75);
-            }
+        }
+        if(counter == 1){
+            aB.moveBack();
             counter++;
-            */
-            //Rotating robot to find gold piece
-            //if(counter == 2){
-                if(!found){
-                    bot.topLeft.setPower(-0.5);
-                    bot.topRight.setPower(-0.5);
-                    bot.botLeft.setPower(-0.5);
-                    bot.botRight.setPower(-0.5);
-                }
-                else{
-                    bot.topLeft.setPower(0.0);
-                    bot.topRight.setPower(0.0);
-                    bot.botRight.setPower(0.0);
-                    bot.botLeft.setPower(0.0);
-                }
-            //}
+        }
+        if(counter == 2) {
+            aB.seekAndDestroy(found, cX, aligned);
             counter++;
-            //Making the robot strafe to align
-            //if(counter == 3) {
-            /*
-                if(cX > 10) {
-                    if (sX < 250) {
-                        bot.topLeft.setPower(0.75);
-                        bot.topRight.setPower(0.75);
-                        bot.botRight.setPower(-0.75);
-                        bot.botLeft.setPower(-0.75);
-                    }
-                    else if (sX > 250) {
-                        bot.topLeft.setPower(-0.75);
-                        bot.topRight.setPower(-0.75);
-                        bot.botLeft.setPower(0.75);
-                        bot.botRight.setPower(0.75);
-                    }
-                    else {
-                        bot.topLeft.setPower(0.0);
-                        bot.topRight.setPower(0.0);
-                        bot.botLeft.setPower(0.0);
-                        bot.botRight.setPower(0.0);
-                    }
-
-            }
-        }*/
+        }
     }
-
-        //After moving mineral dropping team marker in square(code for servo)
-
-        //Code to end off
 
 
     /*
