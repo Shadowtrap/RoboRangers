@@ -9,10 +9,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.helper.Power;
 
 public class Robot {
-    
+
     public final HardwareMap hwm;
     public final Telemetry t;
-    
+
     //Motors for Wheels
     public DcMotor topLeft;
     public DcMotor topRight;
@@ -20,20 +20,24 @@ public class Robot {
     public DcMotor botRight;
 
     //Motor for Arm
-	public DcMotor armMotor1;
-	public DcMotor armMotor2;
+    public DcMotor armMotor1;
+    public DcMotor armMotor2;
 
     //Servo for Arm
     public Servo armServo;
 
     //Motor for scoring
-    public DcMotor scoreMotor;
+    public DcMotor raiseMotor;
+    public DcMotor extendMotor;
 
+    //servo for score door;
+    public Servo left;
+    public Servo right;
     public Robot(HardwareMap hardwareMap, Telemetry tele){
         hwm = hardwareMap;
         t = tele;
     }
-    
+
     public void Display(String s){
         t.addLine(s);
     }
@@ -81,8 +85,8 @@ public class Robot {
     }
 
     //Code for armMotor
-	public void setUpArmMotor(){
-		Display("Setting up the armMotor");
+    public void setUpArmMotor(){
+        Display("Setting up the armMotor");
         try {
             armMotor1 = hwm.get(DcMotor.class, "armMotor1");
             armMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -93,57 +97,70 @@ public class Robot {
         }
 
         try {
-           armMotor2 = hwm.get(DcMotor.class, "armMotor2");
-           armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-           armMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            armMotor2 = hwm.get(DcMotor.class, "armMotor2");
+            armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            armMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             Display("armMotor2 : OK");
         } catch (Exception e) {
             Display("armMotor2 : ERROR");
         }
-	}
+    }
 
-	//Code for armServo
+    //Code for armServo
     public void setUpArmServo(){
         Display("Setting up the Servo");
         try {
             armServo = hwm.get(Servo.class, "armServo");
-            //armServo.setPosition(0);
-            Display("armServo : OK ");
+            armServo.setPosition(0);
+            Display("armServo : OK");
         }
         catch(Exception e) {
             Display("armServo is broken");
         }
     }
 
-    public void setUpScoreMotor(){
+    public void setUpScoreMech(){
         try {
-            botRight = hwm.get(DcMotor.class, "scoreMotor");
-            botRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            Display("scoremotor : OK");
+            raiseMotor = hwm.get(DcMotor.class, "raiseMotor");
+            raiseMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            raiseMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            Display("raisMotor : OK");
         } catch (Exception e) {
             Display("scoremotor : ERROR");
         }
+        try {
+            extendMotor = hwm.get(DcMotor.class, "extendMotor");
+            extendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            extendMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            Display("extendMotor : OK");
+        } catch (Exception e) {
+            Display("extendMotor : ERROR");
+        }
+
+        try {
+            left = hwm.get(Servo.class, "left");
+            left.setPosition(0);
+            Display("armServo : OK");
+        }
+        catch(Exception e) {
+            Display("left is broken");
+        }
+        try {
+            right = hwm.get(Servo.class, "right");
+            right.setPosition(0);
+            Display("right : OK");
+        }
+        catch(Exception e) {
+            Display("right is broken");
+        }
     }
+
+
 
     public void move(Power power) {
         topLeft.setPower(power.topLeft);
         topRight.setPower(power.topRight);
         botLeft.setPower(power.botLeft);
         botRight.setPower(power.botRight);
-    }
-
-    public void armServoMovement(Gamepad gamepad1){
-        boolean up = gamepad1.dpad_up;
-        boolean down = gamepad1.dpad_down;
-        if(up) {
-            armServo.setPosition(0.0);
-        }
-        else if(down){
-            armServo.setPosition(1.0);
-        }
-        else{
-            armServo.setPosition(0.5);
-        }
     }
 }
