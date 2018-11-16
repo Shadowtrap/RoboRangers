@@ -16,7 +16,7 @@ public class TeleTest extends OpMode {
         bot = new TeleBot(hardwareMap,telemetry);
         driver = new Driver(gamepad1);
 
-        bot.setUpScoreMotor();
+        bot.setUpScoreMech();
         bot.setUpWheels();
         bot.setUpArmServo();
         bot.setUpArmMotor();
@@ -27,6 +27,6 @@ public class TeleTest extends OpMode {
         bot.armMotorMovement(gamepad1);
         bot.armServoMovement(gamepad1);
         bot.move(driver.getPowerDriver());
-        bot.armMech(gamepad1);
+        bot.scoreMech(gamepad1);
     }
 }

@@ -79,5 +79,18 @@ public class TeleBot extends Robot {
         else if(b){
             raiseMotor.setTargetPosition(10000);
         }
+
+        if(rb){
+            right.setPosition(-1);
+        }
+        else{
+            right.setPosition(0);
+        }
+        if(lb){
+            left.setPosition(1);
+        }
+        else{
+            left.setPosition(0);
+        }
     }
 }
