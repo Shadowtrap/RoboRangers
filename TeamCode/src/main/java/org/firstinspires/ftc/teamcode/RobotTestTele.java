@@ -38,8 +38,8 @@ public class RobotTestTele extends OpMode {
      */
     @Override
     public void init_loop() {
-        telemetry.addLine("initLoop");
-        Display("initLoop");
+        //telemetry.addLine("initLoop");
+        //Display("initLoop");
         
     }
 
@@ -63,12 +63,13 @@ public class RobotTestTele extends OpMode {
         telemetry.addLine("botLeft power : " + driver.getPowerDriver().botLeft);
         telemetry.addLine("botRight power : " + driver.getPowerDriver().topLeft);
 		telemetry.addLine("armMotor power : " + bot.getArmMotorPower());
-        telemetry.addLine("armServo position : " + bot.getArmServoPosition());
-        */
+		*/
+        //telemetry.addLine("armServo position : " + bot.armServo.getPosition());
+
         teleBot.armMotorMovement(gamepad1);
         teleBot.armServoMovement(gamepad1);
         teleBot.move(driver.getPowerDriver());
-        teleBot.armMech(gamepad1);
+        //teleBot.armMech(gamepad1);
         //telemetry.addLine("MotorPos : " + teleBot.scoreMotor.getCurrentPosition());
     }
 

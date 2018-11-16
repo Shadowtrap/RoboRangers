@@ -28,6 +28,7 @@ public class Robot {
 
     //Motor for scoring
     public DcMotor scoreMotor;
+
     public Robot(HardwareMap hardwareMap, Telemetry tele){
         hwm = hardwareMap;
         t = tele;
@@ -106,8 +107,8 @@ public class Robot {
         Display("Setting up the Servo");
         try {
             armServo = hwm.get(Servo.class, "armServo");
-            armServo.setPosition(0);
-            Display("armServo : OK");
+            //armServo.setPosition(0);
+            Display("armServo : OK ");
         }
         catch(Exception e) {
             Display("armServo is broken");
@@ -130,5 +131,19 @@ public class Robot {
         topRight.setPower(power.topRight);
         botLeft.setPower(power.botLeft);
         botRight.setPower(power.botRight);
+    }
+
+    public void armServoMovement(Gamepad gamepad1){
+        boolean up = gamepad1.dpad_up;
+        boolean down = gamepad1.dpad_down;
+        if(up) {
+            armServo.setPosition(0.0);
+        }
+        else if(down){
+            armServo.setPosition(1.0);
+        }
+        else{
+            armServo.setPosition(0.5);
+        }
     }
 }

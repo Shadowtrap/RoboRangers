@@ -59,7 +59,7 @@ public class RobotTestAuto extends OpMode
         aB = new AutoBot(hardwareMap, telemetry);
         aB.setUpDropMotor();
         aB.setUpWheels();
-        counter = 0;
+        counter = 1;
 
         // Set up detector
         detector = new GoldAlignDetector(); // Create detector
@@ -108,10 +108,10 @@ public class RobotTestAuto extends OpMode
         double sX = detector.temp.x;
         boolean found = detector.isFound();
         boolean aligned = detector.getAligned();
-        if(counter == 0) {
+        /*if(counter == 0) {
             aB.drop();
             counter++;
-        }
+        }*/
         if(counter == 1){
             aB.moveBack();
             counter++;
