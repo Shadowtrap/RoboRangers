@@ -58,39 +58,78 @@ public class TeleBot extends Robot {
     //scoring mechanism TBI
 
     public void scoreMech(Gamepad gamepad1){
-        boolean rb = gamepad1.right_bumper;
-        boolean lb = gamepad1.left_bumper;
+        //boolean rb = gamepad1.right_bumper;
+       // boolean lb = gamepad1.left_bumper;
 
         boolean y = gamepad1.y;
         boolean a = gamepad1.a;
 
         boolean x = gamepad1.x;
         boolean b = gamepad1.b;
-        if(y){
-            raiseMotor.setTargetPosition(10000);
-        }
-        else if(a){
-            raiseMotor.setTargetPosition(-5000);
+
+        boolean lb = gamepad1.left_bumper;
+        boolean rb = gamepad1.right_bumper;
+
+        if(!raiseMotor.equals(null)){
+            if(y){
+                raiseMotor.setPower(1);
+                r2.setPower(-1);
+            }
+            else if(a){
+                raiseMotor.setPower(-1);
+                r2.setPower(1);
+            }
+            else
+            {
+                raiseMotor.setPower(0);
+                r2.setPower(0);
+            }
         }
 
-        if(x){
-            extendMotor.setTargetPosition(-10000);
-        }
-        else if(b){
-            raiseMotor.setTargetPosition(10000);
+        if(!extendMotor.equals(null)){
+            if(x){
+                extendMotor.setPower(-1);
+            }
+            else if(b){
+                extendMotor.setPower(1);
+            }
+            else
+            {
+                extendMotor.setPower(0);
+            }
         }
 
-        if(rb){
-            right.setPosition(-1);
+        if (!score.equals(null)){
+            if(lb){
+                score.setPosition(1);
+            }
+            else if(rb){
+                score.setPosition(0);
+            }
+            else{
+                score.setPosition(0.5);
+            }
         }
-        else{
-            right.setPosition(0);
+
+        /*
+        if(!right.equals(null)){
+            if(rb){
+                right.setPosition(-1);
+            }
+            else{
+                right.setPosition(0);
+            }
         }
-        if(lb){
-            left.setPosition(1);
-        }
-        else{
-            left.setPosition(0);
-        }
+
+        if(!left.equals(null)){
+            if(lb){
+                left.setPosition(1);
+            }
+            else{
+                left.setPosition(0);
+            }
+        }*/
+
+
     }
 }

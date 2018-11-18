@@ -34,7 +34,7 @@ public class AutoTest extends LinearOpMode {
         double xPos = detector.getXPosition();
         //isStopRequested is a method from opmode
         if(!isStopRequested()){
-            bot.drop();
+            //bot.drop();
             //bot.seekAndDestroy(found,time,xPos,detector);
 
         }

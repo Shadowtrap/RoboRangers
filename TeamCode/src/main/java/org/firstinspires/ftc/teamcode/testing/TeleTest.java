@@ -18,14 +18,14 @@ public class TeleTest extends OpMode {
 
         bot.setUpScoreMech();
         bot.setUpWheels();
-        bot.setUpArmServo();
-        bot.setUpArmMotor();
+        //bot.setUpArmServo();
+        //bot.setUpArmMotor();
     }
 
     @Override
     public void loop() {
-        bot.armMotorMovement(gamepad1);
-        bot.armServoMovement(gamepad1);
+        //bot.armMotorMovement(gamepad1);
+        //bot.armServoMovement(gamepad1);
         bot.move(driver.getPowerDriver());
         bot.scoreMech(gamepad1);
     }

@@ -5,12 +5,13 @@ import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class AutoBot extends Robot {
-
-    //private Timer time = new Timer();
+    ElapsedTime secound  = new ElapsedTime();
+    private Timer time = new Timer();
     public AutoBot(HardwareMap hardwareMap, Telemetry tele) {
         super(hardwareMap, tele);
 
@@ -36,7 +37,7 @@ public class AutoBot extends Robot {
             Display("armMotor2 : ERROR");
         }
     }
-
+/*
     public void setUpWheels() {
         Display("Setting up the wheels");
 
@@ -75,7 +76,7 @@ public class AutoBot extends Robot {
         } catch (Exception e) {
             Display("botRight : ERROR");
         }
-    }
+    }*/
 
     public void setUpDetector(GoldAlignDetector detector){
         // Set up detector
@@ -124,33 +125,53 @@ public class AutoBot extends Robot {
         }
     }
 
-    public void seekAndDestroy(boolean found, double x, boolean aligned){
-        if(!found){
-            topLeft.setPower(-0.4);
-            topRight.setPower(-0.4);
-            botLeft.setPower(-0.4);
-            botRight.setPower(-0.4);
+    public void seekAndDestroy2(boolean found, boolean aligned){
+        int counter = 0;
+
+        if (counter == 0 && time.getCurrentMS()<=2000) {
+            topLeft.setPower(-1);
+            topRight.setPower(1);
+            botRight.setPower(1);
+            botLeft.setPower(-1);
+            //counter=1;
+        }
+        if(time.getCurrentMS()>2000)
+            counter=1;
+        if(counter == 1){
+            topLeft.setPower(0.3);
+            topRight.setPower(0.3);
+            botLeft.setPower(0.3);
+            botRight.setPower(0.3);
         }
         else{
-            topLeft.setPower(0.0);
-            topRight.setPower(0.0);
-            botRight.setPower(0.0);
-            botLeft.setPower(0.0);
+            if(!aligned)
+                {
+                    Display("Yeah");
+                }
+                else {
+
+                    Display("Umhh");
+                }
+
+
         }
 
-        if(found && aligned){
-            if(topLeft.getCurrentPosition() < 10000){
-                topLeft.setPower(-1);
-            }
-            if(topRight.getCurrentPosition() < 10000){
-                topRight.setPower(-1);
-            }
-            if(botLeft.getCurrentPosition() < 10000){
-                botLeft.setPower(-1);
-            }
-            if(botRight.getCurrentPosition() < 10000){
-                botRight.setPower(-1);
-            }
+
+    }
+
+    public void forward(boolean found){
+        if(!found){
+            topLeft.setPower(1);
+            topRight.setPower(-1);
+            botLeft.setPower(1);
+            botRight.setPower(-1);
+        }
+        else
+        {
+            topLeft.setPower(0);
+            topRight.setPower(0);
+            botLeft.setPower(0);
+            botRight.setPower(0);
         }
     }
 /*
@@ -204,7 +225,9 @@ public class AutoBot extends Robot {
             botLeft.setPower(-0.5);
         }
     }
+
 */
+
     //motor values MAY NEED FIXING both for neg/pos + speed val
     public void align(double x, boolean aligned){
         if(!aligned && x  < 9999){

@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class RobotTestTele extends OpMode {
     /* Declare OpMode members. */
-    Robot bot;
+    //Robot bot;
     TeleBot teleBot;
     Driver driver;
 
@@ -20,7 +20,7 @@ public class RobotTestTele extends OpMode {
     public void init() {
         telemetry.addData("Status", "Initialized");
         telemetry.addLine("init");
-        bot = new Robot(hardwareMap,telemetry);
+        //bot = new Robot(hardwareMap,telemetry);
         teleBot = new TeleBot(hardwareMap,telemetry);
         driver = new Driver(gamepad1);
 
@@ -30,7 +30,7 @@ public class RobotTestTele extends OpMode {
         teleBot.setUpArmMotor();
         teleBot.setUpArmServo();
         teleBot.setUpWheels();
-        teleBot.setUpScoreMotor();
+        //teleBot.setUpScoreMotor();
     }
 
     /*
@@ -66,10 +66,10 @@ public class RobotTestTele extends OpMode {
 		*/
         //telemetry.addLine("armServo position : " + bot.armServo.getPosition());
 
-        teleBot.armMotorMovement(gamepad1);
-        teleBot.armServoMovement(gamepad1);
+        //teleBot.armMotorMovement(gamepad1);
+        //teleBot.armServoMovement(gamepad1);
         teleBot.move(driver.getPowerDriver());
-        //teleBot.armMech(gamepad1);
+        teleBot.scoreMech(gamepad1);
         //telemetry.addLine("MotorPos : " + teleBot.scoreMotor.getCurrentPosition());
     }
 

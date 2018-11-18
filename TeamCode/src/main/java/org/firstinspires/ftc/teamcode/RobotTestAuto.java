@@ -48,7 +48,7 @@ public class RobotTestAuto extends OpMode
     private GoldAlignDetector detector;
     private Robot bot;
     private AutoBot aB;
-    private Timer timer;
+    //private Timer timer;
     private int counter;
    //private double currentServoPos;
 
@@ -112,14 +112,9 @@ public class RobotTestAuto extends OpMode
             aB.drop();
             counter++;
         }*/
-        if(counter == 1){
-            aB.moveBack();
-            counter++;
-        }
-        if(counter == 2) {
-            aB.seekAndDestroy(found, cX, aligned);
-            counter++;
-        }
+        aB.seekAndDestroy2(found,aligned);
+
+
     }
 
 

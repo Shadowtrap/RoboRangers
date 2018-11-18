@@ -33,6 +33,10 @@ public class Robot {
     //servo for score door;
     public Servo left;
     public Servo right;
+
+    public Servo score;
+
+    public DcMotor r2;
     public Robot(HardwareMap hardwareMap, Telemetry tele){
         hwm = hardwareMap;
         t = tele;
@@ -123,20 +127,29 @@ public class Robot {
         try {
             raiseMotor = hwm.get(DcMotor.class, "raiseMotor");
             raiseMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            raiseMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            Display("raisMotor : OK");
+            raiseMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            Display("raiseMotor : OK");
         } catch (Exception e) {
             Display("scoremotor : ERROR");
         }
         try {
             extendMotor = hwm.get(DcMotor.class, "extendMotor");
             extendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            extendMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            extendMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             Display("extendMotor : OK");
         } catch (Exception e) {
             Display("extendMotor : ERROR");
         }
 
+        try {
+            r2 = hwm.get(DcMotor.class, "r2");
+            r2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            r2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            Display("r2 : OK");
+        } catch (Exception e) {
+            Display("r2 : ERROR");
+        }
+        /*
         try {
             left = hwm.get(Servo.class, "left");
             left.setPosition(0);
@@ -152,6 +165,15 @@ public class Robot {
         }
         catch(Exception e) {
             Display("right is broken");
+        }*/
+
+        try{
+            score = hwm.get(Servo.class, "score");
+
+            Display("OK");
+        }
+        catch (Exception e){
+            Display("BADDDDD");
         }
     }
 
