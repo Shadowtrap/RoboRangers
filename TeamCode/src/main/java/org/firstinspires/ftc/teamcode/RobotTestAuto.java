@@ -102,10 +102,10 @@ public class RobotTestAuto extends OpMode
     public void loop() {
         telemetry.addData("IsAligned", detector.getAligned()); // Is the bot aligned with the gold mineral?
         telemetry.addData("Center X Pos", detector.getXPosition()); // Gold center X position.
-        telemetry.addLine("Rect Edge X Pos: " + detector.temp.x); // Gold right side X position
+        //telemetry.addLine("Rect Edge X Pos: " + detector.temp.x); // Gold right side X position
 
         double cX = detector.getXPosition();
-        double sX = detector.temp.x;
+        //double sX = detector.temp.x;
         boolean found = detector.isFound();
         boolean aligned = detector.getAligned();
         /*if(counter == 0) {

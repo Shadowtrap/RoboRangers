@@ -28,10 +28,10 @@ import java.util.List;
 public class GoldAlignDetector extends DogeCVDetector {
 
     // Defining Mats to be used.
-    public Mat displayMat = new Mat(); // Display debug info to the screen (this is what is returned)
-    public Mat workingMat = new Mat(); // Used for preprocessing and working with (blurring as an example)
-    public Mat maskYellow = new Mat(); // Yellow Mask returned by color filter
-    public Mat hierarchy  = new Mat(); // hierarchy used by coutnours
+    private Mat displayMat = new Mat(); // Display debug info to the screen (this is what is returned)
+    private Mat workingMat = new Mat(); // Used for preprocessing and working with (blurring as an example)
+    private Mat maskYellow = new Mat(); // Yellow Mask returned by color filter
+    private Mat hierarchy  = new Mat(); // hierarchy used by coutnours
 
     // Results of the detector
     private boolean found    = false; // Is the gold mineral found
@@ -48,6 +48,7 @@ public class GoldAlignDetector extends DogeCVDetector {
 
     //Create the default filters and scorers
     public DogeCVColorFilter yellowFilter      = new LeviColorFilter(LeviColorFilter.ColorPreset.YELLOW); //Default Yellow filter
+
     public RatioScorer       ratioScorer       = new RatioScorer(1.0, 3);          // Used to find perfect squares
     public MaxAreaScorer     maxAreaScorer     = new MaxAreaScorer( 0.01);                    // Used to find largest objects
     public PerfectAreaScorer perfectAreaScorer = new PerfectAreaScorer(5000,0.05); // Used to find objects near a tuned area value
@@ -55,7 +56,6 @@ public class GoldAlignDetector extends DogeCVDetector {
     /**
      * Simple constructor
      */
-    public Rect temp = new Rect();
     public GoldAlignDetector() {
         super();
         detectorName = "Gold Align Detector"; // Set the detector name
@@ -97,7 +97,6 @@ public class GoldAlignDetector extends DogeCVDetector {
             if(score < bestDiffrence){
                 bestDiffrence = score;
                 bestRect = rect;
-                temp = bestRect;
             }
         }
 
@@ -129,7 +128,6 @@ public class GoldAlignDetector extends DogeCVDetector {
             // Draw Current X
             Imgproc.putText(displayMat,"Current X: " + bestRect.x,new Point(10,getAdjustedSize().height - 10),0,0.5, new Scalar(255,255,255),1);
             found = true;
-
         }else{
             found = false;
             aligned = false;
