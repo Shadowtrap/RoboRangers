@@ -116,13 +116,29 @@ public class TensorFlowTest extends LinearOpMode {
                     List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
                     if (updatedRecognitions != null) {
                       telemetry.addData("# Object Detected", updatedRecognitions.size());
+                      int goldMineralX = -1;
+                      int goldY = -1;
+
+                      if(updatedRecognitions.size()>=1)
+                      {
+                          for(Recognition r: updatedRecognitions)
+                          {
+                              if (r.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                                  goldMineralX = (int) r.getLeft();
+                                  goldY = (int)r.getTop();
+                              }
+                          }
+                      }
+
                       if (updatedRecognitions.size() == 3) {
-                        int goldMineralX = -1;
+                        goldMineralX = -1;
+                        goldY = -1;
                         int silverMineral1X = -1;
                         int silverMineral2X = -1;
                         for (Recognition recognition : updatedRecognitions) {
                           if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
                             goldMineralX = (int) recognition.getLeft();
+                            goldY = (int)recognition.getTop();
                           } else if (silverMineral1X == -1) {
                             silverMineral1X = (int) recognition.getLeft();
                           } else {
@@ -132,19 +148,20 @@ public class TensorFlowTest extends LinearOpMode {
                         if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
                           if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
                             telemetry.addData("Gold Mineral Position", "Left");
-                            telemetry.addLine("Left");
+                            telemetry.addLine("Left code was updated");
                             pos = -1;
                           } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
                             telemetry.addData("Gold Mineral Position", "Right");
-                            telemetry.addLine("Right");
+                            telemetry.addLine("Right code was updated");
                             pos = 1;
                           } else {
                             telemetry.addData("Gold Mineral Position", "Center");
-                            telemetry.addLine("Center");
+                            telemetry.addLine("Center code was updated");
                             pos = 0;
                           }
                         }
                       }
+                      telemetry.addLine("Gold cor: (" + goldMineralX + ", " + goldY + ")");
                       telemetry.update();
                     }
                 }
