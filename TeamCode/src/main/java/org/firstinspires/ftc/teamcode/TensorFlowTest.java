@@ -57,6 +57,7 @@ public class TensorFlowTest extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
+    public static int pos = 2;
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -130,10 +131,16 @@ public class TensorFlowTest extends LinearOpMode {
                         if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
                           if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
                             telemetry.addData("Gold Mineral Position", "Left");
+                            telemetry.addLine("Left");
+                            pos = -1;
                           } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
                             telemetry.addData("Gold Mineral Position", "Right");
+                            telemetry.addLine("Right");
+                            pos = 1;
                           } else {
                             telemetry.addData("Gold Mineral Position", "Center");
+                            telemetry.addLine("Center");
+                            pos = 0;
                           }
                         }
                       }
