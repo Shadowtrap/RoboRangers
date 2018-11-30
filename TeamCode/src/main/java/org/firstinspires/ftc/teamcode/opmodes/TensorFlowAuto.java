@@ -118,6 +118,9 @@ public class TensorFlowAuto extends LinearOpMode {
                       telemetry.addData("# Object Detected", updatedRecognitions.size());
                       int goldMineralX = -1;
                       int goldY = -1;
+                      int goldCenterX = -1;
+                      int goldCenterY = -1;
+                      boolean aligned = false;
 
                       if(updatedRecognitions.size()>=1)
                       {
@@ -126,6 +129,9 @@ public class TensorFlowAuto extends LinearOpMode {
                               if (r.getLabel().equals(LABEL_GOLD_MINERAL)) {
                                   goldMineralX = (int) r.getLeft();
                                   goldY = (int)r.getTop();
+                                  goldCenterX = center((int)r.getLeft(), (int)r.getRight());
+                                  goldCenterY = center((int)r.getTop(), (int)r.getBottom());
+                                  aligned = isAligned(goldCenterX);
                               }
                           }
                       }
@@ -158,7 +164,9 @@ public class TensorFlowAuto extends LinearOpMode {
                           }
                         }
                       }
-                      telemetry.addLine("Gold cor: (" + goldMineralX + ", " + goldY + ")");
+                      telemetry.addLine("Gold Top Left Corner: (" + goldMineralX + ", " + goldY + ")");
+                      telemetry.addLine("Gold Center: (" + goldCenterX + ", " + goldCenterY + ")");
+                      telemetry.addLine("Aligned: " + aligned);
                       telemetry.update();
                     }
                 }
@@ -184,6 +192,7 @@ public class TensorFlowAuto extends LinearOpMode {
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
     }
 
@@ -197,5 +206,15 @@ public class TensorFlowAuto extends LinearOpMode {
         tfodParameters.minimumConfidence = 0.64;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
+    }
+
+    private static int center(int lower, int higher){
+        return higher - lower;
+    }
+    private static boolean isAligned(int centerX){
+        if(centerX > 590 && centerX < 690){
+            return true;
+        }
+        return false;
     }
 }
