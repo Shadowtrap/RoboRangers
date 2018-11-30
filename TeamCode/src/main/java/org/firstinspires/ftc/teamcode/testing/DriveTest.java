@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.testing;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.Blinker;
@@ -15,7 +15,7 @@ import java.util.Date;
 
 
 @TeleOp(name = "DriveTest1")
-
+@Disabled
 public class DriveTest extends OpMode {
     /* Declare OpMode members. */
     

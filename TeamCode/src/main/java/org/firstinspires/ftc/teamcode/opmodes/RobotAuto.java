@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.opmodes;
 
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
@@ -35,14 +35,13 @@ import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
 import org.firstinspires.ftc.teamcode.helper.AutoBot;
 import org.firstinspires.ftc.teamcode.helper.Robot;
 import org.firstinspires.ftc.teamcode.helper.Timer;
 
-@Autonomous(name="RobotTestAuto", group="DogeCV")
+@Autonomous(name="RobotAuto", group="DogeCV")
 
-public class RobotTestAuto extends OpMode
+public class RobotAuto extends OpMode
 {
     // Detector object
     private GoldAlignDetector detector;
@@ -108,10 +107,6 @@ public class RobotTestAuto extends OpMode
         //double sX = detector.temp.x;
         boolean found = detector.isFound();
         boolean aligned = detector.getAligned();
-        /*if(counter == 0) {
-            aB.drop();
-            counter++;
-        }*/
         aB.seekAndDestroy2(found,aligned);
 
 

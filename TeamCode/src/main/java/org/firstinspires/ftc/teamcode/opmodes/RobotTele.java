@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.opmodes;
 
 import org.firstinspires.ftc.teamcode.helper.Robot;
 import org.firstinspires.ftc.teamcode.helper.Driver;
@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-@TeleOp(name = "RobotTestTele")
+@TeleOp(name = "RobotTele")
 
-public class RobotTestTele extends OpMode {
+public class RobotTele extends OpMode {
     /* Declare OpMode members. */
     //Robot bot;
     TeleBot teleBot;
