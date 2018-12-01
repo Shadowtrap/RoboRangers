@@ -39,6 +39,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.teamcode.helper.Robot;
 
 import java.util.List;
 
@@ -87,6 +88,8 @@ public class TensorFlowAuto extends LinearOpMode {
      */
     private TFObjectDetector tfod;
     private float focalLength = 0;
+    Robot bot = new Robot(hardwareMap, telemetry);
+
 
     @Override
     public void runOpMode() {
@@ -102,6 +105,7 @@ public class TensorFlowAuto extends LinearOpMode {
 
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start tracking");
+        bot.setUpWheels();
         telemetry.update();
         waitForStart();
 
@@ -122,8 +126,9 @@ public class TensorFlowAuto extends LinearOpMode {
                       int goldY = -1;
                       int goldCenterX = -1;
                       int goldCenterY = -1;
-                      boolean aligned = false;
                       int goldHeight = -1;
+                      int position = 2;
+                      boolean aligned = false;
                       if(updatedRecognitions.size()>=1)
                       {
                           for(Recognition r: updatedRecognitions)
@@ -158,12 +163,15 @@ public class TensorFlowAuto extends LinearOpMode {
                           if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
                             telemetry.addData("Gold Mineral Position", "Left");
                             telemetry.addLine("Left code was updated");
+                            position = -1;
                           } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
                             telemetry.addData("Gold Mineral Position", "Right");
                             telemetry.addLine("Right code was updated");
+                            position = 1;
                           } else {
                             telemetry.addData("Gold Mineral Position", "Center");
                             telemetry.addLine("Center code was updated");
+                            position = 0;
                           }
                         }
                       }
@@ -172,6 +180,7 @@ public class TensorFlowAuto extends LinearOpMode {
                       telemetry.addLine("Aligned: " + aligned);
                       telemetry.addLine("Focal Length: " + focalLength);
                       telemetry.addLine("Distance: " + (int)((50 * focalLength) / goldHeight));
+                      //move(bot, aligned, position, goldCenterX);
                       telemetry.update();
                     }
                 }
@@ -223,5 +232,27 @@ public class TensorFlowAuto extends LinearOpMode {
             return true;
         }
         return false;
+    }
+    private static void move(Robot bot, boolean aligned, int position, int center){
+        while(!aligned) {
+            if (position == -1) {
+                bot.topLeft.setPower(-0.2);
+                bot.topRight.setPower(-0.2);
+                bot.botLeft.setPower(-0.2);
+                bot.botRight.setPower(-0.2);
+            } else if (position == 1) {
+                bot.topLeft.setPower(0.2);
+                bot.topRight.setPower(0.2);
+                bot.botLeft.setPower(0.2);
+                bot.botRight.setPower(0.2);
+            }
+            if(aligned){
+                bot.topLeft.setPower(0);
+                bot.topRight.setPower(0);
+                bot.botLeft.setPower(0);
+                bot.botRight.setPower(0);
+            }
+            aligned = isAligned(center);
+        }
     }
 }
