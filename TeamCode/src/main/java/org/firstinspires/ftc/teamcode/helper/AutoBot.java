@@ -37,7 +37,7 @@ public class AutoBot extends Robot {
             Display("armMotor2 : ERROR");
         }
     }
-/*
+
     public void setUpWheels() {
         Display("Setting up the wheels");
 
@@ -76,7 +76,7 @@ public class AutoBot extends Robot {
         } catch (Exception e) {
             Display("botRight : ERROR");
         }
-    }*/
+    }
 
     public void setUpDetector(GoldAlignDetector detector){
         // Set up detector
@@ -249,4 +249,5 @@ public class AutoBot extends Robot {
             botRight.setPower(0);
         }
     }
+
 }
