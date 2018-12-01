@@ -155,4 +155,6 @@ public class SilverDetector extends DogeCVDetector {
     public boolean isFound() {
         return found;
     }
+
+
 }

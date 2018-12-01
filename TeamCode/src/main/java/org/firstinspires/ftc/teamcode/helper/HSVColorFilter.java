@@ -1,4 +1,6 @@
-package com.disnodeteam.dogecv.filters;
+package org.firstinspires.ftc.teamcode.helper;
+
+import com.disnodeteam.dogecv.filters.DogeCVColorFilter;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -10,7 +12,7 @@ import org.opencv.imgproc.Imgproc;
  * Created by Victo on 1/1/2018.
  */
 
-public class HSVColorFilter extends DogeCVColorFilter{
+public class HSVColorFilter extends DogeCVColorFilter {
 
     private Scalar perfect = new Scalar(255,255,255); // Prefect color
     private Scalar range = new Scalar(0,0,0); // Range around perfect color

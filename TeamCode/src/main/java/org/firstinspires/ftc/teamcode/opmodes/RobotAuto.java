@@ -29,22 +29,28 @@
 
 package org.firstinspires.ftc.teamcode.opmodes;
 
+
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
-import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.helper.HSVColorFilter;
+import org.firstinspires.ftc.teamcode.helper.SamplingOrderDetector;
 import org.firstinspires.ftc.teamcode.helper.AutoBot;
 import org.firstinspires.ftc.teamcode.helper.Robot;
-import org.firstinspires.ftc.teamcode.helper.Timer;
 
-@Autonomous(name="RobotAuto", group="DogeCV")
+@Autonomous(name="NewRobotAuto", group="DogeCV")
 
 public class RobotAuto extends OpMode
 {
     // Detector object
-    private GoldAlignDetector detector;
+    private SamplingOrderDetector detectorsam;
+
     private Robot bot;
     private AutoBot aB;
     //private Timer timer;
@@ -60,23 +66,30 @@ public class RobotAuto extends OpMode
         aB.setUpWheels();
         counter = 1;
 
-        // Set up detector
-        detector = new GoldAlignDetector(); // Create detector
-        detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize it with the app context and camera
-        detector.useDefaults(); // Set detector to use default settings
+
+        /////////////////////////////////////////////////////////////////////////////
+        // Setup detectorsam
+        detectorsam = new SamplingOrderDetector(); // Create the detector
+        detectorsam.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize detector with app context and camera
+        detectorsam.useDefaults(); // Set detector to use default settings
+
+        detectorsam.downscale = 0.4; // How much to downscale the input frames
 
         // Optional tuning
-        detector.alignSize = 100; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
-        detector.alignPosOffset = 0; // How far from center frame to offset this alignment zone.
-        detector.downscale = 0.4; // How much to downscale the input frames
-
-        detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
+        detectorsam.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
         //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
-        detector.maxAreaScorer.weight = 0.005; //
+        detectorsam.maxAreaScorer.weight = 0.001;
 
-        detector.ratioScorer.weight = 5; //
-        detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
-        detector.enable(); // Start the detector!
+        // Optional tuning
+        detectorsam.alignSize1 = 100; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
+        detectorsam.alignPosOffset1 = 0; // How far from center frame to offset this alignment zone.
+        detectorsam.downscale = 0.4; // How much to downscale the input frames
+
+        detectorsam.ratioScorer.weight = 15;
+        detectorsam.ratioScorer.perfectRatio = 1.0;
+
+        detectorsam.enable(); // Start detectorsam
+        //////////////////////////////////////////////////////////////////////////////////
     }
 
     /*
@@ -99,18 +112,15 @@ public class RobotAuto extends OpMode
      */
     @Override
     public void loop() {
-        telemetry.addData("IsAligned", detector.getAligned()); // Is the bot aligned with the gold mineral?
-        telemetry.addData("Center X Pos", detector.getXPosition()); // Gold center X position.
+        telemetry.addData("IsAligned", detectorsam.getAligned()); // Is the bot aligned with the gold mineral?
+        telemetry.addData("Center X Pos", detectorsam.getXPosition()); // Gold center X position.
         //telemetry.addLine("Rect Edge X Pos: " + detector.temp.x); // Gold right side X position
-
-        double cX = detector.getXPosition();
-        //double sX = detector.temp.x;
-        boolean found = detector.isFound();
-        boolean aligned = detector.getAligned();
-        aB.seekAndDestroy2(found,aligned);
-
+        telemetry.addData("Current Order" , detectorsam.getCurrentOrder().toString()); // The current result for the frame
+        telemetry.addData("Last Order" , detectorsam.getLastOrder().toString()); // The last known result
 
     }
+
+
 
 
     /*
@@ -119,7 +129,7 @@ public class RobotAuto extends OpMode
     @Override
     public void stop() {
         // Disable the detector
-        detector.disable();
+        detectorsam.disable();
     }
 
 }

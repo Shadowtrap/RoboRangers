@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-@TeleOp(name = "DriveTest1")
+@TeleOp(name = "SampleTest")
 @Disabled
 public class DriveTest extends OpMode {
     /* Declare OpMode members. */
