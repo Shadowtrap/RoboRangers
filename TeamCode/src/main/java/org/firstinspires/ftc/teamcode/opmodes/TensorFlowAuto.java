@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.vuforia.CameraCalibration;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -85,6 +86,7 @@ public class TensorFlowAuto extends LinearOpMode {
      * Detection engine.
      */
     private TFObjectDetector tfod;
+    private float focalLength = 0;
 
     @Override
     public void runOpMode() {
@@ -121,7 +123,7 @@ public class TensorFlowAuto extends LinearOpMode {
                       int goldCenterX = -1;
                       int goldCenterY = -1;
                       boolean aligned = false;
-
+                      int goldHeight = -1;
                       if(updatedRecognitions.size()>=1)
                       {
                           for(Recognition r: updatedRecognitions)
@@ -132,6 +134,7 @@ public class TensorFlowAuto extends LinearOpMode {
                                   goldCenterX = center((int)r.getLeft(), (int)r.getRight());
                                   goldCenterY = center((int)r.getTop(), (int)r.getBottom());
                                   aligned = isAligned(goldCenterX);
+                                  goldHeight = (int)r.getHeight();
                               }
                           }
                       }
@@ -167,6 +170,8 @@ public class TensorFlowAuto extends LinearOpMode {
                       telemetry.addLine("Gold Top Left Corner: (" + goldMineralX + ", " + goldY + ")");
                       telemetry.addLine("Gold Center: (" + goldCenterX + ", " + goldCenterY + ")");
                       telemetry.addLine("Aligned: " + aligned);
+                      telemetry.addLine("Focal Length: " + focalLength);
+                      telemetry.addLine("Distance: " + (int)((50 * focalLength) / goldHeight));
                       telemetry.update();
                     }
                 }
@@ -189,7 +194,9 @@ public class TensorFlowAuto extends LinearOpMode {
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraDirection = CameraDirection.BACK;
-
+        CameraCalibration cc = vuforia.getCameraCalibration();
+        float[] focalLengths = cc.getFocalLength().getData();
+        focalLength = focalLengths[0];
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
