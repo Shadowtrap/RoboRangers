@@ -48,7 +48,7 @@ public class EncoderSquare extends OpMode {
             rotate(-1985, ab);
             counter++;
         }
-        if(counter > 7git ){
+        if(counter > 7){
             ab.topLeft.setPower(0);
             ab.botRight.setPower(0);
             ab.topRight.setPower(0);
