@@ -225,7 +225,7 @@ public class TensorFlowAuto extends LinearOpMode {
     }
 
     private static int center(int lower, int higher){
-        return higher - lower;
+        return lower + ((higher - lower) / 2);
     }
     private static boolean isAligned(int centerX){
         if(centerX > 590 && centerX < 690){
