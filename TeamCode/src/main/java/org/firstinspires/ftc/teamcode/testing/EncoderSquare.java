@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.helper.AutoBot;
 import org.firstinspires.ftc.teamcode.helper.Driver;
@@ -14,14 +15,13 @@ import org.firstinspires.ftc.teamcode.helper.Robot;
 public class EncoderSquare extends OpMode {
 
     private AutoBot ab;
-    private int counter = 1;
+    private int counter = 0;
+    private ElapsedTime time = new ElapsedTime();
 
 
     public void init() {
         ab = new AutoBot(hardwareMap, telemetry);
         ab.setUpWheels();
-
-
     }
     @Override
     public void init_loop() {
@@ -33,16 +33,28 @@ public class EncoderSquare extends OpMode {
     }
     @Override
     public void loop() {
-
-        if(counter==1) {
+        if(counter % 2 == 0) {
             forward(equation(46), ab);
             counter++;
-
         }
-        else if(counter==2)
+        time.reset();
+        if(time.time() < 1){
+            ab.topLeft.setPower(0);
+            ab.botRight.setPower(0);
+            ab.topRight.setPower(0);
+            ab.botLeft.setPower(0);
+        }
+        if(counter % 2 == 1) {
             rotate(-1985, ab);
+            counter++;
+        }
+        if(counter > 7git ){
+            ab.topLeft.setPower(0);
+            ab.botRight.setPower(0);
+            ab.topRight.setPower(0);
+            ab.botLeft.setPower(0);
+        }
 
-            //rotate(equation(10),ab);
         //ab.move(new Driver(gamepad1).getPowerDriver());
         //telemetry.addLine("left:" + ab.topLeft.getCurrentPosition());
         //telemetry.addLine("right:" + ab.topRight.getCurrentPosition());
