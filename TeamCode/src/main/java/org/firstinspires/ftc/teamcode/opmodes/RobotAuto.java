@@ -44,31 +44,30 @@ import org.firstinspires.ftc.teamcode.helper.SamplingOrderDetector;
 import org.firstinspires.ftc.teamcode.helper.AutoBot;
 import org.firstinspires.ftc.teamcode.helper.Robot;
 
-@Autonomous(name="NewRobotAuto", group="DogeCV")
+@Autonomous(name="RobotAuto", group="DogeCV")
 
 public class RobotAuto extends OpMode
 {
     // Detector object
-    private SamplingOrderDetector detectorsam;
 
-    private Robot bot;
-    private AutoBot aB;
-    //private Timer timer;
-    private int counter;
+    private AutoBot RobotAuto;
+
+    public SamplingOrderDetector detectorsam;
+    public int counter = 1;
    //private double currentServoPos;
 
     @Override
     public void init() {
         telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
-        bot = new Robot(hardwareMap,telemetry);
-        aB = new AutoBot(hardwareMap, telemetry);
-        aB.setUpDropMotor();
-        aB.setUpWheels();
-        counter = 1;
+        RobotAuto = new AutoBot(hardwareMap, telemetry);
+        RobotAuto.setUpDropMotor();
+        RobotAuto.setUpWheels();
+
 
 
         /////////////////////////////////////////////////////////////////////////////
-        // Setup detectorsam
+        /*
+        /// / Setup detectorsam
         detectorsam = new SamplingOrderDetector(); // Create the detector
         detectorsam.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize detector with app context and camera
         detectorsam.useDefaults(); // Set detector to use default settings
@@ -89,7 +88,10 @@ public class RobotAuto extends OpMode
         detectorsam.ratioScorer.perfectRatio = 1.0;
 
         detectorsam.enable(); // Start detectorsam
-        //////////////////////////////////////////////////////////////////////////////////
+
+
+       */
+        RobotAuto.setDetectors();
     }
 
     /*
@@ -112,11 +114,26 @@ public class RobotAuto extends OpMode
      */
     @Override
     public void loop() {
-        telemetry.addData("IsAligned", detectorsam.getAligned()); // Is the bot aligned with the gold mineral?
-        telemetry.addData("Center X Pos", detectorsam.getXPosition()); // Gold center X position.
-        //telemetry.addLine("Rect Edge X Pos: " + detector.temp.x); // Gold right side X position
-        telemetry.addData("Current Order" , detectorsam.getCurrentOrder().toString()); // The current result for the frame
-        telemetry.addData("Last Order" , detectorsam.getLastOrder().toString()); // The last known result
+
+        if(counter==1)
+        {
+            RobotAuto.forward(10);
+            counter++;
+            telemetry.addLine("Step 1");
+        }
+        else if(counter==2)
+        {
+            RobotAuto.OrderAndAlginment(10,10,10);
+            counter++;
+            telemetry.addLine("Step 2");
+        }
+
+
+
+        telemetry.addData("IsAligned", RobotAuto.detectorsam.getAligned()); // Is the bot aligned with the gold mineral?
+        telemetry.addData("Center X Pos", RobotAuto.detectorsam.getXPosition()); // Gold center X position.
+        telemetry.addData("Current Order" , RobotAuto.detectorsam.getCurrentOrder().toString()); // The current result for the frame
+        telemetry.addData("Last Order" , RobotAuto.detectorsam.getLastOrder().toString()); // The last known result
 
     }
 
@@ -129,7 +146,7 @@ public class RobotAuto extends OpMode
     @Override
     public void stop() {
         // Disable the detector
-        detectorsam.disable();
+        RobotAuto.detectorsam.disable();
     }
 
 }

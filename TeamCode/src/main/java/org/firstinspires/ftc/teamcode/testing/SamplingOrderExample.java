@@ -31,6 +31,8 @@ package org.firstinspires.ftc.teamcode.dogecv;
 
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
+
+import org.firstinspires.ftc.teamcode.helper.Robot;
 import org.firstinspires.ftc.teamcode.helper.SamplingOrderDetector;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;

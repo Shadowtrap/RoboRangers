@@ -6,12 +6,16 @@ import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.teamcode.helper.SamplingOrderDetector;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class AutoBot extends Robot {
     ElapsedTime secound  = new ElapsedTime();
     private Timer time = new Timer();
+    public int counter;
+    private HardwareMap hardwaremap;
+    public SamplingOrderDetector detectorsam;
     public AutoBot(HardwareMap hardwareMap, Telemetry tele) {
         super(hardwareMap, tele);
 
@@ -77,177 +81,219 @@ public class AutoBot extends Robot {
             Display("botRight : ERROR");
         }
     }
+    public void setDetectors() {
+        // Setup detectorsam
+        detectorsam = new SamplingOrderDetector(); // Create the detector
+        detectorsam.init( hwm.appContext,CameraViewDisplay.getInstance()); // Initialize detector with app context and camera
+        detectorsam.useDefaults(); // Set detector to use default settings
 
-    public void setUpDetector(GoldAlignDetector detector){
-        // Set up detector
-        detector = new GoldAlignDetector(); // Create detector
-        detector.init(this.hwm.appContext, CameraViewDisplay.getInstance()); // Initialize it with the app context and camera
-        detector.useDefaults(); // Set detector to use default settings
+        detectorsam.downscale = 0.4; // How much to downscale the input frames
 
         // Optional tuning
-        detector.alignSize = 100; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
-        detector.alignPosOffset = 0; // How far from center frame to offset this alignment zone.
-        detector.downscale = 0.4; // How much to downscale the input frames
-
-        detector.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
+        detectorsam.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
         //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
-        detector.maxAreaScorer.weight = 0.005; //
+        detectorsam.maxAreaScorer.weight = 0.001;
 
-        detector.ratioScorer.weight = 5; //
-        detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
-        detector.enable(); // Start the detector!
+        // Optional tuning
+        detectorsam.alignSize1 = 100; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
+        detectorsam.alignPosOffset1 = 0; // How far from center frame to offset this alignment zone.
+        detectorsam.downscale = 0.4; // How much to downscale the input frames
+
+        detectorsam.ratioScorer.weight = 15;
+        detectorsam.ratioScorer.perfectRatio = 1.0;
+
+        detectorsam.enable(); // Start detectorsam
     }
 
-    public void drop(){
+    //Equation for Ticks
+    public static double equation(double distance)
+    {
+        return (360/(4*Math.PI))*distance;
+    }
 
-        /*VALUES NEED TO BE DETERMINED
-        99999 needs to be set to whatever position we find using enconders
-        setPower needs to be adjusted for optimal use
-         */
-        if(armMotor1.getCurrentPosition() < 10000  && armMotor2.getCurrentPosition() < 10000){
-            armMotor1.setPower(-0.75);
-            armMotor2.setPower(-0.75);
+
+    //Foward using encoders
+    public void forward(double encode){
+        if(topLeft.getCurrentPosition() < encode && topRight.getCurrentPosition() < encode){
+            topLeft.setPower(.5);
+            botRight.setPower(-.5);
+            topRight.setPower(-.5);
+            botLeft.setPower(.5);
+
+        }
+        else {
+            topLeft.setPower(0);
+            botRight.setPower(0);
+            topRight.setPower(0);
+            botLeft.setPower(0);
+            topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            stop();;
+
+
         }
     }
 
-    public void moveBack(){
-        if(topLeft.getCurrentPosition() < 5000){
-            topLeft.setPower(1);
+    //Backwards using encoders
+    public void backwards(double encode){
+        if(topLeft.getCurrentPosition() < encode && topRight.getCurrentPosition() < encode){
+            topLeft.setPower(-.5);
+            botRight.setPower(.5);
+            topRight.setPower(.5);
+            botLeft.setPower(-.5);
+
         }
-        if(topRight.getCurrentPosition() < 5000){
-            topRight.setPower(-1);
-        }
-        if(botLeft.getCurrentPosition() < 5000){
-            botLeft.setPower(1);
-        }
-        if(botRight.getCurrentPosition() < 5000){
-            botRight.setPower(-1);
+        else {
+            topLeft.setPower(0);
+            botRight.setPower(0);
+            topRight.setPower(0);
+            botLeft.setPower(0);
+            topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            stop();
+
+
         }
     }
 
-    public void seekAndDestroy2(boolean found, boolean aligned){
-        int counter = 0;
+    //Rotation Left or Right
+    public void rotate(String str,int deg)
+    {
+        if(str.equals("Right")==true||str.equals("Right")==true)
+        {
+            if(topLeft.getCurrentPosition()<(int)(deg*-22.0555555556))
+            {
+                topLeft.setPower(-.5);
+                botRight.setPower(-0.5);
+                topRight.setPower(-.5);
+                botLeft.setPower(-.5);
+            }
+            else {
+                topLeft.setPower(0);
+                botRight.setPower(0);
+                topRight.setPower(0);
+                botLeft.setPower(0);
+                topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                stop();;
 
-        if (counter == 0 && time.getCurrentMS()<=2000) {
-            topLeft.setPower(-1);
-            topRight.setPower(1);
-            botRight.setPower(1);
-            botLeft.setPower(-1);
-            //counter=1;
-        }
-        if(time.getCurrentMS()>2000)
-            counter=1;
-        if(counter == 1){
-            topLeft.setPower(0.3);
-            topRight.setPower(0.3);
-            botLeft.setPower(0.3);
-            botRight.setPower(0.3);
-        }
-        else{
-            if(!aligned)
-                {
-                    Display("Yeah");
-                }
-                else {
 
-                    Display("Umhh");
-                }
-
+            }
 
         }
+        else if(str.equals("Left")==true||str.equals("left")==true)
+        {
+            if(topLeft.getCurrentPosition()<Math.abs((int)(deg*-22.0555555556)))
+            {
+                topLeft.setPower(.5);
+                botRight.setPower(0.5);
+                topRight.setPower(.5);
+                botLeft.setPower(.5);
+            }
+            else {
+                topLeft.setPower(0);
+                botRight.setPower(0);
+                topRight.setPower(0);
+                botLeft.setPower(0);
+                topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                stop();
 
 
-    }
-
-    public void forward(boolean found){
-        if(!found){
-            topLeft.setPower(1);
-            topRight.setPower(-1);
-            botLeft.setPower(1);
-            botRight.setPower(-1);
+            }
         }
         else
         {
             topLeft.setPower(0);
+            botRight.setPower(0);
             topRight.setPower(0);
             botLeft.setPower(0);
-            botRight.setPower(0);
-        }
-    }
-/*
-    public void seekAndDestroy(boolean found, Timer t, double x, GoldAlignDetector detector){
-
-        if(!found){
-            topLeft.setPower(-0.5);
-            topRight.setPower(-0.5);
-            botLeft.setPower(-0.5);
-            botRight.setPower(-0.5);
-        }
-        else{
-            topLeft.setPower(0.0);
-            topRight.setPower(0.0);
-            botRight.setPower(0.0);
-            botLeft.setPower(0.0);
-        }
-        t.reset();
-
-        //drive forward a bit so that we dont hit the lander VALUES NEED TO BE UPDATED
-        if(t.hasReached(1000)){
-            topLeft.setPower(0.5);
-            topRight.setPower(0.5);
-            botRight.setPower(0.5);
-            botLeft.setPower(0.5);
-        }
-        align(x,detector.getAligned());
-
-        t.reset();
-        //time needed to  reach and push away block
-        //NEED EDIT DUHHHHHHH
-        //INCORPO
-        if(!t.hasReached(999)){
-            topLeft.setPower(0.5);
-            topRight.setPower(-0.5);
-            botRight.setPower(-0.5);
-            botLeft.setPower(0.5);
-        }
-        //SAME VALUE AS IN THE IF
-        else if(t.hasReached(999)){
-            topLeft.setPower(0.0);
-            topRight.setPower(0.0);
-            botRight.setPower(0.0);
-            botLeft.setPower(0.0);
-        }
-        //longer value than inital this is the return trip back to its spot
-        else if(!t.hasReached(99999)){
-            topLeft.setPower(-0.5);
-            topRight.setPower(0.5);
-            botRight.setPower(0.5);
-            botLeft.setPower(-0.5);
+            topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
     }
 
-*/
-
-    //motor values MAY NEED FIXING both for neg/pos + speed val
-    public void align(double x, boolean aligned){
-        if(!aligned && x  < 9999){
-            topLeft.setPower(-.5);
-            botLeft.setPower(.5);
-            topRight.setPower(-.5);
-            botRight.setPower(.5);
+    //Stop timer
+    public void stop()
+    {
+        int once = 1;
+        if(once==1) {
+            secound.reset();
+            once++;
         }
-        else if(!aligned && x > 9999999){
-            topLeft.setPower(.5);
-            botLeft.setPower(-.5);
-            topRight.setPower(.5);
-            botRight.setPower(-.5);
-        }
-        else{
+        if(secound.milliseconds()<5000&&once==2)
+        {
             topLeft.setPower(0);
-            botLeft.setPower(0);
-            topRight.setPower(0);
             botRight.setPower(0);
+            topRight.setPower(0);
+            botLeft.setPower(0);
+            topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         }
     }
 
+    //Alginment and Postion
+    public void OrderAndAlginment(double distance,double distance1,double distance2)
+    {
+        int counter1 = 1;
+
+        if(detectorsam.getCurrentOrder().equals(SamplingOrderDetector.GoldLocation.CENTER)==true)
+        {
+            forward(distance);
+        }
+        else if (detectorsam.getCurrentOrder().equals(SamplingOrderDetector.GoldLocation.LEFT)==true)
+        {
+            if(detectorsam.getAligned()==false)
+            {
+                topLeft.setPower(.25);
+                botRight.setPower(0.25);
+                topRight.setPower(.25);
+                botLeft.setPower(.25);
+            }
+            else {
+                  if(counter1==1)
+                  {
+                      stop();
+                      forward(distance1);
+                      stop();
+                  }
+            }
+        }
+        else if (detectorsam.getCurrentOrder().equals(SamplingOrderDetector.GoldLocation.RIGHT)==true)
+        {
+            if(detectorsam.getAligned()==false)
+            {
+                topLeft.setPower(-.25);
+                botRight.setPower(-0.25);
+                topRight.setPower(-.25);
+                botLeft.setPower(-.25);
+            }
+            else {
+                if(counter1==1)
+                {
+                    stop();
+                    forward(distance2);
+                    stop();
+
+                }
+            }
+        }
+        else
+        {
+            stop();
+        }
+    }
 }

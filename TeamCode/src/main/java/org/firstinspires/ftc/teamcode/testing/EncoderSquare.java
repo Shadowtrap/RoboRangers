@@ -36,24 +36,32 @@ public class EncoderSquare extends OpMode {
         if(counter % 2 == 0) {
             forward(equation(46), ab);
             counter++;
+            time.reset();
+            if (time.time() < 1) {
+                ab.topLeft.setPower(0);
+                ab.botRight.setPower(0);
+                ab.topRight.setPower(0);
+                ab.botLeft.setPower(0);
+            }
         }
-        time.reset();
-        if(time.time() < 1){
-            ab.topLeft.setPower(0);
-            ab.botRight.setPower(0);
-            ab.topRight.setPower(0);
-            ab.botLeft.setPower(0);
-        }
-        if(counter % 2 == 1) {
+        else {
             rotate(-1985, ab);
             counter++;
+            time.reset();
+            if (time.time() < 1) {
+                ab.topLeft.setPower(0);
+                ab.botRight.setPower(0);
+                ab.topRight.setPower(0);
+                ab.botLeft.setPower(0);
+            }
+            if(counter > 7){
+                ab.topLeft.setPower(0);
+                ab.botRight.setPower(0);
+                ab.topRight.setPower(0);
+                ab.botLeft.setPower(0);
+            }
         }
-        if(counter > 7){
-            ab.topLeft.setPower(0);
-            ab.botRight.setPower(0);
-            ab.topRight.setPower(0);
-            ab.botLeft.setPower(0);
-        }
+
 
         //ab.move(new Driver(gamepad1).getPowerDriver());
         //telemetry.addLine("left:" + ab.topLeft.getCurrentPosition());
