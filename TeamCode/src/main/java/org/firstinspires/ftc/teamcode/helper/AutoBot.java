@@ -18,9 +18,7 @@ public class AutoBot extends Robot {
     public SamplingOrderDetector detectorsam;
     public AutoBot(HardwareMap hardwareMap, Telemetry tele) {
         super(hardwareMap, tele);
-
     }
-
     public void setUpDropMotor() {
         Display("Setting up the armMotor");
         try {
@@ -112,7 +110,7 @@ public class AutoBot extends Robot {
     }
 
 
-    //Foward using encoders
+    //Forward using encoders
     public void forward(double encode){
         if(topLeft.getCurrentPosition() < encode && topRight.getCurrentPosition() < encode){
             topLeft.setPower(.5);
@@ -130,9 +128,7 @@ public class AutoBot extends Robot {
             topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            stop();;
-
-
+            stop();
         }
     }
 
@@ -155,17 +151,15 @@ public class AutoBot extends Robot {
             botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             stop();
-
-
         }
     }
 
     //Rotation Left or Right
-    public void rotate(String str,int deg)
+    public void rotate(int goldPos,int deg)
     {
-        if(str.equals("Right")==true||str.equals("Right")==true)
+        if(goldPos == 1)
         {
-            if(topLeft.getCurrentPosition()<(int)(deg*-22.0555555556))
+            if(topLeft.getCurrentPosition() > (int)(deg * -22.0555555556))
             {
                 topLeft.setPower(-.5);
                 botRight.setPower(-0.5);
@@ -181,15 +175,12 @@ public class AutoBot extends Robot {
                 topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                stop();;
-
-
+                stop();
             }
-
         }
-        else if(str.equals("Left")==true||str.equals("left")==true)
+        else if(goldPos == -1)
         {
-            if(topLeft.getCurrentPosition()<Math.abs((int)(deg*-22.0555555556)))
+            if(topLeft.getCurrentPosition() < (int)(deg * 22.0555555556))
             {
                 topLeft.setPower(.5);
                 botRight.setPower(0.5);
@@ -206,8 +197,6 @@ public class AutoBot extends Robot {
                 botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 stop();
-
-
             }
         }
         else
@@ -231,7 +220,7 @@ public class AutoBot extends Robot {
             secound.reset();
             once++;
         }
-        if(secound.milliseconds()<5000&&once==2)
+        if(secound.milliseconds() < 5000 && once==2)
         {
             topLeft.setPower(0);
             botRight.setPower(0);
@@ -246,15 +235,15 @@ public class AutoBot extends Robot {
     }
 
     //Alginment and Postion
-    public void OrderAndAlginment(double distance,double distance1,double distance2)
+    public void OrderAndAlginment(double distance, double distance1, double distance2, SamplingOrderDetector.GoldLocation goldPosition)
     {
         int counter1 = 1;
 
-        if(detectorsam.getCurrentOrder().equals(SamplingOrderDetector.GoldLocation.CENTER)==true)
+        if(goldPosition.equals(SamplingOrderDetector.GoldLocation.CENTER))
         {
             forward(distance);
         }
-        else if (detectorsam.getCurrentOrder().equals(SamplingOrderDetector.GoldLocation.LEFT)==true)
+        else if (goldPosition.equals(SamplingOrderDetector.GoldLocation.LEFT))
         {
             if(detectorsam.getAligned()==false)
             {
@@ -272,7 +261,7 @@ public class AutoBot extends Robot {
                   }
             }
         }
-        else if (detectorsam.getCurrentOrder().equals(SamplingOrderDetector.GoldLocation.RIGHT)==true)
+        else if (goldPosition.equals(SamplingOrderDetector.GoldLocation.RIGHT))
         {
             if(detectorsam.getAligned()==false)
             {

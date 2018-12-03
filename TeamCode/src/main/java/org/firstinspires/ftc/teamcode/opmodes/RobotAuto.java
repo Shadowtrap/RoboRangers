@@ -117,13 +117,13 @@ public class RobotAuto extends OpMode
 
         if(counter==1)
         {
-            RobotAuto.forward(10);
+            RobotAuto.forward(AutoBot.equation(1));
             counter++;
             telemetry.addLine("Step 1");
         }
         else if(counter==2)
         {
-            RobotAuto.OrderAndAlginment(10,10,10);
+            RobotAuto.OrderAndAlginment(10,10,10, RobotAuto.detectorsam.getCurrentOrder());
             counter++;
             telemetry.addLine("Step 2");
         }
