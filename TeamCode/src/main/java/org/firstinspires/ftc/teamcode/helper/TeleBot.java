@@ -20,23 +20,23 @@ public class TeleBot extends Robot {
         //boolean b = gamepad1.b;
         /*
         if(x){
-            armMotor2.setPower(-1);
+            armMotor2.setPower(-0.2);
         }
         else if(b){
-            armMotor2.setPower(1);
+            armMotor2.setPower(0.2);
         }
         */
         if(left){
-            armMotor1.setPower(1);
-            armMotor2.setPower(1);
+            armMotor1.setPower(0.2);
+           // armMotor2.setPower(1);
         }
         else if(right){
-            armMotor1.setPower(-1);
-            armMotor2.setPower(-1);
+            armMotor1.setPower(-0.2);
+            //armMotor2.setPower(-1);
         }
         else{
             armMotor1.setPower(0);
-            armMotor2.setPower(0);
+           // armMotor2.setPower(0);
         }
     }
 

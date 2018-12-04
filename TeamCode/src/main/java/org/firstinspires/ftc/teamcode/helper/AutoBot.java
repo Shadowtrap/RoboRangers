@@ -11,14 +11,19 @@ import org.firstinspires.ftc.teamcode.helper.SamplingOrderDetector;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class AutoBot extends Robot {
-    ElapsedTime secound  = new ElapsedTime();
-    private Timer time = new Timer();
+    
+    ElapsedTime secound = new ElapsedTime();
+    private ElapsedTime time = new ElapsedTime();
     public int counter;
     private HardwareMap hardwaremap;
     public SamplingOrderDetector detectorsam;
+
     public AutoBot(HardwareMap hardwareMap, Telemetry tele) {
         super(hardwareMap, tele);
     }
+
+    private int once = 1;
+
     public void setUpDropMotor() {
         Display("Setting up the armMotor");
         try {
@@ -79,10 +84,11 @@ public class AutoBot extends Robot {
             Display("botRight : ERROR");
         }
     }
+
     public void setDetectors() {
         // Setup detectorsam
         detectorsam = new SamplingOrderDetector(); // Create the detector
-        detectorsam.init( hwm.appContext,CameraViewDisplay.getInstance()); // Initialize detector with app context and camera
+        detectorsam.init(hwm.appContext, CameraViewDisplay.getInstance()); // Initialize detector with app context and camera
         detectorsam.useDefaults(); // Set detector to use default settings
 
         detectorsam.downscale = 0.4; // How much to downscale the input frames
@@ -104,69 +110,48 @@ public class AutoBot extends Robot {
     }
 
     //Equation for Ticks
-    public static double equation(double distance)
-    {
-        return (360/(4*Math.PI))*distance;
+    public static double equation(double distance) {
+        return (360 / (4 * Math.PI)) * distance;
     }
 
 
     //Forward using encoders
-    public void forward(double encode){
-        if(topLeft.getCurrentPosition() < encode && topRight.getCurrentPosition() < encode){
+    public void forward(double encode) {
+        if (topLeft.getCurrentPosition() < encode && topRight.getCurrentPosition() < encode) {
             topLeft.setPower(.5);
             botRight.setPower(-.5);
             topRight.setPower(-.5);
             botLeft.setPower(.5);
 
-        }
-        else {
-            topLeft.setPower(0);
-            botRight.setPower(0);
-            topRight.setPower(0);
-            botLeft.setPower(0);
-            topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        } else {
+
             stop();
         }
     }
 
     //Backwards using encoders
-    public void backwards(double encode){
-        if(topLeft.getCurrentPosition() < encode && topRight.getCurrentPosition() < encode){
+    public void backwards(double encode) {
+        if (topLeft.getCurrentPosition() < encode && topRight.getCurrentPosition() < encode) {
             topLeft.setPower(-.5);
             botRight.setPower(.5);
             topRight.setPower(.5);
             botLeft.setPower(-.5);
 
-        }
-        else {
-            topLeft.setPower(0);
-            botRight.setPower(0);
-            topRight.setPower(0);
-            botLeft.setPower(0);
-            topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        } else {
+
             stop();
         }
     }
 
     //Rotation Left or Right
-    public void rotate(int goldPos,int deg)
-    {
-        if(goldPos == 1)
-        {
-            if(topLeft.getCurrentPosition() > (int)(deg * -22.0555555556))
-            {
+    public void rotate(int goldPos, int deg) {
+        if (goldPos == 1) {
+            if (topLeft.getCurrentPosition() > (int) (deg * -22.0555555556)) {
                 topLeft.setPower(-.5);
                 botRight.setPower(-0.5);
                 topRight.setPower(-.5);
                 botLeft.setPower(-.5);
-            }
-            else {
+            } else {
                 topLeft.setPower(0);
                 botRight.setPower(0);
                 topRight.setPower(0);
@@ -177,17 +162,13 @@ public class AutoBot extends Robot {
                 botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 stop();
             }
-        }
-        else if(goldPos == -1)
-        {
-            if(topLeft.getCurrentPosition() < (int)(deg * 22.0555555556))
-            {
+        } else if (goldPos == -1) {
+            if (topLeft.getCurrentPosition() < (int) (deg * 22.0555555556)) {
                 topLeft.setPower(.5);
                 botRight.setPower(0.5);
                 topRight.setPower(.5);
                 botLeft.setPower(.5);
-            }
-            else {
+            } else {
                 topLeft.setPower(0);
                 botRight.setPower(0);
                 topRight.setPower(0);
@@ -198,9 +179,7 @@ public class AutoBot extends Robot {
                 botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 stop();
             }
-        }
-        else
-        {
+        } else {
             topLeft.setPower(0);
             botRight.setPower(0);
             topRight.setPower(0);
@@ -212,27 +191,44 @@ public class AutoBot extends Robot {
         }
     }
 
-    //Stop timer
-    public void stop()
-    {
-        int once = 1;
-        if(once==1) {
-            secound.reset();
-            once++;
-        }
-        if(secound.milliseconds() < 5000 && once==2)
+
+
+        public void stop()
         {
-            topLeft.setPower(0);
-            botRight.setPower(0);
-            topRight.setPower(0);
-            botLeft.setPower(0);
-            topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            if(once==1) {
+                time.reset();
+                time.startTime();
+                once++;
+            }
+
+            if(time.milliseconds() < 3000 && once==2)
+            {
+                topLeft.setPower(0);
+                botRight.setPower(0);
+                topRight.setPower(0);
+                botLeft.setPower(0);
+
+                topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+            }
+            else// if(once==2)
+            {//after i stopped
+                once = 1;
+                counter++;//go to next phase,
+
+                topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
 
         }
-    }
+
 
     //Alginment and Postion
     public void OrderAndAlginment(double distance, double distance1, double distance2, SamplingOrderDetector.GoldLocation goldPosition)

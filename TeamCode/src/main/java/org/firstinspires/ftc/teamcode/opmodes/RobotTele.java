@@ -69,7 +69,8 @@ public class RobotTele extends OpMode {
         //teleBot.armMotorMovement(gamepad1);
         //teleBot.armServoMovement(gamepad1);
         teleBot.move(driver.getPowerDriver());
-        teleBot.scoreMech(gamepad1);
+        teleBot.armMotorMovement(gamepad1);
+        //teleBot.scoreMech(gamepad1);
         //telemetry.addLine("MotorPos : " + teleBot.scoreMotor.getCurrentPosition());
     }
 

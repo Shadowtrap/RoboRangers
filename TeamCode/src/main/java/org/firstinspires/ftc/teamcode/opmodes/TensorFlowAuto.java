@@ -203,9 +203,11 @@ public class TensorFlowAuto extends LinearOpMode {
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraDirection = CameraDirection.BACK;
+        /*
         CameraCalibration cc = vuforia.getCameraCalibration();
         float[] focalLengths = cc.getFocalLength().getData();
         focalLength = focalLengths[0];
+        */
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
