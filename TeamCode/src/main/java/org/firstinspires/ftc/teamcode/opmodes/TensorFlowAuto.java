@@ -29,9 +29,12 @@
 
 package org.firstinspires.ftc.teamcode.opmodes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.vuforia.CameraCalibration;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -39,6 +42,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.teamcode.helper.AutoBot;
 import org.firstinspires.ftc.teamcode.helper.Robot;
 
 import java.util.List;
@@ -54,7 +58,7 @@ import java.util.List;
  * is explained below.
  */
 
-@TeleOp(name = "TensorFlowAuto")
+@Autonomous(name = "TensorFlowAuto")
 //@Disabled
 public class TensorFlowAuto extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
@@ -88,7 +92,11 @@ public class TensorFlowAuto extends LinearOpMode {
      */
     private TFObjectDetector tfod;
     private float focalLength = 0;
-    Robot bot = new Robot(hardwareMap, telemetry);
+    AutoBot bot = new AutoBot(hardwareMap, telemetry);
+    private int distance = -1;
+    private int once = 1;
+    int counter;
+    private ElapsedTime time;
 
 
     @Override
@@ -105,6 +113,7 @@ public class TensorFlowAuto extends LinearOpMode {
 
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start tracking");
+        time = new ElapsedTime();
         bot.setUpWheels();
         telemetry.update();
         waitForStart();
@@ -175,12 +184,29 @@ public class TensorFlowAuto extends LinearOpMode {
                           }
                         }
                       }
+
+                      //After camera detects where gold mineral is
+                      distance = (int)(((2 * focalLength) / goldHeight) + 2);
+
+                      if(position == 0){
+                          //Distance is always decreasing meaning ticks checked are decreasing meaning will not go full length
+                          //Need to find the initial distance, when camera starts detecting
+                          forward(equation(distance));
+                      }
+                      else{
+                          //Distance is always decreasing meaning ticks checked are decreasing meaning will not go full length
+                          //Need to find the initial distance, when camera starts detecting, and aligned with gold mineral
+                            rotate(position, aligned);
+                            if(aligned){
+                                forward(equation(distance));
+                            }
+                      }
+                      
                       telemetry.addLine("Gold Top Left Corner: (" + goldMineralX + ", " + goldY + ")");
                       telemetry.addLine("Gold Center: (" + goldCenterX + ", " + goldCenterY + ")");
                       telemetry.addLine("Aligned: " + aligned);
                       telemetry.addLine("Focal Length: " + focalLength);
-                      telemetry.addLine("Distance: " + (int)((50 * focalLength) / goldHeight));
-                      //move(bot, aligned, position, goldCenterX);
+                      telemetry.addLine("Distance: " + distance + "in");
                       telemetry.update();
                     }
                 }
@@ -203,13 +229,13 @@ public class TensorFlowAuto extends LinearOpMode {
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraDirection = CameraDirection.BACK;
-        /*
-        CameraCalibration cc = vuforia.getCameraCalibration();
-        float[] focalLengths = cc.getFocalLength().getData();
-        focalLength = focalLengths[0];
-        */
+
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+        CameraCalibration cc = vuforia.getCameraCalibration();
+        float[] focalLengths = cc.getFocalLength().getData();
+        focalLength = focalLengths[1];
 
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
     }
@@ -221,7 +247,7 @@ public class TensorFlowAuto extends LinearOpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
             "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minimumConfidence = 0.64;
+        tfodParameters.minimumConfidence = 0.70;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
@@ -235,26 +261,82 @@ public class TensorFlowAuto extends LinearOpMode {
         }
         return false;
     }
-    private static void move(Robot bot, boolean aligned, int position, int center){
-        while(!aligned) {
-            if (position == -1) {
-                bot.topLeft.setPower(-0.2);
-                bot.topRight.setPower(-0.2);
-                bot.botLeft.setPower(-0.2);
-                bot.botRight.setPower(-0.2);
-            } else if (position == 1) {
-                bot.topLeft.setPower(0.2);
-                bot.topRight.setPower(0.2);
-                bot.botLeft.setPower(0.2);
-                bot.botRight.setPower(0.2);
-            }
-            if(aligned){
-                bot.topLeft.setPower(0);
-                bot.topRight.setPower(0);
-                bot.botLeft.setPower(0);
-                bot.botRight.setPower(0);
-            }
-            aligned = isAligned(center);
+
+    //Equation for Ticks
+    public static double equation(double distance) {
+        return (360 / (4 * Math.PI)) * distance;
+    }
+
+    //Forward using encoders
+    public void forward(double encode) {
+        if (bot.topLeft.getCurrentPosition() < encode && bot.topRight.getCurrentPosition() < encode) {
+            bot.topLeft.setPower(.5);
+            bot.botRight.setPower(-.5);
+            bot.topRight.setPower(-.5);
+            bot.botLeft.setPower(.5);
+
+        } else {
+            bot.topLeft.setPower(0);
+            bot.botRight.setPower(0);
+            bot.topRight.setPower(0);
+            bot.botLeft.setPower(0);
         }
+    }
+
+    //Rotation
+    public void rotate(int goldPosition, boolean aligned){
+        if(goldPosition == -1 && bot.topLeft.getCurrentPosition() < (int)(45 * 22.0555555556) && aligned == false){
+            bot.topLeft.setPower(.5);
+            bot.botRight.setPower(0.5);
+            bot.topRight.setPower(.5);
+            bot.botLeft.setPower(.5);
+        }
+        else if(goldPosition == 1 && bot.topLeft.getCurrentPosition() > (int)(45 * -22.0555555556) && aligned == false){
+            bot.topLeft.setPower(-.5);
+            bot.botRight.setPower(-0.5);
+            bot.topRight.setPower(-.5);
+            bot.botLeft.setPower(-.5);
+        }
+        else{
+            bot.topLeft.setPower(0);
+            bot.botRight.setPower(0);
+            bot.topRight.setPower(0);
+            bot.botLeft.setPower(0);
+            bot.topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            bot.topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            bot.botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            bot.botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            stopTime();
+        }
+    }
+
+    //stop method
+    public void stopTime()
+    {
+        if(once==1){
+            time.reset();
+            time.startTime();
+            once++;
+        }
+        if(time.milliseconds() < 3000 && once==2) {
+            bot.topLeft.setPower(0);
+            bot.botRight.setPower(0);
+            bot.topRight.setPower(0);
+            bot.botLeft.setPower(0);
+
+            bot.topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            bot.topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            bot.botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            bot.botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
+        else{
+            once = 1;
+            counter++;//go to next phase
+            bot.topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            bot.topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            bot.botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            bot.botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+
     }
 }
