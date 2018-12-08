@@ -44,6 +44,22 @@ import org.firstinspires.ftc.teamcode.helper.SamplingOrderDetector;
 import org.firstinspires.ftc.teamcode.helper.AutoBot;
 import org.firstinspires.ftc.teamcode.helper.Robot;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.vuforia.CameraCalibration;
+
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.teamcode.helper.AutoBot;
+import org.firstinspires.ftc.teamcode.helper.Robot;
+
 @Autonomous(name="RobotAuto", group="DogeCV")
 
 public class RobotAuto extends OpMode
@@ -52,8 +68,8 @@ public class RobotAuto extends OpMode
 
     private AutoBot RobotAuto;
 
-    public SamplingOrderDetector detectorsam;
-    public int counter = 1;
+    //public SamplingOrderDetector detectorsam;
+    public int step = 1;
    //private double currentServoPos;
 
     @Override
@@ -62,36 +78,10 @@ public class RobotAuto extends OpMode
         RobotAuto = new AutoBot(hardwareMap, telemetry);
         RobotAuto.setUpDropMotor();
         RobotAuto.setUpWheels();
-
-
-
-        /////////////////////////////////////////////////////////////////////////////
-        /*
-        /// / Setup detectorsam
-        detectorsam = new SamplingOrderDetector(); // Create the detector
-        detectorsam.init(hardwareMap.appContext, CameraViewDisplay.getInstance()); // Initialize detector with app context and camera
-        detectorsam.useDefaults(); // Set detector to use default settings
-
-        detectorsam.downscale = 0.4; // How much to downscale the input frames
-
-        // Optional tuning
-        detectorsam.areaScoringMethod = DogeCV.AreaScoringMethod.MAX_AREA; // Can also be PERFECT_AREA
-        //detector.perfectAreaScorer.perfectArea = 10000; // if using PERFECT_AREA scoring
-        detectorsam.maxAreaScorer.weight = 0.001;
-
-        // Optional tuning
-        detectorsam.alignSize1 = 100; // How wide (in pixels) is the range in which the gold object will be aligned. (Represented by green bars in the preview)
-        detectorsam.alignPosOffset1 = 0; // How far from center frame to offset this alignment zone.
-        detectorsam.downscale = 0.4; // How much to downscale the input frames
-
-        detectorsam.ratioScorer.weight = 15;
-        detectorsam.ratioScorer.perfectRatio = 1.0;
-
-        detectorsam.enable(); // Start detectorsam
-
-
-       */
-        RobotAuto.setDetectors();
+        RobotAuto.counter =0;
+        RobotAuto.time = new ElapsedTime();
+        RobotAuto.once = 1;
+        RobotAuto.setupTensorCV();//Starting camera detection hence called tfod
     }
 
     /*
@@ -114,27 +104,16 @@ public class RobotAuto extends OpMode
      */
     @Override
     public void loop() {
-
-        if(counter==1)
-        {
-            RobotAuto.forward(AutoBot.equation(1));
-            counter++;
-            telemetry.addLine("Step 1");
-        }
-        else if(counter==2)
-        {
-            RobotAuto.OrderAndAlginment(10,10,10, RobotAuto.detectorsam.getCurrentOrder());
-            counter++;
-            telemetry.addLine("Step 2");
-        }
+        RobotAuto.detectTensor();//Checking where the object is
+        RobotAuto.OrderAndAlginment( RobotAuto.pos, RobotAuto.alignedTensor);//If not aligned rotating to be aligned with robot
 
 
-
+        /*
         telemetry.addData("IsAligned", RobotAuto.detectorsam.getAligned()); // Is the bot aligned with the gold mineral?
         telemetry.addData("Center X Pos", RobotAuto.detectorsam.getXPosition()); // Gold center X position.
         telemetry.addData("Current Order" , RobotAuto.detectorsam.getCurrentOrder().toString()); // The current result for the frame
         telemetry.addData("Last Order" , RobotAuto.detectorsam.getLastOrder().toString()); // The last known result
-
+        */
     }
 
 
@@ -146,7 +125,7 @@ public class RobotAuto extends OpMode
     @Override
     public void stop() {
         // Disable the detector
-        RobotAuto.detectorsam.disable();
+        RobotAuto.tfod.shutdown();
     }
 
 }

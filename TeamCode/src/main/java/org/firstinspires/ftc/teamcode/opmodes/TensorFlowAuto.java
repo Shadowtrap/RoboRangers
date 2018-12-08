@@ -130,59 +130,80 @@ public class TensorFlowAuto extends LinearOpMode {
                     // the last time that call was made.
                     List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
                     if (updatedRecognitions != null) {
-                      telemetry.addData("# Object Detected", updatedRecognitions.size());
-                      int goldMineralX = -1;
-                      int goldY = -1;
-                      int goldCenterX = -1;
-                      int goldCenterY = -1;
-                      int goldHeight = -1;
-                      int position = 2;
-                      boolean aligned = false;
-                      if(updatedRecognitions.size()>=1)
-                      {
-                          for(Recognition r: updatedRecognitions)
-                          {
-                              if (r.getLabel().equals(LABEL_GOLD_MINERAL)) {
-                                  goldMineralX = (int) r.getLeft();
-                                  goldY = (int)r.getTop();
-                                  goldCenterX = center((int)r.getLeft(), (int)r.getRight());
-                                  goldCenterY = center((int)r.getTop(), (int)r.getBottom());
-                                  aligned = isAligned(goldCenterX);
-                                  goldHeight = (int)r.getHeight();
-                              }
-                          }
-                      }
+                        telemetry.addData("# Object Detected", updatedRecognitions.size());
+                        int goldMineralX = -1;
+                        int goldY = -1;
+                        int goldCenterX = -1;
+                        int goldCenterY = -1;
+                        int goldHeight = -1;
+                        int position = 2;
+                          boolean aligned = false;
+                        if(updatedRecognitions.size()>=1)
+                        {
+                            for(Recognition r: updatedRecognitions)
+                            {
+                                if (r.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                                    goldMineralX = (int) r.getLeft();
+                                    goldY = (int)r.getTop();
+                                    goldCenterX = center((int)r.getLeft(), (int)r.getRight());
+                                    goldCenterY = center((int)r.getTop(), (int)r.getBottom());
+                                    aligned = isAligned(goldCenterX);
+                                    if(aligned && updatedRecognitions.size() == 1)
+                                        goldHeight = (int) r.getHeight();
+                                }
+                            }
+                        }
 
-                      if (updatedRecognitions.size() == 3) {
-                        goldMineralX = -1;
-                        goldY = -1;
-                        int silverMineral1X = -1;
-                        int silverMineral2X = -1;
-                        for (Recognition recognition : updatedRecognitions) {
-                          if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
-                            goldMineralX = (int) recognition.getLeft();
-                            goldY = (int)recognition.getTop();
-                          } else if (silverMineral1X == -1) {
-                            silverMineral1X = (int) recognition.getLeft();
-                          } else {
-                            silverMineral2X = (int) recognition.getLeft();
-                          }
+                        if (updatedRecognitions.size() == 3) {
+                            goldMineralX = -1;
+                            goldY = -1;
+                            int silverMineral1X = -1;
+                            int silverMineral2X = -1;
+                            for (Recognition recognition : updatedRecognitions) {
+                                if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                                    goldMineralX = (int) recognition.getLeft();
+                                    goldY = (int)recognition.getTop();
+                                } else if (silverMineral1X == -1) {
+                                    silverMineral1X = (int) recognition.getLeft();
+                                } else {
+                                    silverMineral2X = (int) recognition.getLeft();
+                                }
+                            }
+                            if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
+                                if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
+                                    telemetry.addData("Gold Mineral Position", "Left");
+                                    telemetry.addLine("Left code was updated");
+                                    position = -1;
+                                } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
+                                    telemetry.addData("Gold Mineral Position", "Right");
+                                    telemetry.addLine("Right code was updated");
+                                    position = 1;
+                                } else {
+                                    telemetry.addData("Gold Mineral Position", "Center");
+                                    telemetry.addLine("Center code was updated");
+                                    position = 0;
+                                }
+                            }
                         }
-                        if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
-                          if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
-                            telemetry.addData("Gold Mineral Position", "Left");
-                            telemetry.addLine("Left code was updated");
-                            position = -1;
-                          } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
-                            telemetry.addData("Gold Mineral Position", "Right");
-                            telemetry.addLine("Right code was updated");
-                            position = 1;
-                          } else {
-                            telemetry.addData("Gold Mineral Position", "Center");
-                            telemetry.addLine("Center code was updated");
-                            position = 0;
-                          }
+
+                        //After camera detects where gold mineral is
+                        distance = (int)(((2 * focalLength) / goldHeight) + 2);
+                        /*
+                        if(position == 0){
+                            //Distance is always decreasing meaning ticks checked are decreasing meaning will not go full length
+                            //Need to find the initial distance, when camera starts detecting
+                            forward(equation(distance));
                         }
+                        else{
+                            //Distance is always decreasing meaning ticks checked are decreasing meaning will not go full length
+                            //Need to find the initial distance, when camera starts detecting, and aligned with gold mineral
+
+                            rotate(position, aligned);
+                            if(aligned){
+                                forward(equation(distance));
+                            }
+                        }
+<<<<<<< Updated upstream
                       }
 
                       //After camera detects where gold mineral is
@@ -208,6 +229,15 @@ public class TensorFlowAuto extends LinearOpMode {
                       telemetry.addLine("Focal Length: " + focalLength);
                       telemetry.addLine("Distance: " + distance + "in");
                       telemetry.update();
+=======
+                        */
+                        telemetry.addLine("Gold Top Left Corner: (" + goldMineralX + ", " + goldY + ")");
+                        telemetry.addLine("Gold Center: (" + goldCenterX + ", " + goldCenterY + ")");
+                        telemetry.addLine("Aligned: " + aligned);
+                        telemetry.addLine("Focal Length: " + focalLength);
+                        telemetry.addLine("Distance: " + distance + "in");
+                        telemetry.update();
+>>>>>>> Stashed changes
                     }
                 }
             }
@@ -245,7 +275,7 @@ public class TensorFlowAuto extends LinearOpMode {
      */
     private void initTfod() {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-            "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfodParameters.minimumConfidence = 0.70;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
@@ -256,7 +286,7 @@ public class TensorFlowAuto extends LinearOpMode {
         return lower + ((higher - lower) / 2);
     }
     private static boolean isAligned(int centerX){
-        if(centerX > 590 && centerX < 690){
+        if(centerX > 570 && centerX < 710){
             return true;
         }
         return false;
@@ -339,4 +369,8 @@ public class TensorFlowAuto extends LinearOpMode {
         }
 
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes

@@ -14,7 +14,10 @@ public class RobotTele extends OpMode {
     //Robot bot;
     TeleBot teleBot;
     Driver driver;
-
+    boolean up;
+    boolean down;
+    boolean left;
+    boolean right;
 
     @Override
     public void init() {
@@ -23,12 +26,15 @@ public class RobotTele extends OpMode {
         //bot = new Robot(hardwareMap,telemetry);
         teleBot = new TeleBot(hardwareMap,telemetry);
         driver = new Driver(gamepad1);
-
+        up = gamepad1.dpad_up;
+        down = gamepad1.dpad_down;
+        left = gamepad1.dpad_left;
+        right = gamepad1.dpad_right;
         //bot.setUpArmServo();
 		//bot.setUpArmMotor();
         //bot.setUpWheels();
-        teleBot.setUpArmMotor();
-        teleBot.setUpArmServo();
+        //teleBot.setUpArmMotor();
+        //teleBot.setUpArmServo();
         teleBot.setUpWheels();
         //teleBot.setUpScoreMotor();
     }
@@ -69,7 +75,37 @@ public class RobotTele extends OpMode {
         //teleBot.armMotorMovement(gamepad1);
         //teleBot.armServoMovement(gamepad1);
         teleBot.move(driver.getPowerDriver());
-        teleBot.armMotorMovement(gamepad1);
+        if(up){
+            teleBot.topLeft.setPower(0.5);
+            teleBot.topRight.setPower(-0.5);
+            teleBot.botLeft.setPower(0.5);
+            teleBot.botRight.setPower(-0.5);
+        }
+        else if(down){
+            teleBot.topLeft.setPower(-0.5);
+            teleBot.topRight.setPower(0.5);
+            teleBot.botLeft.setPower(-0.5);
+            teleBot.botRight.setPower(0.5);
+        }
+        else if(left){
+            teleBot.topLeft.setPower(0.5);
+            teleBot.topRight.setPower(0.5);
+            teleBot.botLeft.setPower(0.5);
+            teleBot.botRight.setPower(0.5);
+        }
+        else if(right){
+            teleBot.topLeft.setPower(-0.5);
+            teleBot.topRight.setPower(-0.5);
+            teleBot.botLeft.setPower(-0.5);
+            teleBot.botRight.setPower(-0.5);
+        }
+        else{
+            teleBot.topLeft.setPower(0);
+            teleBot.topRight.setPower(0);
+            teleBot.botLeft.setPower(0);
+            teleBot.botRight.setPower(0);
+        }
+        //teleBot.armMotorMovement(gamepad1);
         //teleBot.scoreMech(gamepad1);
         //telemetry.addLine("MotorPos : " + teleBot.scoreMotor.getCurrentPosition());
     }

@@ -37,6 +37,7 @@ public class EncoderSquare extends OpMode {
     }
     @Override
     public void loop() {
+
         if(counter % 2 == 0) {
             forward(equation(37));
             telemetry.addLine("FORWARD MODE");
@@ -61,7 +62,7 @@ public class EncoderSquare extends OpMode {
     public static double equation(double distance)
     {
         return (360/(Math.PI))*distance;
-    }
+    }//4242
     public static double rotateEquation(double distance)
     {
         return 0;
