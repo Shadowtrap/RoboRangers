@@ -39,6 +39,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.teamcode.helper.HSVColorFilter;
 import org.firstinspires.ftc.teamcode.helper.SamplingOrderDetector;
 import org.firstinspires.ftc.teamcode.helper.AutoBot;
@@ -66,22 +67,22 @@ public class RobotAuto extends OpMode
 {
     // Detector object
 
-    private AutoBot RobotAuto;
+    private AutoBot Auto;
 
     //public SamplingOrderDetector detectorsam;
-    public int step = 1;
+    public int step = 0;
    //private double currentServoPos;
 
     @Override
     public void init() {
         telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
-        RobotAuto = new AutoBot(hardwareMap, telemetry);
-        RobotAuto.setUpDropMotor();
-        RobotAuto.setUpWheels();
-        RobotAuto.counter =0;
-        RobotAuto.time = new ElapsedTime();
-        RobotAuto.once = 1;
-        RobotAuto.setupTensorCV();//Starting camera detection hence called tfod
+        Auto = new AutoBot(hardwareMap, telemetry);
+        Auto.setUpDropMotor();
+        Auto.setUpWheels();
+        Auto.time = new ElapsedTime();
+        Auto.once = 1;
+        Auto.setupTensorCV();//Starting camera detection hence called tfod
+        step = 0;
     }
 
     /*
@@ -104,17 +105,15 @@ public class RobotAuto extends OpMode
      */
     @Override
     public void loop() {
-        RobotAuto.detectTensor();//Checking where the object is
-        RobotAuto.OrderAndAlginment( RobotAuto.pos, RobotAuto.alignedTensor);//If not aligned rotating to be aligned with robot
-
-
-        /*
-        telemetry.addData("IsAligned", RobotAuto.detectorsam.getAligned()); // Is the bot aligned with the gold mineral?
-        telemetry.addData("Center X Pos", RobotAuto.detectorsam.getXPosition()); // Gold center X position.
-        telemetry.addData("Current Order" , RobotAuto.detectorsam.getCurrentOrder().toString()); // The current result for the frame
-        telemetry.addData("Last Order" , RobotAuto.detectorsam.getLastOrder().toString()); // The last known result
-        */
+        Auto.detectTensor();//Checking where the object is
+        if(Auto.counter == 0 )
+        alignAndGo(Auto);
+        else if (Auto.counter == 1) {
+            Auto.stop();
+        }
     }
+
+
 
 
 
@@ -125,7 +124,38 @@ public class RobotAuto extends OpMode
     @Override
     public void stop() {
         // Disable the detector
-        RobotAuto.tfod.shutdown();
+        Auto.tfod.shutdown();
     }
 
+    public void alignAndGo(AutoBot Auto){
+        if(Auto.pos == 0 ){
+            telemetry.addLine("CENTER");
+            Auto.forward(Auto.equation(25), 0.5);
+        }
+        else if(Auto.pos == -1){
+            telemetry.addLine("LEFT");
+            if (Auto.alignedTensor) {
+                Auto.forward(Auto.equation(25), 0.5);
+            }
+            else {
+                Auto.topLeft.setPower(0.02);
+                Auto.botRight.setPower(0.02);
+                Auto.topRight.setPower(0.02);
+                Auto.botLeft.setPower(0.02);
+            }
+        }
+        else if(Auto.pos == 1) {
+            telemetry.addLine("RIGHT");
+            if (Auto.alignedTensor) {
+                Auto.forward(Auto.equation(25), 0.5);
+
+            }
+            else {
+                Auto.topLeft.setPower(-0.02);
+                Auto.botRight.setPower(-0.02);
+                Auto.topRight.setPower(-0.02);
+                Auto.botLeft.setPower(-0.02);
+            }
+        }
+    }
 }

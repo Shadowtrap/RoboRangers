@@ -19,6 +19,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import java.util.List;
 
 public class AutoBot extends Robot {
+
     public ElapsedTime time = new ElapsedTime();
     public int counter = 0;
     private HardwareMap hardwaremap;
@@ -163,7 +164,6 @@ public class AutoBot extends Robot {
             botLeft.setPower(-pow);
 
         } else {
-            counter++;
             stop();
         }
     }
@@ -189,7 +189,6 @@ public class AutoBot extends Robot {
                 topRight.setPower(pow);
                 botLeft.setPower(pow);
             } else {
-                counter++;
                 stop();
             }
         }
@@ -202,13 +201,11 @@ public class AutoBot extends Robot {
 
         public void stop()
         {
-
             if(once==1) {
                 time.reset();
                 time.startTime();
                 once++;
             }
-
             if(time.milliseconds() < 3000 && once==2)
             {
                 topLeft.setPower(0);
@@ -226,8 +223,6 @@ public class AutoBot extends Robot {
             else// if(once==2)
             {//after i stopped
                 once = 1;
-                counter++;//go to next phase,
-
                 topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -411,7 +406,7 @@ public class AutoBot extends Robot {
         int tfodMonitorViewId = hwm.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hwm.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minimumConfidence = 0.70;
+        //tfodParameters.minimumConfidence = 0.40;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
@@ -425,4 +420,5 @@ public class AutoBot extends Robot {
         }
         return false;
     }
+
 }

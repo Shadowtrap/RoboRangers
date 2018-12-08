@@ -137,18 +137,16 @@ public class TensorFlowAuto extends LinearOpMode {
                         int goldCenterY = -1;
                         int goldHeight = -1;
                         int position = 2;
-                          boolean aligned = false;
-                        if(updatedRecognitions.size()>=1)
-                        {
-                            for(Recognition r: updatedRecognitions)
-                            {
+                        boolean aligned = false;
+                        if (updatedRecognitions.size() >= 1) {
+                            for (Recognition r : updatedRecognitions) {
                                 if (r.getLabel().equals(LABEL_GOLD_MINERAL)) {
                                     goldMineralX = (int) r.getLeft();
-                                    goldY = (int)r.getTop();
-                                    goldCenterX = center((int)r.getLeft(), (int)r.getRight());
-                                    goldCenterY = center((int)r.getTop(), (int)r.getBottom());
+                                    goldY = (int) r.getTop();
+                                    goldCenterX = center((int) r.getLeft(), (int) r.getRight());
+                                    goldCenterY = center((int) r.getTop(), (int) r.getBottom());
                                     aligned = isAligned(goldCenterX);
-                                    if(aligned && updatedRecognitions.size() == 1)
+                                    if (aligned && updatedRecognitions.size() == 1)
                                         goldHeight = (int) r.getHeight();
                                 }
                             }
@@ -162,7 +160,7 @@ public class TensorFlowAuto extends LinearOpMode {
                             for (Recognition recognition : updatedRecognitions) {
                                 if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
                                     goldMineralX = (int) recognition.getLeft();
-                                    goldY = (int)recognition.getTop();
+                                    goldY = (int) recognition.getTop();
                                 } else if (silverMineral1X == -1) {
                                     silverMineral1X = (int) recognition.getLeft();
                                 } else {
@@ -187,7 +185,7 @@ public class TensorFlowAuto extends LinearOpMode {
                         }
 
                         //After camera detects where gold mineral is
-                        distance = (int)(((2 * focalLength) / goldHeight) + 2);
+                        distance = (int) (((2 * focalLength) / goldHeight) + 2);
                         /*
                         if(position == 0){
                             //Distance is always decreasing meaning ticks checked are decreasing meaning will not go full length
@@ -237,7 +235,7 @@ public class TensorFlowAuto extends LinearOpMode {
                         telemetry.addLine("Focal Length: " + focalLength);
                         telemetry.addLine("Distance: " + distance + "in");
                         telemetry.update();
->>>>>>> Stashed changes
+
                     }
                 }
             }
@@ -282,11 +280,12 @@ public class TensorFlowAuto extends LinearOpMode {
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
 
-    private static int center(int lower, int higher){
+    private static int center(int lower, int higher) {
         return lower + ((higher - lower) / 2);
     }
-    private static boolean isAligned(int centerX){
-        if(centerX > 570 && centerX < 710){
+
+    private static boolean isAligned(int centerX) {
+        if (centerX > 570 && centerX < 710) {
             return true;
         }
         return false;
@@ -314,20 +313,18 @@ public class TensorFlowAuto extends LinearOpMode {
     }
 
     //Rotation
-    public void rotate(int goldPosition, boolean aligned){
-        if(goldPosition == -1 && bot.topLeft.getCurrentPosition() < (int)(45 * 22.0555555556) && aligned == false){
+    public void rotate(int goldPosition, boolean aligned) {
+        if (goldPosition == -1 && bot.topLeft.getCurrentPosition() < (int) (45 * 22.0555555556) && aligned == false) {
             bot.topLeft.setPower(.5);
             bot.botRight.setPower(0.5);
             bot.topRight.setPower(.5);
             bot.botLeft.setPower(.5);
-        }
-        else if(goldPosition == 1 && bot.topLeft.getCurrentPosition() > (int)(45 * -22.0555555556) && aligned == false){
+        } else if (goldPosition == 1 && bot.topLeft.getCurrentPosition() > (int) (45 * -22.0555555556) && aligned == false) {
             bot.topLeft.setPower(-.5);
             bot.botRight.setPower(-0.5);
             bot.topRight.setPower(-.5);
             bot.botLeft.setPower(-.5);
-        }
-        else{
+        } else {
             bot.topLeft.setPower(0);
             bot.botRight.setPower(0);
             bot.topRight.setPower(0);
@@ -341,14 +338,13 @@ public class TensorFlowAuto extends LinearOpMode {
     }
 
     //stop method
-    public void stopTime()
-    {
-        if(once==1){
+    public void stopTime() {
+        if (once == 1) {
             time.reset();
             time.startTime();
             once++;
         }
-        if(time.milliseconds() < 3000 && once==2) {
+        if (time.milliseconds() < 3000 && once == 2) {
             bot.topLeft.setPower(0);
             bot.botRight.setPower(0);
             bot.topRight.setPower(0);
@@ -358,8 +354,7 @@ public class TensorFlowAuto extends LinearOpMode {
             bot.topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             bot.botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             bot.botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        }
-        else{
+        } else {
             once = 1;
             counter++;//go to next phase
             bot.topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -369,8 +364,4 @@ public class TensorFlowAuto extends LinearOpMode {
         }
 
     }
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes
