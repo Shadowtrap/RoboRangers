@@ -27,11 +27,11 @@ public class TeleBot extends Robot {
         }
         */
         if(left){
-            armMotor1.setPower(0.2);
+            armMotor1.setPower(0.5);
            // armMotor2.setPower(1);
         }
         else if(right){
-            armMotor1.setPower(-0.2);
+            armMotor1.setPower(-0.5);
             //armMotor2.setPower(-1);
         }
         else{

@@ -33,7 +33,7 @@ public class RobotTele extends OpMode {
         //bot.setUpArmServo();
 		//bot.setUpArmMotor();
         //bot.setUpWheels();
-        //teleBot.setUpArmMotor();
+        teleBot.setUpArmMotor();
         //teleBot.setUpArmServo();
         teleBot.setUpWheels();
         //teleBot.setUpScoreMotor();
@@ -75,37 +75,32 @@ public class RobotTele extends OpMode {
         //teleBot.armMotorMovement(gamepad1);
         //teleBot.armServoMovement(gamepad1);
         teleBot.move(driver.getPowerDriver());
-        if(up){
-            teleBot.topLeft.setPower(0.5);
-            teleBot.topRight.setPower(-0.5);
-            teleBot.botLeft.setPower(0.5);
-            teleBot.botRight.setPower(-0.5);
+        /*if(up){
+            teleBot.armMotor1.setPower(0.5);
         }
         else if(down){
-            teleBot.topLeft.setPower(-0.5);
-            teleBot.topRight.setPower(0.5);
-            teleBot.botLeft.setPower(-0.5);
-            teleBot.botRight.setPower(0.5);
+            teleBot.armMotor1.setPower(-0.5);
         }
         else if(left){
-            teleBot.topLeft.setPower(0.5);
+            teleBot.armMotor1.setPower(0.5);
             teleBot.topRight.setPower(0.5);
             teleBot.botLeft.setPower(0.5);
             teleBot.botRight.setPower(0.5);
         }
         else if(right){
-            teleBot.topLeft.setPower(-0.5);
+            teleBot.armMotor1.setPower(-0.5);
             teleBot.topRight.setPower(-0.5);
             teleBot.botLeft.setPower(-0.5);
             teleBot.botRight.setPower(-0.5);
         }
         else{
-            teleBot.topLeft.setPower(0);
+            teleBot.armMotor1.setPower(0);
             teleBot.topRight.setPower(0);
             teleBot.botLeft.setPower(0);
             teleBot.botRight.setPower(0);
         }
-        //teleBot.armMotorMovement(gamepad1);
+        */
+        teleBot.armMotorMovement(gamepad1);
         //teleBot.scoreMech(gamepad1);
         //telemetry.addLine("MotorPos : " + teleBot.scoreMotor.getCurrentPosition());
     }

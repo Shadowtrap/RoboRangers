@@ -39,7 +39,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.teamcode.helper.HSVColorFilter;
 import org.firstinspires.ftc.teamcode.helper.SamplingOrderDetector;
 import org.firstinspires.ftc.teamcode.helper.AutoBot;
@@ -63,25 +62,16 @@ import org.firstinspires.ftc.teamcode.helper.Robot;
 
 @Autonomous(name="RobotAuto", group="DogeCV")
 
-public class RobotAuto extends OpMode
-{
-    // Detector object
-
-    private AutoBot Auto;
-
-    //public SamplingOrderDetector detectorsam;
+public class RobotAuto extends OpMode {
+    private AutoBot shamsBot;
     public int step = 0;
-   //private double currentServoPos;
 
     @Override
     public void init() {
-        telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
-        Auto = new AutoBot(hardwareMap, telemetry);
-        Auto.setUpDropMotor();
-        Auto.setUpWheels();
-        Auto.time = new ElapsedTime();
-        Auto.once = 1;
-        Auto.setupTensorCV();//Starting camera detection hence called tfod
+        shamsBot = new AutoBot(hardwareMap, telemetry);
+        shamsBot.setUpWheels();
+        shamsBot.setupTensorCV();
+        shamsBot.time = new ElapsedTime();
         step = 0;
     }
 
@@ -104,58 +94,91 @@ public class RobotAuto extends OpMode
      * Code to run REPEATEDLY when the driver hits PLAY
      */
     @Override
-    public void loop() {
-        Auto.detectTensor();//Checking where the object is
-        if(Auto.counter == 0 )
-        alignAndGo(Auto);
-        else if (Auto.counter == 1) {
-            Auto.stop();
+    public void loop()
+    {
+        shamsBot.detectTensor();
+        telemetry.addData("TopLeft Encoder", shamsBot.topLeft.getCurrentPosition());
+        telemetry.addData("TopRight Encoder", shamsBot.topRight.getCurrentPosition());
+        telemetry.addData("BottomLeft Encoder", shamsBot.botLeft.getCurrentPosition());
+        telemetry.addData("BottomRight Encoder", shamsBot.botRight.getCurrentPosition());
+
+        //Enter Auto Step 0
+        if (step == 0)
+        {
+            //Gold Mineral Straight
+            if (shamsBot.pos == 0) {
+
+                //Robot Forward
+                telemetry.addLine("Forward (Middle)");
+                shamsBot.forward(24, 0.5);
+
+
+                //Shift Phase 2
+                setStep(2);
+            }
+
+            //Gold Mineral Left
+            else if (shamsBot.pos == -1)
+            {
+                telemetry.addLine("LEFT");
+
+                //Rotate Left
+                shamsBot.rotateLeft();
+
+                //Set to Step 1
+                setStep(1);
+
+                //Step 1 -(Left)
+                if (step == 1)
+                {
+                    //Forward 24 inches
+                    telemetry.addLine("Forward (Left)");
+                    shamsBot.forward(24, 0.5);
+
+                    //Change to Step 2
+                    //setStep(2);
+                }
+                //Step 2 -(Left)
+                //else if (step == 2)
+                //{
+                    //Rotate Left Degree 45
+                    //shamsBot.rotate("Left", 45, 0.5);
+            }
+            //Gold Mineral on the Right
+            else if (shamsBot.pos == 1)
+            {
+                telemetry.addLine("RIGHT");
+                //Rotate Left
+                shamsBot.rotateRight();
+
+                //Set to Step 1
+                setStep(1);
+
+                //Step 1 -(Left)
+                if (step == 1)
+                {
+                    telemetry.addLine("Forward (Right)");
+                    //Forward 24 inches
+                    shamsBot.forward(shamsBot.equation(12), 0.5);
+
+                    //Change to Step 2
+                    //setStep(2);
+                }
+            }
         }
     }
 
-
-
-
-
-
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
     @Override
-    public void stop() {
+    public void stop(){
         // Disable the detector
-        Auto.tfod.shutdown();
+        shamsBot.tfod.shutdown();
+    }
+    public void setStep(int x)
+    {
+        if (!shamsBot.isMoving)
+            step = x;
     }
 
-    public void alignAndGo(AutoBot Auto){
-        if(Auto.pos == 0 ){
-            telemetry.addLine("CENTER");
-            Auto.forward(Auto.equation(25), 0.5);
-        }
-        else if(Auto.pos == -1){
-            telemetry.addLine("LEFT");
-            if (Auto.alignedTensor) {
-                Auto.forward(Auto.equation(25), 0.5);
-            }
-            else {
-                Auto.topLeft.setPower(0.02);
-                Auto.botRight.setPower(0.02);
-                Auto.topRight.setPower(0.02);
-                Auto.botLeft.setPower(0.02);
-            }
-        }
-        else if(Auto.pos == 1) {
-            telemetry.addLine("RIGHT");
-            if (Auto.alignedTensor) {
-                Auto.forward(Auto.equation(25), 0.5);
 
-            }
-            else {
-                Auto.topLeft.setPower(-0.02);
-                Auto.botRight.setPower(-0.02);
-                Auto.topRight.setPower(-0.02);
-                Auto.botLeft.setPower(-0.02);
-            }
-        }
-    }
+
 }

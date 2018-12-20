@@ -38,22 +38,8 @@ public class EncoderSquare extends OpMode {
     @Override
     public void loop() {
 
-        if(counter % 2 == 0) {
-            forward(equation(37));
-            telemetry.addLine("FORWARD MODE");
-        }
-        else {
-            rotate(-1985);
-            telemetry.addLine("rOTATE MODE" );
-        }
-
-        telemetry.addLine("Counter:" + counter);
-        telemetry.addLine("Once: " + once);
-        telemetry.addLine("Time: " + time.milliseconds());
-        //ab.move(new Driver(gamepad1).getPowerDriver());
-        //telemetry.addLine("left:" + ab.topLeft.getCurrentPosition());
-        //telemetry.addLine("right:" + ab.topRight.getCurrentPosition());
-
+        forward(equation(39));
+        telemetry.addLine("" + ab.topLeft.getCurrentPosition());
     }
     @Override
     public void stop() {
@@ -61,7 +47,7 @@ public class EncoderSquare extends OpMode {
     }
     public static double equation(double distance)
     {
-        return (360/(Math.PI))*distance;
+        return (1090/(4*Math.PI))*distance;
     }//4242
     public static double rotateEquation(double distance)
     {
@@ -69,7 +55,7 @@ public class EncoderSquare extends OpMode {
     }
 
     public void forward(double encode){
-        if(ab.topLeft.getCurrentPosition() < encode && ab.topRight.getCurrentPosition() < encode&&once==1){
+        if(ab.topLeft.getCurrentPosition() < encode){
             ab.topLeft.setPower(.5);
             ab.botRight.setPower(-.5);
             ab.topRight.setPower(-.5);
@@ -104,15 +90,15 @@ public class EncoderSquare extends OpMode {
 
         if(time.milliseconds() < 3000 && once==2)
         {
-            /*ab.topLeft.setPower(0);
+            ab.topLeft.setPower(0);
             ab.botRight.setPower(0);
             ab.topRight.setPower(0);
             ab.botLeft.setPower(0);
-*/
-            ab.topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            ab.topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            ab.botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            ab.botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            //ab.topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //ab.topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //ab.botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //ab.botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             telemetry.addLine("STOPPPP");
 
         }
@@ -127,10 +113,10 @@ public class EncoderSquare extends OpMode {
             telemetry.addLine("GO TO NEXT PHASE");
             telemetry.addLine("GO TO NEXT PHASE");
 
-            ab.topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            ab.topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            ab.botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            ab.botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //ab.topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //ab.topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //ab.botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            //ab.botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
     }
