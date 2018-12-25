@@ -33,6 +33,7 @@ public class AutoBot extends Robot {
     public TFObjectDetector tfod;
     public boolean alignedTensor = false;
     public boolean isMoving = false;
+    public int encoderForTopLeft = 0;
 
     public AutoBot(HardwareMap hardwareMap, Telemetry tele) {
         super(hardwareMap, tele);
@@ -241,15 +242,14 @@ public class AutoBot extends Robot {
         }
     }
 
-    public void backwards(double encode,double pow) {
-        if (topRight.getCurrentPosition() < encode  && once==1) {
-            topLeft.setPower(-pow);
-            botRight.setPower(pow);
-            topRight.setPower(pow);
-            botLeft.setPower(-pow);
-            isMoving= true;
-        }
-        else
+    public void backward(double distance,double pow) {
+        topLeft.setTargetPosition((int)equation(distance));
+        topLeft.setPower(pow);
+        botRight.setPower(-pow);
+        topRight.setPower(-pow);
+        botLeft.setPower(pow);
+        isMoving = true;
+        if(!topLeft.isBusy())
         {
             stop();
         }
@@ -284,7 +284,6 @@ public class AutoBot extends Robot {
         }
     }
 
-
     public void rotateLeft(){
         if(!alignedTensor) {
             topLeft.setPower(0.02);
@@ -292,6 +291,7 @@ public class AutoBot extends Robot {
             topRight.setPower(0.02);
             botLeft.setPower(0.02);
             isMoving= true;
+            encoderForTopLeft = topLeft.getCurrentPosition();
         }
         else
         {
@@ -305,12 +305,42 @@ public class AutoBot extends Robot {
             topRight.setPower(-0.02);
             botLeft.setPower(-0.02);
             isMoving = true;
+            encoderForTopLeft = topLeft.getCurrentPosition();
         }
         else
         {
             stop();
         }
     }
+
+    public void rotateLeftTicks(int ticks){
+        topLeft.setTargetPosition(-ticks);
+        topLeft.setPower(0.02);
+        botRight.setPower(0.02);
+        topRight.setPower(0.02);
+        botLeft.setPower(0.02);
+        isMoving = true;
+        if(!topLeft.isBusy())
+        {
+            stop();
+        }
+    }
+
+    public void rotateRightTicks(int ticks){
+        topLeft.setTargetPosition(ticks);
+        topLeft.setPower(-0.02);
+        botRight.setPower(-0.02);
+        topRight.setPower(-0.02);
+        botLeft.setPower(-0.02);
+        isMoving = true;
+        if(!topLeft.isBusy())
+        {
+            stop();
+        }
+    }
+
+
+
     public void stop()
     {
         if(once==1) {

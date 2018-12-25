@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.helper.Driver;
 import org.firstinspires.ftc.teamcode.helper.Robot;
 
 @TeleOp(name = "Encoder Test", group = "Auto")
+@Disabled
 public class EncoderSquare extends OpMode {
 
     private AutoBot ab;

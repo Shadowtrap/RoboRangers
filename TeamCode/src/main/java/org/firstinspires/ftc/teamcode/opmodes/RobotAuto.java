@@ -29,42 +29,18 @@
 
 package org.firstinspires.ftc.teamcode.opmodes;
 
-
-import com.disnodeteam.dogecv.CameraViewDisplay;
-import com.disnodeteam.dogecv.DogeCV;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.helper.HSVColorFilter;
-import org.firstinspires.ftc.teamcode.helper.SamplingOrderDetector;
 import org.firstinspires.ftc.teamcode.helper.AutoBot;
-import org.firstinspires.ftc.teamcode.helper.Robot;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.vuforia.CameraCalibration;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.teamcode.helper.AutoBot;
-import org.firstinspires.ftc.teamcode.helper.Robot;
+@Autonomous(name="RobotAuto")
 
-@Autonomous(name="RobotAuto", group="DogeCV")
-
-public class RobotAuto extends OpMode {
+public class RobotAuto extends OpMode{
     private AutoBot shamsBot;
-    public int step = 0;
+    private int step;
+
 
     @Override
     public void init() {
@@ -101,84 +77,81 @@ public class RobotAuto extends OpMode {
         telemetry.addData("TopRight Encoder", shamsBot.topRight.getCurrentPosition());
         telemetry.addData("BottomLeft Encoder", shamsBot.botLeft.getCurrentPosition());
         telemetry.addData("BottomRight Encoder", shamsBot.botRight.getCurrentPosition());
+        telemetry.addData("Step", step);
+        telemetry.addData("Left Motor Encoder Value After Rotation", shamsBot.encoderForTopLeft);
 
         //Enter Auto Step 0
         if (step == 0)
         {
-            //Gold Mineral Straight
             if (shamsBot.pos == 0) {
-
-                //Robot Forward
-                telemetry.addLine("Forward (Middle)");
+                //telemetry.addLine("Forward (Middle)");
                 shamsBot.forward(24, 0.5);
-
-
-                //Shift Phase 2
-                setStep(2);
+                setStep(1);
+                if(step == 1){
+                    shamsBot.backward(24, 0.5);
+                }
             }
-
-            //Gold Mineral Left
             else if (shamsBot.pos == -1)
             {
-                telemetry.addLine("LEFT");
-
-                //Rotate Left
+                //telemetry.addLine("LEFT");
                 shamsBot.rotateLeft();
-
-                //Set to Step 1
                 setStep(1);
-
-                //Step 1 -(Left)
                 if (step == 1)
                 {
-                    //Forward 24 inches
-                    telemetry.addLine("Forward (Left)");
+                    //telemetry.addLine("Forward (Left)");
                     shamsBot.forward(24, 0.5);
-
-                    //Change to Step 2
-                    //setStep(2);
+                    setStep(2);
                 }
-                //Step 2 -(Left)
-                //else if (step == 2)
-                //{
-                    //Rotate Left Degree 45
-                    //shamsBot.rotate("Left", 45, 0.5);
+                if(step == 2){
+                    //telemetry.addLine("Backward (Left)");
+                    shamsBot.backward(24, 0.5);
+                    setStep(3);
+                }
+                if(step == 3){
+                    shamsBot.rotateRightTicks(shamsBot.encoderForTopLeft);
+                }
             }
-            //Gold Mineral on the Right
             else if (shamsBot.pos == 1)
             {
-                telemetry.addLine("RIGHT");
+                //telemetry.addLine("RIGHT");
                 //Rotate Left
                 shamsBot.rotateRight();
-
                 //Set to Step 1
                 setStep(1);
-
-                //Step 1 -(Left)
                 if (step == 1)
                 {
-                    telemetry.addLine("Forward (Right)");
-                    //Forward 24 inches
-                    shamsBot.forward(shamsBot.equation(12), 0.5);
-
-                    //Change to Step 2
-                    //setStep(2);
+                    //telemetry.addLine("Forward (Right)");
+                    shamsBot.forward(shamsBot.equation(24), 0.5);
+                }
+                if(step == 2){
+                    //telemetry.addLine("Backward (Left)");
+                    shamsBot.backward(24, 0.5);
+                    setStep(3);
+                }
+                if(step == 3){
+                    shamsBot.rotateLeftTicks(shamsBot.encoderForTopLeft);
                 }
             }
         }
     }
 
     @Override
-    public void stop(){
+    public void stop()
+    {
         // Disable the detector
         shamsBot.tfod.shutdown();
     }
+
     public void setStep(int x)
     {
-        if (!shamsBot.isMoving)
+        if (!shamsBot.topLeft.isBusy())
             step = x;
     }
 
 
+    /*Problems with Auto as of now
+            - Encoder values are not being reset after rotation(Possibly)
+                - Causing the robot to not stop after rotation
+     */
 
 }
