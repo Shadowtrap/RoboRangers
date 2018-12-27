@@ -14,7 +14,17 @@ public class TeleBot extends Robot {
     //latching mechanism
 
     public void armMotorMovement(Gamepad g) {
-
+        boolean up = g.dpad_up;
+        boolean down = g.dpad_down;
+        if(up){
+            liftMotor.setPower(0.5);
+        }
+        else if(down){
+            liftMotor.setPower(-0.5);
+        }
+        else{
+            liftMotor.setPower(0);
+        }
     }
 
     public void scoreMechMovement(Gamepad g){
@@ -29,7 +39,7 @@ public class TeleBot extends Robot {
         if(a){
             phoneServo.setPosition(0);
         }
-        if(b){
+        else if(b){
             phoneServo.setPosition(1);
         }
         else{

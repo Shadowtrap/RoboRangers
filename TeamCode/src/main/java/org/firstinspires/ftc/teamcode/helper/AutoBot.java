@@ -132,8 +132,6 @@ public class AutoBot extends Robot {
                 if (updatedRecognitions.size() >= 1) {
                     for (Recognition r : updatedRecognitions) {
                         if (r.getLabel().equals(LABEL_GOLD_MINERAL)) {
-                            goldMineralX = (int) r.getLeft();
-                            goldY = (int) r.getTop();
                             goldCenterX = center((int) r.getLeft(), (int) r.getRight());
                             goldCenterY = center((int) r.getTop(), (int) r.getBottom());
                             alignedTensor = isAligned(goldCenterX);
@@ -195,11 +193,6 @@ public class AutoBot extends Robot {
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
-        /*
-        CameraCalibration cc = vuforia.getCameraCalibration();
-        float[] focalLengths = cc.getFocalLength().getData();
-        focalLength = focalLengths[1];
-        */
         // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
     }
 
@@ -207,8 +200,7 @@ public class AutoBot extends Robot {
      * Initialize the Tensor Flow Object Detection engine.
      */
     private void initTfod() {
-        int tfodMonitorViewId = hwm.appContext.getResources().getIdentifier(
-                "tfodMonitorViewId", "id", hwm.appContext.getPackageName());
+        int tfodMonitorViewId = hwm.appContext.getResources().getIdentifier("tfodMonitorViewId", "id", hwm.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
@@ -266,7 +258,8 @@ public class AutoBot extends Robot {
                 botRight.setPower(-pow);
                 topRight.setPower(-pow);
                 botLeft.setPower(-pow);
-            } else {
+            }
+            else {
                 stop();
             }
         } else if (str.equals("Left")==true||str.equals("left")==true) {
@@ -339,8 +332,6 @@ public class AutoBot extends Robot {
         }
     }
 
-
-
     public void stop()
     {
         if(once==1) {
@@ -348,20 +339,13 @@ public class AutoBot extends Robot {
             time.startTime();
             once++;
         }
-        if(time.milliseconds() < 1000 && once==2)
+        if(time.milliseconds() < 1000 && once == 2)
         {
             topLeft.setPower(0);
             botRight.setPower(0);
             topRight.setPower(0);
             botLeft.setPower(0);
-            topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            topLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            topRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            botLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            botRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            resetEncoder();
         }
         else
         {
@@ -370,8 +354,21 @@ public class AutoBot extends Robot {
         }
 
     }
+
+    public void resetEncoder(){
+        topLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        topLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        topRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        botLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        botRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
     public void alignCenter(){
-        if(pos == 0 && !alignedTensor){
+        boolean isAligned = alignedTensor;
+        if(pos == 0 && !isAligned){
             topLeft.setPower(-0.02);
             botRight.setPower(0.02);
             topRight.setPower(-0.02);

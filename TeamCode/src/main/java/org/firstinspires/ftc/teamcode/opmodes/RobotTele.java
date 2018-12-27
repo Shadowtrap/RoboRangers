@@ -52,6 +52,7 @@ public class RobotTele extends OpMode {
     @Override
     public void loop() {
         teleBot.move(driver1.getPowerDriver());
+        teleBot.armMotorMovement(gamepad1);
         teleBot.phoneMovement(gamepad1);
 
     }

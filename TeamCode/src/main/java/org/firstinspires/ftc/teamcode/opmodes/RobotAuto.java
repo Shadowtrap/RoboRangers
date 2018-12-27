@@ -46,6 +46,8 @@ public class RobotAuto extends OpMode{
     public void init() {
         shamsBot = new AutoBot(hardwareMap, telemetry);
         shamsBot.setUpWheels();
+        shamsBot.resetEncoder();
+        telemetry.addData("TopLeft Encoder", shamsBot.topLeft.getCurrentPosition());
         shamsBot.setupTensorCV();
         shamsBot.time = new ElapsedTime();
         step = 0;
@@ -72,64 +74,62 @@ public class RobotAuto extends OpMode{
     @Override
     public void loop()
     {
-        shamsBot.detectTensor();
+
         telemetry.addData("TopLeft Encoder", shamsBot.topLeft.getCurrentPosition());
         telemetry.addData("TopRight Encoder", shamsBot.topRight.getCurrentPosition());
         telemetry.addData("BottomLeft Encoder", shamsBot.botLeft.getCurrentPosition());
         telemetry.addData("BottomRight Encoder", shamsBot.botRight.getCurrentPosition());
         telemetry.addData("Step", step);
-        telemetry.addData("Left Motor Encoder Value After Rotation", shamsBot.encoderForTopLeft);
 
         //Enter Auto Step 0
         if (step == 0)
         {
+            shamsBot.detectTensor();
+            shamsBot.phoneServo.setPosition(0.7);
             if (shamsBot.pos == 0) {
                 //telemetry.addLine("Forward (Middle)");
                 shamsBot.forward(24, 0.5);
                 setStep(1);
                 if(step == 1){
-                    shamsBot.backward(24, 0.5);
+                    shamsBot.phoneServo.setPosition(0.2);
+                    setStep(2);
+                }
+                if(step == 2){
+                    shamsBot.backward(16, 0.5);
+                    setStep(3);
+                }
+                if(step == 3){
+                    shamsBot.rotate("Right", 45, 0.2);
+                    setStep(4);
+                }
+                if(step == 4){
+                    shamsBot.forward(40, 0.5);
                 }
             }
             else if (shamsBot.pos == -1)
             {
-                //telemetry.addLine("LEFT");
                 shamsBot.rotateLeft();
                 setStep(1);
                 if (step == 1)
                 {
-                    //telemetry.addLine("Forward (Left)");
                     shamsBot.forward(24, 0.5);
                     setStep(2);
                 }
                 if(step == 2){
-                    //telemetry.addLine("Backward (Left)");
-                    shamsBot.backward(24, 0.5);
-                    setStep(3);
-                }
-                if(step == 3){
-                    shamsBot.rotateRightTicks(shamsBot.encoderForTopLeft);
+                    shamsBot.phoneServo.setPosition(0.2);
                 }
             }
             else if (shamsBot.pos == 1)
             {
-                //telemetry.addLine("RIGHT");
-                //Rotate Left
                 shamsBot.rotateRight();
-                //Set to Step 1
                 setStep(1);
                 if (step == 1)
                 {
-                    //telemetry.addLine("Forward (Right)");
                     shamsBot.forward(shamsBot.equation(24), 0.5);
+                    setStep(2);
                 }
                 if(step == 2){
-                    //telemetry.addLine("Backward (Left)");
-                    shamsBot.backward(24, 0.5);
-                    setStep(3);
-                }
-                if(step == 3){
-                    shamsBot.rotateLeftTicks(shamsBot.encoderForTopLeft);
+                    shamsBot.phoneServo.setPosition(0.2);
                 }
             }
         }
@@ -147,11 +147,4 @@ public class RobotAuto extends OpMode{
         if (!shamsBot.topLeft.isBusy())
             step = x;
     }
-
-
-    /*Problems with Auto as of now
-            - Encoder values are not being reset after rotation(Possibly)
-                - Causing the robot to not stop after rotation
-     */
-
 }
