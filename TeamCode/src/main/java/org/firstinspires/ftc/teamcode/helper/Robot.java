@@ -19,24 +19,19 @@ public class Robot {
     public DcMotor botLeft;
     public DcMotor botRight;
 
-    //Motor for Arm
-    public DcMotor armMotor1;
-    public DcMotor armMotor2;
+    //Motor for lift
+    public DcMotor liftMotor;
 
     //Servo for Arm
-    public Servo armServo;
+    public Servo wristServo;
+    public Servo intakeServo;
 
     //Motor for scoring
-    public DcMotor raiseMotor;
-    public DcMotor extendMotor;
+    public DcMotor baseMotor;
+    public DcMotor elbowMotor;
 
-    //servo for score door;
-    public Servo left;
-    public Servo right;
+    public Servo phoneServo;
 
-    public Servo score;
-
-    public DcMotor r2;
     public Robot(HardwareMap hardwareMap, Telemetry tele){
         hwm = hardwareMap;
         t = tele;
@@ -89,91 +84,65 @@ public class Robot {
     }
 
     //Code for armMotor
-    public void setUpArmMotor(){
-        Display("Setting up the armMotor");
-        try {
-            armMotor1 = hwm.get(DcMotor.class, "armMotor1");
-            armMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            armMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            Display("armMotor1 : OK");
-        } catch (Exception e) {
-            Display("armMotor1 : ERROR");
+    public void setUpLift(){
+        try{
+            liftMotor = hwm.get(DcMotor.class, "liftMotor");
+            liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            Display("liftMotor : OK");
         }
-
-        try {
-            armMotor2 = hwm.get(DcMotor.class, "armMotor2");
-            armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            armMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            Display("armMotor2 : OK");
-        } catch (Exception e) {
-            Display("armMotor2 : ERROR");
+        catch(Exception e){
+            Display("liftMotor is broken :(");
         }
     }
 
-    //Code for armServo
-    public void setUpArmServo(){
-        Display("Setting up the Servo");
-        try {
-            armServo = hwm.get(Servo.class, "armServo");
-            armServo.setPosition(0);
-            Display("armServo : OK");
+    public void setUpPhoneServo(){
+        try{
+            phoneServo = hwm.get(Servo.class, "phoneServo");
+            phoneServo.setPosition(0);
+            Display("phoneServo : OK");
         }
-        catch(Exception e) {
-            Display("armServo is broken");
+        catch(Exception e){
+            Display("phoneServo is broken :(");
         }
     }
 
     public void setUpScoreMech(){
-        try {
-            raiseMotor = hwm.get(DcMotor.class, "raiseMotor");
-            raiseMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            raiseMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            Display("raiseMotor : OK");
-        } catch (Exception e) {
-            Display("scoremotor : ERROR");
+        try{
+            baseMotor = hwm.get(DcMotor.class, "baseMotor");
+            baseMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            baseMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            Display("baseMotor : OK");
         }
-        try {
-            extendMotor = hwm.get(DcMotor.class, "extendMotor");
-            extendMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            extendMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            Display("extendMotor : OK");
-        } catch (Exception e) {
-            Display("extendMotor : ERROR");
+        catch(Exception e){
+            Display("baseMotor is broken :(");
         }
-
-        try {
-            r2 = hwm.get(DcMotor.class, "r2");
-            r2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            r2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            Display("r2 : OK");
-        } catch (Exception e) {
-            Display("r2 : ERROR");
-        }
-        /*
-        try {
-            left = hwm.get(Servo.class, "left");
-            left.setPosition(0);
-            Display("armServo : OK");
-        }
-        catch(Exception e) {
-            Display("left is broken");
-        }
-        try {
-            right = hwm.get(Servo.class, "right");
-            right.setPosition(0);
-            Display("right : OK");
-        }
-        catch(Exception e) {
-            Display("right is broken");
-        }*/
 
         try{
-            score = hwm.get(Servo.class, "score");
-
-            Display("OK");
+            elbowMotor = hwm.get(DcMotor.class, "elbowMotor");
+            elbowMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            elbowMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            Display("elbowMotor : OK");
         }
-        catch (Exception e){
-            Display("BADDDDD");
+        catch(Exception e){
+            Display("elbowMotor is broken :(");
+        }
+
+        try{
+            wristServo = hwm.get(Servo.class, "wristServo");
+            wristServo.setPosition(0);
+            Display("wristServo : OK");
+        }
+        catch(Exception e){
+            Display("wristServo is broken :(");
+        }
+        try{
+            intakeServo = hwm.get(Servo.class, "intakeServo");
+            intakeServo.setPosition(0);
+            Display("intakeServo : OK");
+        }
+        catch(Exception e){
+            Display("intakeServo is broken :(");
         }
     }
 

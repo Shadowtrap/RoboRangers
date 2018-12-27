@@ -11,16 +11,17 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class RobotTele extends OpMode {
     TeleBot teleBot;
-    Driver driver;
+    Driver driver1,driver2;
 
     @Override
     public void init() {
         telemetry.addData("Status", "Initialized");
         telemetry.addLine("init");
         teleBot = new TeleBot(hardwareMap,telemetry);
-        driver = new Driver(gamepad1);
-        teleBot.setUpArmMotor();
-        teleBot.setUpWheels();
+        driver1 = new Driver(gamepad1);
+
+        //may not be needed but we will need to use gamepad 2 for arm movement potentially
+        driver2 = new Driver(gamepad2);
     }
 
     /*
@@ -29,7 +30,7 @@ public class RobotTele extends OpMode {
     @Override
     public void init_loop() {
         //telemetry.addLine("initLoop");
-        
+
     }
 
     /*
@@ -39,6 +40,10 @@ public class RobotTele extends OpMode {
     @Override
     public void start() {
         telemetry.addLine("start");
+        teleBot.setUpWheels();
+        teleBot.setUpScoreMech();
+        teleBot.setUpLift();
+        teleBot.setUpPhoneServo();
     }
 
     /*
@@ -46,8 +51,9 @@ public class RobotTele extends OpMode {
      */
     @Override
     public void loop() {
-        teleBot.move(driver.getPowerDriver());
-        teleBot.armMotorMovement(gamepad1);
+        teleBot.move(driver1.getPowerDriver());
+        teleBot.phoneMovement(gamepad1);
+
     }
 
     /*
