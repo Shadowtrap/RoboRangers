@@ -306,7 +306,7 @@ public class AutoBot extends Robot {
         }
     }
 
-    public void rotateLeftTicks(int ticks){
+    public void rotateLeft(int ticks) {
         topLeft.setTargetPosition(-ticks);
         topLeft.setPower(0.02);
         botRight.setPower(0.02);
@@ -319,7 +319,7 @@ public class AutoBot extends Robot {
         }
     }
 
-    public void rotateRightTicks(int ticks){
+    public void rotateRight(int ticks) {
         topLeft.setTargetPosition(ticks);
         topLeft.setPower(-0.02);
         botRight.setPower(-0.02);
@@ -364,16 +364,6 @@ public class AutoBot extends Robot {
         topRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         botLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         botRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-
-    public void alignCenter(){
-        boolean isAligned = alignedTensor;
-        if(pos == 0 && !isAligned){
-            topLeft.setPower(-0.02);
-            botRight.setPower(0.02);
-            topRight.setPower(-0.02);
-            botLeft.setPower(0.02);
-        }
     }
 
 }

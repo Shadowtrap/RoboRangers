@@ -81,10 +81,10 @@ public class RobotAuto extends OpMode{
         telemetry.addData("BottomRight Encoder", shamsBot.botRight.getCurrentPosition());
         telemetry.addData("Step", step);
 
+        shamsBot.detectTensor();
         //Enter Auto Step 0
         if (step == 0)
         {
-            shamsBot.detectTensor();
             shamsBot.phoneServo.setPosition(0.7);
             if (shamsBot.pos == 0) {
                 //telemetry.addLine("Forward (Middle)");
@@ -112,10 +112,18 @@ public class RobotAuto extends OpMode{
                 setStep(1);
                 if (step == 1)
                 {
-                    shamsBot.forward(24, 0.5);
+                    shamsBot.forward(12, 0.5);
                     setStep(2);
                 }
                 if(step == 2){
+                    shamsBot.rotateRight(shamsBot.encoderForTopLeft);
+                    setStep(3);
+                }
+                if(step == 3){
+                    shamsBot.forward(12, 0.5);
+                    setStep(4);
+                }
+                if(step == 4){
                     shamsBot.phoneServo.setPosition(0.2);
                 }
             }
@@ -125,10 +133,18 @@ public class RobotAuto extends OpMode{
                 setStep(1);
                 if (step == 1)
                 {
-                    shamsBot.forward(shamsBot.equation(24), 0.5);
+                    shamsBot.forward(12, 0.5);
                     setStep(2);
                 }
                 if(step == 2){
+                    shamsBot.rotateLeft(shamsBot.encoderForTopLeft);
+                    setStep(3);
+                }
+                if(step == 3){
+                    shamsBot.forward(12, 0.5);
+                    setStep(4);
+                }
+                if(step == 4){
                     shamsBot.phoneServo.setPosition(0.2);
                 }
             }
