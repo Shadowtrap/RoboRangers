@@ -12,11 +12,12 @@ public class TimeAuto extends OpMode {
 
     AutoBot tamBot;
     ElapsedTime time;
-    int step = 0;
+    int step;
 
     @Override
     public void init() {
         tamBot = new AutoBot(hardwareMap, telemetry);
+        step = 0;
         tamBot.setUpWheels();
         tamBot.setupTensorCV();
         time = new ElapsedTime();
@@ -87,6 +88,11 @@ public class TimeAuto extends OpMode {
                 }
             }
         }
+    }
+    @Override
+    public void stop()
+    {
+        tamBot.tfod.shutdown();
     }
 
     //Movement with time

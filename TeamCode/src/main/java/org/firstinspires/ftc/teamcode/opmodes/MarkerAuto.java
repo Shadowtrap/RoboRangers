@@ -35,9 +35,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.helper.AutoBot;
 
 
-@Autonomous(name="RobotAuto")
+@Autonomous(name="Marker Auto")
 
-public class RobotAuto extends OpMode{
+public class MarkerAuto extends OpMode{
     private AutoBot shamsBot;
     private int step;
 
@@ -49,7 +49,6 @@ public class RobotAuto extends OpMode{
         shamsBot.resetEncoder();
         telemetry.addData("TopLeft Encoder", shamsBot.topLeft.getCurrentPosition());
         shamsBot.setupTensorCV();
-        shamsBot.time = new ElapsedTime();
         step = 0;
     }
 

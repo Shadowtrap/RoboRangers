@@ -12,12 +12,14 @@ public class RandAuto extends OpMode {
 
     AutoBot markoBot = new AutoBot(hardwareMap, telemetry);
     int random;
-    int step = 0;
+    int step;
 
     @Override
     public void init() {
         markoBot.setUpWheels();
+        markoBot.resetEncoder();
         random = (int)(Math.random() * 3);
+        step = 0;
     }
 
     @Override
