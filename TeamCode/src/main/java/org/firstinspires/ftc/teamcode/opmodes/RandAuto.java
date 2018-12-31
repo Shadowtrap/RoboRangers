@@ -19,7 +19,7 @@ public class RandAuto extends OpMode {
         markoBot.setUpWheels();
         markoBot.resetEncoder();
         random = (int)(Math.random() * 3);
-        step = 0;
+        setStep(0);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class RandAuto extends OpMode {
             //Center
             if(random == 0){
                 markoBot.forward(24, 0.5);
-                step = 1;
+                setStep(1);
                 if(step == 1){
                     markoBot.phoneServo.setPosition(0.2);
                 }
@@ -38,18 +38,18 @@ public class RandAuto extends OpMode {
             //Left
             else if(random == 1){
                 markoBot.rotate("Left", 45, 0.02);
-                step = 1;
+                setStep(1);
                 if(step == 1){
                     markoBot.forward(12, 0.5);
-                    step = 2;
+                    setStep(2);
                 }
                 if(step == 2){
                     markoBot.rotate("Right", 45, 0.02);
-                    step = 3;
+                    setStep(3);
                 }
                 if(step == 3){
                     markoBot.forward(12, 0.5);
-                    step = 4;
+                    setStep(4);
                 }
                 if(step == 4){
                     markoBot.phoneServo.setPosition(0.2);
@@ -58,23 +58,33 @@ public class RandAuto extends OpMode {
             //Right
             else if (random == 2){
                 markoBot.rotate("Right", 45, 0.02);
-                step = 1;
+                setStep(1);
                 if(step == 1){
                     markoBot.forward(12, 0.5);
-                    step = 2;
+                    setStep(2);
                 }
                 if(step == 2){
                     markoBot.rotate("Left", 45, 0.02);
-                    step = 3;
+                    setStep(3);
                 }
                 if(step == 3){
                     markoBot.forward(12, 0.5);
-                    step = 4;
+                    setStep(4);
                 }
                 if(step == 4){
                     markoBot.phoneServo.setPosition(0.2);
                 }
             }
         }
+    }
+
+    @Override
+    public void stop(){
+
+    }
+
+    public void setStep(int x){
+        if (!markoBot.topLeft.isBusy())
+            step = x;
     }
 }

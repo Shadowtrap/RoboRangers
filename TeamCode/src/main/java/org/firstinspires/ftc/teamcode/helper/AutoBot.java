@@ -316,7 +316,7 @@ public class AutoBot extends Robot {
     }
 
     public void rotateRight(int ticks) {
-        topLeft.setTargetPosition(ticks);
+        topLeft.setTargetPosition(-ticks);
         topLeft.setPower(-0.02);
         botRight.setPower(-0.02);
         topRight.setPower(-0.02);

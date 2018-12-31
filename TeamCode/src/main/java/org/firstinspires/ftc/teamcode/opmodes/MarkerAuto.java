@@ -49,7 +49,7 @@ public class MarkerAuto extends OpMode{
         shamsBot.resetEncoder();
         telemetry.addData("TopLeft Encoder", shamsBot.topLeft.getCurrentPosition());
         shamsBot.setupTensorCV();
-        step = 0;
+        setStep(0);
     }
 
     /*

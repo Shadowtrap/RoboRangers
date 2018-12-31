@@ -17,7 +17,7 @@ public class TimeAuto extends OpMode {
     @Override
     public void init() {
         tamBot = new AutoBot(hardwareMap, telemetry);
-        step = 0;
+        setStep(0);
         tamBot.setUpWheels();
         tamBot.setupTensorCV();
         time = new ElapsedTime();
@@ -32,18 +32,18 @@ public class TimeAuto extends OpMode {
             tamBot.phoneServo.setPosition(0.7);
             if(tamBot.pos == 0){
                 forwardTime(3);
-                step = 1;
+                setStep(1);
                 if(step == 1){
                     tamBot.phoneServo.setPosition(0.2);
-                    step = 2;
+                    setStep(2);
                 }
                 if(step == 2){
                     backwardTime(1);
-                    step = 3;
+                    setStep(3);
                 }
                 if(step == 3){
                     rotateLeftTime(5);
-                    step = 4;
+                    setStep(4);
                 }
                 if(step == 4){
                     forwardTime(6);
@@ -51,18 +51,18 @@ public class TimeAuto extends OpMode {
             }
             else if(tamBot.pos == -1){
                 rotateLeftTime(1);
-                step = 1;
+                setStep(1);
                 if(step == 1){
                     forwardTime(2.5);
-                    step = 2;
+                    setStep(2);
                 }
                 if(step == 2){
                     rotateRightTime(1);
-                    step = 3;
+                    setStep(3);
                 }
                 if(step == 3){
                     forwardTime(1.5);
-                    step = 4;
+                    setStep(4);
                 }
                 if(step == 4){
                     tamBot.phoneServo.setPosition(0.2);
@@ -70,18 +70,18 @@ public class TimeAuto extends OpMode {
             }
             else if(tamBot.pos == 1){
                 rotateRightTime(1);
-                step = 1;
+                setStep(1);
                 if(step == 1){
                     forwardTime(2.5);
-                    step = 2;
+                    setStep(2);
                 }
                 if(step == 2){
                     rotateLeftTime(1);
-                    step = 3;
+                    setStep(3);
                 }
                 if(step == 3){
                     forwardTime(1.5);
-                    step = 4;
+                    setStep(4);
                 }
                 if(step == 4){
                     tamBot.phoneServo.setPosition(0.2);
@@ -159,5 +159,10 @@ public class TimeAuto extends OpMode {
             tamBot.topRight.setPower(0);
             tamBot.botRight.setPower(0);
         }
+    }
+
+    public void setStep(int x){
+        if (!tamBot.topLeft.isBusy())
+            step = x;
     }
 }
