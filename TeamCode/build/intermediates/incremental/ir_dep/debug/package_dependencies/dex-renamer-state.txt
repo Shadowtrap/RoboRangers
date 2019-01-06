@@ -1,4 +1,0 @@
-#Tue Dec 04 12:43:53 PST 2018
-base.0=C\:\\Users\\Shams Faruque\\Desktop\\RoboRangers\\TeamCode\\build\\intermediates\\transforms\\dexMerger\\debug\\10
-path.0=classes.dex
-renamed.0=classes.dex
