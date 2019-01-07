@@ -17,10 +17,10 @@ public class TeleBot extends Robot {
         boolean up = g.dpad_up;
         boolean down = g.dpad_down;
         if(up){
-            liftMotor.setPower(0.5);
+            liftMotor.setPower(-0.5);
         }
         else if(down){
-            liftMotor.setPower(-0.5);
+            liftMotor.setPower(0.5);
         }
         else{
             liftMotor.setPower(0);

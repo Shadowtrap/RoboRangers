@@ -5,6 +5,7 @@ import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -72,6 +73,29 @@ public class AutoBot extends Robot {
             Display("botRight : OK");
         } catch (Exception e) {
             Display("botRight : ERROR");
+        }
+    }
+
+    public void setupliftmotor()
+    {
+        try {
+            liftMotor = hwm.get(DcMotor.class, "liftmotor");
+            liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Display("liftMotor : OK");
+        } catch (Exception e) {
+            Display("liftMotor : ERROR");
+        }
+    }
+
+    public void setupservo()
+    {
+        try {
+            phoneServo = hwm.get(Servo.class,"phoneServo");
+            //phoneServo.setPosition(0.5);
+            Display("phoneServo : OK");
+        } catch (Exception e) {
+            Display("phoneServo : ERROR");
         }
     }
 
@@ -173,10 +197,10 @@ public class AutoBot extends Robot {
         }
 
 
-    /**
-     * Initialize the Vuforia localization engine.
-     */
-}
+        /**
+         * Initialize the Vuforia localization engine.
+         */
+    }
     private void initVuforia() {
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
@@ -321,6 +345,45 @@ public class AutoBot extends Robot {
         botRight.setPower(-0.02);
         topRight.setPower(-0.02);
         botLeft.setPower(-0.02);
+        isMoving = true;
+        if(!topLeft.isBusy())
+        {
+            stop();
+        }
+    }
+
+    public void latchdown()
+    {
+        liftMotor.setTargetPosition(-3000);
+        liftMotor.setPower(-0.5);
+    }
+    public void retract()
+    {
+        liftMotor.setTargetPosition(0);
+        liftMotor.setPower(0.5);
+    }
+
+    public void strafeRight(double distance)
+    {
+        topLeft.setTargetPosition((int)equation(distance));
+        topLeft.setPower(0.02);
+        botRight.setPower(-0.02);
+        topRight.setPower(0.02);
+        botLeft.setPower(-0.02);
+        isMoving = true;
+        if(!topLeft.isBusy())
+        {
+            stop();
+        }
+    }
+
+    public void strafeLeft(double distance)
+    {
+        topLeft.setTargetPosition((int)equation(distance));
+        topLeft.setPower(-0.02);
+        botRight.setPower(0.02);
+        topRight.setPower(-0.02);
+        botLeft.setPower(0.02);
         isMoving = true;
         if(!topLeft.isBusy())
         {
