@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.helper;
 
-import org.firstinspires.ftc.teamcode.helper.Timer;
-
 public class Power {
 
     public final double topLeft;

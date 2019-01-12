@@ -17,14 +17,15 @@ public class TeleBot extends Robot {
         boolean up = g.dpad_up;
         boolean down = g.dpad_down;
         if(up){
-            liftMotor.setPower(-0.5);
+            liftMotor.setPower(-1);
         }
         else if(down){
-            liftMotor.setPower(0.5);
+            liftMotor.setPower(1);
         }
         else{
             liftMotor.setPower(0);
         }
+        t.addData("Encoder:", liftMotor.getCurrentPosition());
     }
 
     public void scoreMechMovement(Gamepad g){
@@ -45,5 +46,6 @@ public class TeleBot extends Robot {
         else{
             phoneServo.setPosition(0.5);
         }
+        t.addData("STUFF:", phoneServo.getPosition());
     }
 }

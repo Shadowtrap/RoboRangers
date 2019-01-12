@@ -29,6 +29,6 @@ public class TeleTest extends OpMode {
         //bot.armMotorMovement(gamepad1);
         //bot.armServoMovement(gamepad1);
         bot.move(driver.getPowerDriver());
-        bot.scoreMech(gamepad1);
+
     }
 }

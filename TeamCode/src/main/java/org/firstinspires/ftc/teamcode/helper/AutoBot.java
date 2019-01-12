@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.helper.SamplingOrderDetector;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.opmodes.MarkerAuto;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class AutoBot extends Robot {
         try {
             topLeft = hwm.get(DcMotor.class, "topLeft");
             topLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            topLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             Display("topLeft : OK");
         } catch (Exception e) {
             Display("topLeft : ERROR");
@@ -51,7 +52,7 @@ public class AutoBot extends Robot {
         try {
             topRight = hwm.get(DcMotor.class, "topRight");
             topRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            topRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             Display("topRight : OK");
         } catch (Exception e) {
             Display("topRight : ERROR");
@@ -60,7 +61,7 @@ public class AutoBot extends Robot {
         try {
             botLeft = hwm.get(DcMotor.class, "botLeft");
             botLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            botLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             Display("botLeft : OK");
         } catch (Exception e) {
             Display("botLeft : ERROR");
@@ -69,7 +70,7 @@ public class AutoBot extends Robot {
         try {
             botRight = hwm.get(DcMotor.class, "botRight");
             botRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            botRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             Display("botRight : OK");
         } catch (Exception e) {
             Display("botRight : ERROR");
@@ -79,9 +80,9 @@ public class AutoBot extends Robot {
     public void setupliftmotor()
     {
         try {
-            liftMotor = hwm.get(DcMotor.class, "liftmotor");
+            liftMotor = hwm.get(DcMotor.class, "liftMotor");
             liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             Display("liftMotor : OK");
         } catch (Exception e) {
             Display("liftMotor : ERROR");
@@ -242,28 +243,33 @@ public class AutoBot extends Robot {
     }
 
     public void forward(double distance,double pow) {
-        topLeft.setTargetPosition((int)equation(-distance));
-        topLeft.setPower(-pow);
-        botRight.setPower(pow);
-        topRight.setPower(pow);
-        botLeft.setPower(-pow);
-        isMoving = true;
-        if(!topLeft.isBusy())
+        if(topLeft.getCurrentPosition() > (int)equation(-distance) && once == 1) {
+            topLeft.setPower(-pow);
+            botRight.setPower(pow);
+            topRight.setPower(pow);
+            botLeft.setPower(-pow);
+            isMoving = true;
+        }
+        else
         {
+
             stop();
+
         }
     }
 
     public void backward(double distance,double pow) {
-        topLeft.setTargetPosition((int)equation(distance));
-        topLeft.setPower(pow);
-        botRight.setPower(-pow);
-        topRight.setPower(-pow);
-        botLeft.setPower(pow);
-        isMoving = true;
-        if(!topLeft.isBusy())
+        if(topLeft.getCurrentPosition() < (int)equation(distance) && once == 1) {
+            topLeft.setPower(pow);
+            botRight.setPower(-pow);
+            topRight.setPower(-pow);
+            botLeft.setPower(pow);
+            isMoving = true;
+        }
+        else
         {
             stop();
+
         }
     }
 
@@ -278,8 +284,10 @@ public class AutoBot extends Robot {
                 botRight.setPower(-pow);
                 topRight.setPower(-pow);
                 botLeft.setPower(-pow);
+                isMoving = true;
             }
             else {
+
                 stop();
             }
         } else if (str.equals("Left")==true||str.equals("left")==true) {
@@ -288,7 +296,9 @@ public class AutoBot extends Robot {
                 botRight.setPower(pow);
                 topRight.setPower(pow);
                 botLeft.setPower(pow);
+                isMoving = true;
             } else {
+
                 stop();
             }
         }
@@ -308,6 +318,7 @@ public class AutoBot extends Robot {
         }
         else
         {
+
             stop();
         }
     }
@@ -323,71 +334,87 @@ public class AutoBot extends Robot {
         else
         {
             stop();
+
         }
     }
 
     public void rotateLeft(int ticks) {
-        topLeft.setTargetPosition(-ticks);
-        topLeft.setPower(0.02);
-        botRight.setPower(0.02);
-        topRight.setPower(0.02);
-        botLeft.setPower(0.02);
-        isMoving = true;
-        if(!topLeft.isBusy())
-        {
+        if(topLeft.getCurrentPosition() < ticks && once == 1) {
+            topLeft.setPower(0.02);
+            botRight.setPower(0.02);
+            topRight.setPower(0.02);
+            botLeft.setPower(0.02);
+            isMoving = true;
+        }
+        else {
             stop();
+
         }
     }
 
     public void rotateRight(int ticks) {
-        topLeft.setTargetPosition(-ticks);
-        topLeft.setPower(-0.02);
-        botRight.setPower(-0.02);
-        topRight.setPower(-0.02);
-        botLeft.setPower(-0.02);
-        isMoving = true;
-        if(!topLeft.isBusy())
-        {
+        if(topLeft.getCurrentPosition()> -ticks && once == 1){
+            topLeft.setPower(-0.2);
+            botRight.setPower(-0.2);
+            topRight.setPower(-0.2);
+            botLeft.setPower(-0.2);
+            isMoving = true;
+        }
+        else{
             stop();
         }
     }
 
     public void latchdown()
     {
-        liftMotor.setTargetPosition(-3000);
-        liftMotor.setPower(-0.5);
+        if(liftMotor.getCurrentPosition() > -11000 && once == 1) {
+            liftMotor.setPower(-0.5);
+            isMoving = true;
+        }
+        else{
+            stop();
+        }
     }
     public void retract()
     {
-        liftMotor.setTargetPosition(0);
-        liftMotor.setPower(0.5);
-    }
-
-    public void strafeRight(double distance)
-    {
-        topLeft.setTargetPosition((int)equation(distance));
-        topLeft.setPower(0.02);
-        botRight.setPower(-0.02);
-        topRight.setPower(0.02);
-        botLeft.setPower(-0.02);
-        isMoving = true;
-        if(!topLeft.isBusy())
-        {
+        if(liftMotor.getCurrentPosition()<100){
+            liftMotor.setPower(-0.5);
+            isMoving = true;
+        }
+        else{
             stop();
         }
     }
 
-    public void strafeLeft(double distance)
+    public void straferight(double distance, double pow)
     {
-        topLeft.setTargetPosition((int)equation(distance));
-        topLeft.setPower(-0.02);
-        botRight.setPower(0.02);
-        topRight.setPower(-0.02);
-        botLeft.setPower(0.02);
-        isMoving = true;
-        if(!topLeft.isBusy())
+        if(topLeft.getCurrentPosition() < (int)equation(distance) && once == 1) {
+            topLeft.setPower(pow);
+            botRight.setPower(-pow);
+            topRight.setPower(pow);
+            botLeft.setPower(-pow);
+            isMoving = true;
+        }
+        else
         {
             stop();
+
+        }
+    }
+
+    public void strafeleft(double distance, double pow)
+    {
+        if(topLeft.getCurrentPosition() > (int)equation(-distance) && once == 1) {
+            topLeft.setPower(-pow);
+            botRight.setPower(pow);
+            topRight.setPower(-pow);
+            botLeft.setPower(pow);
+            isMoving = true;
+        }
+        else
+        {
+            stop();
+
         }
     }
 
@@ -396,6 +423,7 @@ public class AutoBot extends Robot {
         if(once==1) {
             time.reset();
             time.startTime();
+
             once++;
         }
         if(time.milliseconds() < 1000 && once == 2)
@@ -404,10 +432,13 @@ public class AutoBot extends Robot {
             botRight.setPower(0);
             topRight.setPower(0);
             botLeft.setPower(0);
+            topLeft.setPower(0);
+            liftMotor.setPower(0);
             resetEncoder();
         }
         else
         {
+            MarkerAuto.step++;
             once = 1;
             isMoving = false;
         }
@@ -419,10 +450,10 @@ public class AutoBot extends Robot {
         topRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         botLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         botRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        topLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        topRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        botLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        botRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        topLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        topRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        botLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        botRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
 }
