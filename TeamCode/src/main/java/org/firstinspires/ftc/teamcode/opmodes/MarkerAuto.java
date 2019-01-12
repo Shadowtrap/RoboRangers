@@ -32,7 +32,6 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.helper.AutoBot;
 
 
@@ -48,12 +47,11 @@ public class MarkerAuto extends OpMode{
         shamsBot = new AutoBot(hardwareMap, telemetry);
         shamsBot.setUpWheels();
         shamsBot.resetEncoder();
-        telemetry.addData("TopLeft Encoder", shamsBot.topLeft.getCurrentPosition());
         shamsBot.setupTensorCV();
         shamsBot.setupliftmotor();
         shamsBot.setupservo();
+        telemetry.addData("TopLeft Encoder", shamsBot.topLeft.getCurrentPosition());
         step = 5;
-        ////setStep(1);0);
     }
 
     /*
@@ -68,6 +66,7 @@ public class MarkerAuto extends OpMode{
      */
     @Override
     public void start() {
+        //Resetting the encoder value for the latch when starting the OpMode
        shamsBot.liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
        shamsBot.liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
@@ -78,56 +77,50 @@ public class MarkerAuto extends OpMode{
     @Override
     public void loop()
     {
-
+        //Displaying the Encoder Values nad Step(Debugging)
         telemetry.addData("TopLeft Encoder", shamsBot.topLeft.getCurrentPosition());
         telemetry.addData("TopRight Encoder", shamsBot.topRight.getCurrentPosition());
         telemetry.addData("BottomLeft Encoder", shamsBot.botLeft.getCurrentPosition());
         telemetry.addData("BottomRight Encoder", shamsBot.botRight.getCurrentPosition());
         telemetry.addData("Step", step);
 
+        //Start Detecting with Tensor
         shamsBot.detectTensor();
-        //Enter Auto Step 0
+
+        //Latching Down & Aligning
         if (step == 0){
            shamsBot.latchdown();
         }
         else if(step == 1) {
             shamsBot.backward(5,0.5);
-            //setStep(1);2);
         }
         else if(step == 2){
             shamsBot.strafeleft(10, 1);
-            //setStep(1);3);
         }
         else if(step == 3) {
             shamsBot.forward(5,0.5);
-            //setStep(1);4);
         }
         else if(step == 4) {
             shamsBot.rotate("Right",65,0.5);
-            ////setStep(1);5);
         }
         else if(step == 5) {
             shamsBot.phoneServo.setPosition(.60);
-            step = 6;
+            shamsBot.forward(0,0);
         }
-        //Middle when it becomes 7 idt doesn go into this if statement
-        else if(step >= 6  && shamsBot.pos == 0) { // that has to be there to check if it should into here for the middle
+        //Middle
+        else if(step >= 6  && shamsBot.pos == 0) {
             if(step == 6) {
                 shamsBot.forward(39, 0.5);
-                //setStep(1);7);
             }
             else if(step == 7){
                 shamsBot.phoneServo.setPosition(0);
                 shamsBot.forward(0,0);
-                //setStep(1);8);
             }
             else if(step == 8) {
                 shamsBot.backward(8,0.5);
-                //setStep(1);9);
             }
             else if(step == 9){
                 shamsBot.rotate("Right",100,0.5);
-                //setStep(1);10);
             }
             else if(step == 10)
                 shamsBot.forward(85,0.5);
@@ -136,45 +129,59 @@ public class MarkerAuto extends OpMode{
         else if(step >= 6 && shamsBot.pos == 1) {
                 if(step == 6) {
                     shamsBot.rotateRight();
-                    //setStep(1);7);
                 }
                 else if(step == 7){
                     shamsBot.forward(25,0.5);
-                    //setStep(1);8);
                 }
                 else if(step == 8){
                     shamsBot.rotate("Left",100,0.5);
-                    //setStep(1);9);
                 }
                 else if(step == 9){
                     shamsBot.forward(24,0.5);
-                    //setStep(1);10);
                 }
                 else if(step == 10){
                     shamsBot.straferight(24, 0.02);
-                    //setStep(1);11);
                 }
                 else if(step == 11){
                     shamsBot.phoneServo.setPosition(0.4);
-                    //setStep(1);12);
+                    shamsBot.forward(0,0);
                 }
                 else if(step == 12){
-                    shamsBot.rotate("left",180,0.5);
-                    //setStep(1);13);
+                    shamsBot.rotate("Left",180,0.5);
                 }
                 else if(step == 13)
                     shamsBot.forward(80,0.5);
-
-
         }
         //Left
         else if(step >= 6 && shamsBot.pos == -1) {
-
+            if(step == 6) {
+                shamsBot.rotateLeft();
+            }
+            else if(step == 7){
+                shamsBot.forward(25,0.5);
+            }
+            else if(step == 8){
+                shamsBot.rotate("Right",100,0.5);
+            }
+            else if(step == 9){
+                shamsBot.forward(24,0.5);
+            }
+            else if(step == 10){
+                shamsBot.straferight(24, 0.02);
+            }
+            else if(step == 11){
+                shamsBot.phoneServo.setPosition(0.4);
+                shamsBot.forward(0,0);
+            }
+            else if(step == 12){
+                shamsBot.rotate("Right",180,0.5);
+            }
+            else if(step == 13)
+                shamsBot.forward(80,0.5);
         }
-
     }
 
-
+    //Debugging
     /*
     @Override
     public void loop(){
@@ -190,18 +197,12 @@ public class MarkerAuto extends OpMode{
             //shamsBot.botLeft.setPower(-0.5);
         }
     }
-        */
+    */
 
     @Override
     public void stop()
     {
         // Disable the detector
         shamsBot.tfod.shutdown();
-    }
-
-    public void setStep(int x)
-    {
-        if (!shamsBot.topLeft.isBusy())
-            step = x;
     }
 }

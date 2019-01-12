@@ -19,9 +19,6 @@ public class RobotTele extends OpMode {
         telemetry.addLine("init");
         teleBot = new TeleBot(hardwareMap,telemetry);
         driver1 = new Driver(gamepad1);
-
-        //may not be needed but we will need to use gamepad 2 for arm movement potentially
-        driver2 = new Driver(gamepad2);
     }
 
     /*
@@ -52,8 +49,9 @@ public class RobotTele extends OpMode {
     @Override
     public void loop() {
         teleBot.move(driver1.getPowerDriver());
-        teleBot.armMotorMovement(gamepad1);
-        teleBot.phoneMovement(gamepad1);
+        teleBot.liftMechMovement(gamepad1);
+        teleBot.scoreMechMovement(gamepad1);
+        //teleBot.phoneMovement(gamepad1);
 
     }
 

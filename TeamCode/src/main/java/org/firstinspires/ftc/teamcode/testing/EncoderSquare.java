@@ -82,7 +82,6 @@ public class EncoderSquare extends OpMode {
 
     public void timedStop()
     {
-
         if(once==1) {
             time.reset();
             time.startTime();
