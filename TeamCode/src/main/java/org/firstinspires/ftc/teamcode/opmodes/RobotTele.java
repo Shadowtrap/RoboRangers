@@ -48,10 +48,11 @@ public class RobotTele extends OpMode {
      */
     @Override
     public void loop() {
+        telemetry.addData("TopLeft Encoder:", teleBot.topLeft.getCurrentPosition());
         teleBot.move(driver1.getPowerDriver());
         teleBot.liftMechMovement(gamepad1);
         teleBot.scoreMechMovement(gamepad1);
-        //teleBot.phoneMovement(gamepad1);
+        teleBot.phoneMovement(gamepad1);
 
     }
 

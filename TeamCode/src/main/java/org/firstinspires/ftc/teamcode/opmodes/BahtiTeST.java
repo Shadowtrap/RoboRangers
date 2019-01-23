@@ -35,12 +35,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.helper.AutoBot;
 
 
-@Autonomous(name="Marker Auto")
+@Autonomous(name="Bahti Auto")
 
-public class MarkerAuto extends OpMode{
+public class BahtiTeST extends OpMode{
     private AutoBot shamsBot;
-    public static int step = 0;
-
 
     @Override
     public void init() {
@@ -51,7 +49,7 @@ public class MarkerAuto extends OpMode{
         shamsBot.setupliftmotor();
         shamsBot.setupservo();
         telemetry.addData("TopLeft Encoder", shamsBot.topLeft.getCurrentPosition());
-        step = 0;
+        MarkerAuto.step = 0;
     }
 
     /*
@@ -67,16 +65,17 @@ public class MarkerAuto extends OpMode{
     @Override
     public void start() {
         //Resetting the encoder value for the latch when starting the OpMode
-       shamsBot.liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-       shamsBot.liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shamsBot.liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        shamsBot.liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
 
-     //* Code to run REPEATEDLY when the driver hits PLAY
+    //* Code to run REPEATEDLY when the driver hits PLAY
 
     @Override
     public void loop()
     {
+        int step = MarkerAuto.step;
         //Displaying the En+coder Values nad Step(Debugging)
         telemetry.addData("TopLeft Encoder", shamsBot.topLeft.getCurrentPosition());
         telemetry.addData("TopRight Encoder", shamsBot.topRight.getCurrentPosition());
@@ -90,111 +89,96 @@ public class MarkerAuto extends OpMode{
 
         //Latching Down & Aligning
         if (step == 0){
-           shamsBot.latchdown();
+            shamsBot.latchdown();
         }
         else if(step == 1) {
             shamsBot.backward(4,0.3);
         }
         else if(step == 2){
-            shamsBot.strafeleft(10, 0.4);
+            shamsBot.strafeleft(10, 1);
         }
         else if(step == 3) {
-            shamsBot.forward(3.0,0.3);
+            shamsBot.forward(3.5,0.3);
         }
         else if(step == 4) {
-            shamsBot.rotate("Right",90,0.5);
+            shamsBot.rotate("Right",60,0.3);
         }
-        else if(step == 5){
-            shamsBot.backward(5, 0.3);
-        }
-        else if(step == 6) {
-            shamsBot.phoneServo.setPosition(0.55);
+        else if(step == 5) {
+            shamsBot.phoneServo.setPosition(.60);
             shamsBot.forward(0,0);
         }
-        else if(step ==7)
-        {
-            shamsBot.forward(39,0.5);
-        }
-
-
-        /*
         //Middle
-        else if(step >= 7  && shamsBot.pos == 0) {
-            if(step == 7) {
+        else if(step >= 6  && shamsBot.pos == 0) {
+            if(step == 6) {
                 shamsBot.forward(39, 0.5);
             }
-            else if(step == 8){
+            else if(step == 7){
                 shamsBot.phoneServo.setPosition(0);
                 shamsBot.forward(0,0);
             }
-            else if(step == 9) {
+            else if(step == 8) {
                 shamsBot.backward(8,0.5);
-            }
-            else if(step == 10){
-                shamsBot.rotate("Right",98,0.5);
-            }
-            else if(step == 11)
-                shamsBot.forward(85,0.5);
-        }
-        //Right
-        else if(step >= 7 && shamsBot.pos == 1) {
-                if(step == 7) {
-                    shamsBot.rotateRight();
-                }
-                else if(step == 8){
-                    shamsBot.forward(25,0.5);
-                }
-                else if(step == 9){
-                    shamsBot.rotate("Left",100,0.5);
-                }
-                else if(step == 10){
-                    shamsBot.forward(24,0.5);
-                }
-                else if(step == 11){
-                    shamsBot.straferight(24, 0.02);
-                }
-                else if(step == 12){
-                    shamsBot.phoneServo.setPosition(0.4);
-                    shamsBot.forward(0,0);
-                }
-                else if(step == 13){
-                    shamsBot.rotate("Left",180,0.5);
-                }
-                else if(step == 14)
-                    shamsBot.forward(80,0.5);
-        }
-        //Left
-        else if(step >= 7 && shamsBot.pos == -1) {
-            if(step == 7) {
-                shamsBot.rotateLeft();
-            }
-            else if(step == 8){
-                shamsBot.forward(25,0.5);
             }
             else if(step == 9){
                 shamsBot.rotate("Right",100,0.5);
             }
-            else if(step == 10){
+            else if(step == 10)
+                shamsBot.forward(85,0.5);
+        }
+        //Right
+        else if(step >= 6 && shamsBot.pos == 1) {
+            if(step == 6) {
+                shamsBot.rotateRight();
+            }
+            else if(step == 7){
+                shamsBot.forward(25,0.5);
+            }
+            else if(step == 8){
+                shamsBot.rotate("Left",100,0.5);
+            }
+            else if(step == 9){
                 shamsBot.forward(24,0.5);
             }
-            else if(step == 11){
+            else if(step == 10){
                 shamsBot.straferight(24, 0.02);
             }
-            else if(step == 12){
+            else if(step == 11){
                 shamsBot.phoneServo.setPosition(0.4);
                 shamsBot.forward(0,0);
             }
-            else if(step == 13){
-                shamsBot.rotate("Right",180,0.5);
+            else if(step == 12){
+                shamsBot.rotate("Left",180,0.5);
             }
-            else if(step == 14)
+            else if(step == 13)
                 shamsBot.forward(80,0.5);
         }
-        else
-        {
-            telemetry.addLine("Nothing found");
-            telemetry.addLine(shamsBot.pos+"");
-        }*/
+        //Left
+        else if(step >= 6 && shamsBot.pos == -1) {
+            if(step == 6) {
+                shamsBot.rotateLeft();
+            }
+            else if(step == 7){
+                shamsBot.forward(25,0.5);
+            }
+            else if(step == 8){
+                shamsBot.rotate("Right",100,0.5);
+            }
+            else if(step == 9){
+                shamsBot.forward(24,0.5);
+            }
+            else if(step == 10){
+                shamsBot.straferight(24, 0.02);
+            }
+            else if(step == 11){
+                shamsBot.phoneServo.setPosition(0.4);
+                shamsBot.forward(0,0);
+            }
+            else if(step == 12){
+                shamsBot.rotate("Right",180,0.5);
+            }
+            else if(step == 13)
+                shamsBot.forward(80,0.5);
+        }
     }
 
     //Debugging

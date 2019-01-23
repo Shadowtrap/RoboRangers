@@ -99,7 +99,7 @@ public class Robot {
     public void setUpPhoneServo(){
         try{
             phoneServo = hwm.get(Servo.class, "phoneServo");
-            phoneServo.setPosition(0);
+            phoneServo.setPosition(0.5);
             Display("phoneServo : OK");
         }
         catch(Exception e){

@@ -193,7 +193,8 @@ public class AutoBot extends Robot {
                 //distance = (int) (((2 * focalLength) / goldHeight) + 2);
                 t.addLine("Gold Center: (" + goldCenterX + ", " + goldCenterY + ")");
                 t.addLine("Aligned: " + alignedTensor);
-                t.update();
+                t.addLine("Pos: "+pos);
+                //t.update();
             }
         }
 
@@ -278,7 +279,7 @@ public class AutoBot extends Robot {
 
         if (str.equals("Right")==true||str.equals("right")==true)
         {
-            if (topLeft.getCurrentPosition() > (int) (deg * -22.0555555556) && once == 1)
+            if (topLeft.getCurrentPosition() > (int) (deg * -17.75) && once == 1)
             {
                 topLeft.setPower(-pow);
                 botRight.setPower(-pow);
@@ -291,7 +292,7 @@ public class AutoBot extends Robot {
                 stop();
             }
         } else if (str.equals("Left")==true||str.equals("left")==true) {
-            if (topLeft.getCurrentPosition() < (int) (deg * 22.0555555556) && once == 1) {
+            if (topLeft.getCurrentPosition() < (int) (deg * 17.75) && once == 1) {
                 topLeft.setPower(pow);
                 botRight.setPower(pow);
                 topRight.setPower(pow);
@@ -367,8 +368,8 @@ public class AutoBot extends Robot {
 
     public void latchdown()
     {
-        if(liftMotor.getCurrentPosition() > -11000 && once == 1) {
-            liftMotor.setPower(-0.5);
+        if(liftMotor.getCurrentPosition() > -10200 && once == 1) {
+            liftMotor.setPower(-1.0);
             isMoving = true;
         }
         else{
