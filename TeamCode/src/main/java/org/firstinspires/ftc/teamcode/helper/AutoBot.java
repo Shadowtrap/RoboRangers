@@ -89,17 +89,6 @@ public class AutoBot extends Robot {
         }
     }
 
-    public void setupservo()
-    {
-        try {
-            phoneServo = hwm.get(Servo.class,"phoneServo");
-            //phoneServo.setPosition(0.5);
-            Display("phoneServo : OK");
-        } catch (Exception e) {
-            Display("phoneServo : ERROR");
-        }
-    }
-
     public void setDogeCV() {
         // Setup detectorsam
         detectorsam = new SamplingOrderDetector(); // Create the detector

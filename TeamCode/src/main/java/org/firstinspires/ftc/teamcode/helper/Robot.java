@@ -13,6 +13,7 @@ public class Robot {
     public final HardwareMap hwm;
     public final Telemetry t;
 
+
     //Motors for Wheels
     public DcMotor topLeft;
     public DcMotor topRight;
@@ -25,12 +26,19 @@ public class Robot {
     //Servo for Arm
     public Servo wristServo;
     public Servo intakeServo;
+    public Servo goldServo;
+    public Servo silverServo;
+
+    //we have it
+    //we dont have a servo for our phone anymore
 
     //Motor for scoring
     public DcMotor baseMotor;
     public DcMotor elbowMotor;
 
+    //Servo for auto
     public Servo phoneServo;
+
 
     public Robot(HardwareMap hardwareMap, Telemetry tele){
         hwm = hardwareMap;
@@ -96,22 +104,57 @@ public class Robot {
         }
     }
 
-    public void setUpPhoneServo(){
+    public void setUpIntakeServos(){
         try{
+            goldServo = hwm.get(Servo.class, "goldServo");
+            goldServo.setPosition(0.5);
+            Display("goldServo : OK");
+        }
+        catch(Exception e){
+            Display("goldServo is broken :(");
+        }
+
+        try{
+            silverServo = hwm.get(Servo.class, "silverServo");
+            silverServo.setPosition(0.5);
+            Display("silverServo : OK");
+        }
+        catch(Exception e){
+            Display("sliverServo is broken :(");
+        }
+        try{
+            wristServo = hwm.get(Servo.class, "wristServo");
+            wristServo.setPosition(0.5);
+            Display("wristServo : OK");
+        }
+        catch(Exception e){
+            Display("wristServo is broken :(");
+        }
+        try{
+            intakeServo = hwm.get(Servo.class, "intakeServo");
+            intakeServo.setPosition(0.5);
+            Display("intakeServo : OK");
+        }
+        catch(Exception e){
+            Display("intakeServo is broken :(");
+        }
+        try {
             phoneServo = hwm.get(Servo.class, "phoneServo");
             phoneServo.setPosition(0.5);
             Display("phoneServo : OK");
         }
-        catch(Exception e){
-            Display("phoneServo is broken :(");
+        catch (Exception e){
+            Display("phoneServo is broken");
         }
     }
+
+
 
     public void setUpScoreMech(){
         try{
             baseMotor = hwm.get(DcMotor.class, "baseMotor");
             baseMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            baseMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            baseMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             Display("baseMotor : OK");
         }
         catch(Exception e){
@@ -121,28 +164,11 @@ public class Robot {
         try{
             elbowMotor = hwm.get(DcMotor.class, "elbowMotor");
             elbowMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            elbowMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            elbowMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             Display("elbowMotor : OK");
         }
         catch(Exception e){
             Display("elbowMotor is broken :(");
-        }
-
-        try{
-            wristServo = hwm.get(Servo.class, "wristServo");
-            wristServo.setPosition(0);
-            Display("wristServo : OK");
-        }
-        catch(Exception e){
-            Display("wristServo is broken :(");
-        }
-        try{
-            intakeServo = hwm.get(Servo.class, "intakeServo");
-            intakeServo.setPosition(0);
-            Display("intakeServo : OK");
-        }
-        catch(Exception e){
-            Display("intakeServo is broken :(");
         }
     }
 
