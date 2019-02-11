@@ -185,6 +185,50 @@ public class TensorFlowAuto extends LinearOpMode {
                         }
 
                         //After camera detects where gold mineral is
+                        distance = (int) (((2 * focalLength) / goldHeight) + 2);
+                        /*
+                        if(position == 0){
+                            //Distance is always decreasing meaning ticks checked are decreasing meaning will not go full length
+                            //Need to find the initial distance, when camera starts detecting
+                            forward(equation(distance));
+                        }
+                        else{
+                            //Distance is always decreasing meaning ticks checked are decreasing meaning will not go full length
+                            //Need to find the initial distance, when camera starts detecting, and aligned with gold mineral
+
+                            rotate(position, aligned);
+                            if(aligned){
+                                forward(equation(distance));
+                            }
+                        }
+<<<<<<< Updated upstream
+                      }
+
+                      //After camera detects where gold mineral is
+                      distance = (int)(((2 * focalLength) / goldHeight) + 2);
+
+                      if(position == 0){
+                          //Distance is always decreasing meaning ticks checked are decreasing meaning will not go full length
+                          //Need to find the initial distance, when camera starts detecting
+                          forward(equation(distance));
+                      }
+                      else{
+                          //Distance is always decreasing meaning ticks checked are decreasing meaning will not go full length
+                          //Need to find the initial distance, when camera starts detecting, and aligned with gold mineral
+                            rotate(position, aligned);
+                            if(aligned){
+                                forward(equation(distance));
+                            }
+                      }
+                      
+                      telemetry.addLine("Gold Top Left Corner: (" + goldMineralX + ", " + goldY + ")");
+                      telemetry.addLine("Gold Center: (" + goldCenterX + ", " + goldCenterY + ")");
+                      telemetry.addLine("Aligned: " + aligned);
+                      telemetry.addLine("Focal Length: " + focalLength);
+                      telemetry.addLine("Distance: " + distance + "in");
+                      telemetry.update();
+=======
+                        */
                         telemetry.addLine("Gold Top Left Corner: (" + goldMineralX + ", " + goldY + ")");
                         telemetry.addLine("Gold Center: (" + goldCenterX + ", " + goldCenterY + ")");
                         telemetry.addLine("Aligned: " + aligned);

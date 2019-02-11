@@ -12,153 +12,93 @@ public class TeleBot extends Robot {
         super(hardwareMap, tele);
     }
 
-    public boolean moving1 =  false, moving2 = false, moving3 = false, moving4 = false, moving5 = false;
+    public boolean moving1, moving2;
 
     public void scoreMechMovement(Gamepad g){
+        boolean xButton = g.x;
+        boolean yButton = g.y;
+        boolean bButton = g.b;
+        boolean aButton = g.a;
 
-        //Elbow: -246 , -215
-
-        boolean buttonA = g.a;
-        /*
-        boolean  buttonB = g.b;
-        boolean  buttonX = g.x;
-        boolean  buttonY = g.y;
-        boolean  buttonA = g.a;
-
-
-        if(buttonB||moving1){
-            if(elbowMotor.getCurrentPosition() > -246){
-                elbowMotor.setPower(-0.7);
+        if(xButton&&!moving1&&!moving2){
+            if(baseMotor.getCurrentPosition() < 300){
+                baseMotor.setPower(0.5);
                 moving1 = true;
+            }
+            else{
+                baseMotor.setPower(0);
+                moving1 = false;
+            }
+
+            if(elbowMotor.getCurrentPosition() > -300){
+                elbowMotor.setPower(-0.5);
+                moving2 = true;
             }
             else {
                 elbowMotor.setPower(0);
-                moving1 = false;
-            }
-        }
-        else if(buttonY||moving2||moving3){
-
-            if(elbowMotor.getCurrentPosition() < -215){
-                elbowMotor.setPower(0.3);
-                moving2 = true;
-            }
-            else{
-                elbowMotor.setPower(0);
                 moving2 = false;
             }
-
-            if(baseMotor.getCurrentPosition() > -550){
-                baseMotor.setPower(-0.3);
-                moving3 = true;
+            if(!moving1){
+                baseMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                baseMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
-            else{
-                baseMotor.setPower(0);
-                moving3 = false;
-            }
-        }
-
-        else if(buttonX||moving4||moving5){
-
-            if(elbowMotor.getCurrentPosition() > 0){
-                elbowMotor.setPower(-0.7);
-                moving4 = true;
-            }
-            else{
-                elbowMotor.setPower(0);
-                moving4 = false;
-            }//i get that part but im just, wait give a sec to read over this again
-
-            if(baseMotor.getCurrentPosition() < 0){
-                baseMotor.setPower(0.3);
-                moving5 = true;
-            }
-            else{
-                baseMotor.setPower(0);
-                moving5 = false;
+            if(!moving2){
+                elbowMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                elbowMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
         }
+        else if(yButton){
 
+        }
+        else if(bButton){
 
-        */
+        }
+        else if(aButton){
 
-        //Non Encoder Movement
-        float rightT = g.right_trigger;
-        float leftT = g.left_trigger;
-        boolean rightB = g.right_bumper;
-        boolean leftB = g.left_bumper;
-
-        if(rightT > 0.35){
-            elbowMotor.setPower(0.4);
-        }
-        else if(leftT > 0.35){
-            elbowMotor.setPower(-0.4);
-        }
-        else{
-            elbowMotor.setPower(0);
-        }
-
-        if(rightB){
-            baseMotor.setPower(0.3);
-        }
-        else if(leftB){
-            baseMotor.setPower(-0.3);
-        }
-        else {
-            baseMotor.setPower(0);
-        }
-        if(buttonA){
-            baseMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            baseMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            elbowMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            elbowMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
     }
+
     public void liftMechMovement(Gamepad g){
         boolean up = g.dpad_up;
         boolean down = g.dpad_down;
         if(up){
-            liftMotor.setPower(.75);
+            liftMotor.setPower(1);
         }
         else if(down){
-            liftMotor.setPower(-.75);
+            liftMotor.setPower(-1);
         }
         else{
             liftMotor.setPower(0);
         }
     }
 
-    public void goldAndSilverMove(Gamepad g) {
-        boolean buttonA = g.a;
-        if (buttonA) {
+    public void goldAndSilverMove(Gamepad g){
+        boolean rightTrigger = g.right_trigger < 0.35;
+        if(rightTrigger){
             goldServo.setPosition(0);
             silverServo.setPosition(0);
-        } else {
+        }
+        else{
             goldServo.setPosition(0.5);
             silverServo.setPosition(0.5);
         }
     }
 
-    public void phoneServoMovement(Gamepad g){
-        boolean dpadleft = g.dpad_left;
-        if(dpadleft){
-            phoneServo.setPosition(0);
+    public void movingArm(Gamepad g){
+        boolean rightTrigger = g.right_trigger > 0.35;
+        boolean leftTrigger = g.left_trigger > 0.35;
+        if(rightTrigger){
+            armServo1.setPosition(1);
+            armServo2.setPosition(0);
+        }
+        else if(leftTrigger){
+            armServo1.setPosition(0);
+            armServo2.setPosition(1);
         }
         else{
-            phoneServo.setPosition(0.5);
+            goldServo.setPosition(0.5);
+            silverServo.setPosition(0.5);
         }
-    }
-
-    public void intakeMovement(Gamepad g){
-        boolean dpadright = g.dpad_right;
-        if(dpadright){
-            intakeServo.setPosition(-1);
-        }
-        else{
-            intakeServo.setPosition(1);
-        }
-    }
-    public void wristMovement(Gamepad g){
-
     }
 }

@@ -26,19 +26,16 @@ public class Robot {
     //Servo for Arm
     public Servo wristServo;
     public Servo intakeServo;
-    public Servo goldServo;
-    public Servo silverServo;
-
-    //we have it
-    //we dont have a servo for our phone anymore
+    public Servo armServo1;
+    public Servo armServo2;
 
     //Motor for scoring
     public DcMotor baseMotor;
     public DcMotor elbowMotor;
 
-    //Servo for auto
-    public Servo phoneServo;
-
+    //Servo for Mineral Release
+    public Servo goldServo;
+    public Servo silverServo;
 
     public Robot(HardwareMap hardwareMap, Telemetry tele){
         hwm = hardwareMap;
@@ -124,7 +121,7 @@ public class Robot {
         }
         try{
             wristServo = hwm.get(Servo.class, "wristServo");
-            wristServo.setPosition(0.5);
+            wristServo.setPosition(0);
             Display("wristServo : OK");
         }
         catch(Exception e){
@@ -132,19 +129,27 @@ public class Robot {
         }
         try{
             intakeServo = hwm.get(Servo.class, "intakeServo");
-            intakeServo.setPosition(0.5);
+            intakeServo.setPosition(0);
             Display("intakeServo : OK");
         }
         catch(Exception e){
             Display("intakeServo is broken :(");
         }
-        try {
-            phoneServo = hwm.get(Servo.class, "phoneServo");
-            phoneServo.setPosition(0.5);
-            Display("phoneServo : OK");
+        try{
+            armServo1 = hwm.get(Servo.class, "armServo1");
+            armServo1.setPosition(0.5);
+            Display("armServo1 : OK");
         }
-        catch (Exception e){
-            Display("phoneServo is broken");
+        catch(Exception e){
+            Display("armServo1 is broken :(");
+        }
+        try{
+            armServo2 = hwm.get(Servo.class, "armServo2");
+            armServo2.setPosition(0.5);
+            Display("armServo2 : OK");
+        }
+        catch(Exception e){
+            Display("armServo2 is broken :(");
         }
     }
 

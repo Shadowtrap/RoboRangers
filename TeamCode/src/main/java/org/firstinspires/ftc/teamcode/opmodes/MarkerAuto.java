@@ -49,7 +49,6 @@ public class MarkerAuto extends OpMode{
         shamsBot.resetEncoder();
         shamsBot.setupTensorCV();
         shamsBot.setupliftmotor();
-        shamsBot.setupservo();
         telemetry.addData("TopLeft Encoder", shamsBot.topLeft.getCurrentPosition());
         step = 0;
     }
@@ -87,7 +86,24 @@ public class MarkerAuto extends OpMode{
 
         //Start Detecting with Tensor
         shamsBot.detectTensor();
-
+        if(step == 0){
+            if(shamsBot.pos == 0){
+                shamsBot.forward(0, 0);
+            }
+            else if(shamsBot.pos == 1){
+                shamsBot.rotateRight();
+            }
+            else if(shamsBot.pos == -1){
+                shamsBot.rotateLeft();
+            }
+            else{
+                telemetry.addLine("MOVE BACK");
+            }
+        }
+        else if(step == 1){
+            shamsBot.forward(10,0.5);
+        }
+/*
         //Latching Down & Aligning
         if (step == 0){
            shamsBot.latchdown();
@@ -108,14 +124,13 @@ public class MarkerAuto extends OpMode{
             shamsBot.backward(5, 0.3);
         }
         else if(step == 6) {
-            shamsBot.phoneServo.setPosition(0.55);
             shamsBot.forward(0,0);
         }
         else if(step ==7)
         {
             shamsBot.forward(39,0.5);
         }
-
+*/
 
         /*
         //Middle
