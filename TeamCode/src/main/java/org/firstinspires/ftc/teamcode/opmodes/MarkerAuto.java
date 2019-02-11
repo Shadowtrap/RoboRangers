@@ -101,7 +101,7 @@ public class MarkerAuto extends OpMode{
             }
         }
         else if(step == 1){
-            shamsBot.forward(10,0.5);
+            shamsBot.forward(24,0.5);
         }
 /*
         //Latching Down & Aligning

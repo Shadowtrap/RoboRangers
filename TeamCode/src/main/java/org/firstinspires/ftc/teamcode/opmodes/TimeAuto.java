@@ -29,12 +29,12 @@ public class TimeAuto extends OpMode {
         time.startTime();
         tamBot.detectTensor();
         if (step == 0) {
-            tamBot.phoneServo.setPosition(0.7);
+            //tamBot.phoneServo.setPosition(0.7);
             if (tamBot.pos == 0) {
                 forwardTime(3);
                 setStep(1);
                 if (step == 1) {
-                    tamBot.phoneServo.setPosition(0.2);
+                    //tamBot.phoneServo.setPosition(0.2);
                     setStep(2);
                 }
                 if (step == 2) {
@@ -64,7 +64,7 @@ public class TimeAuto extends OpMode {
                     setStep(4);
                 }
                 if (step == 4) {
-                    tamBot.phoneServo.setPosition(0.2);
+                    //tamBot.phoneServo.setPosition(0.2);
                 }
             } else if (tamBot.pos == 1) {
                 rotateRightTime(1);
@@ -82,7 +82,7 @@ public class TimeAuto extends OpMode {
                     setStep(4);
                 }
                 if (step == 4) {
-                    tamBot.phoneServo.setPosition(0.2);
+                    //tamBot.phoneServo.setPosition(0.2);
                 }
             }
         }

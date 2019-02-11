@@ -47,7 +47,6 @@ public class BahtiTeST extends OpMode{
         shamsBot.resetEncoder();
         shamsBot.setupTensorCV();
         shamsBot.setupliftmotor();
-        shamsBot.setupservo();
         telemetry.addData("TopLeft Encoder", shamsBot.topLeft.getCurrentPosition());
         MarkerAuto.step = 0;
     }
@@ -104,7 +103,6 @@ public class BahtiTeST extends OpMode{
             shamsBot.rotate("Right",60,0.3);
         }
         else if(step == 5) {
-            shamsBot.phoneServo.setPosition(.60);
             shamsBot.forward(0,0);
         }
         //Middle
@@ -113,7 +111,6 @@ public class BahtiTeST extends OpMode{
                 shamsBot.forward(39, 0.5);
             }
             else if(step == 7){
-                shamsBot.phoneServo.setPosition(0);
                 shamsBot.forward(0,0);
             }
             else if(step == 8) {
@@ -143,7 +140,6 @@ public class BahtiTeST extends OpMode{
                 shamsBot.straferight(24, 0.02);
             }
             else if(step == 11){
-                shamsBot.phoneServo.setPosition(0.4);
                 shamsBot.forward(0,0);
             }
             else if(step == 12){
@@ -170,7 +166,6 @@ public class BahtiTeST extends OpMode{
                 shamsBot.straferight(24, 0.02);
             }
             else if(step == 11){
-                shamsBot.phoneServo.setPosition(0.4);
                 shamsBot.forward(0,0);
             }
             else if(step == 12){

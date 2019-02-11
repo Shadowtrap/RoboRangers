@@ -26,13 +26,13 @@ public class RandAuto extends OpMode {
     public void loop() {
 
         if(step == 0){
-            markoBot.phoneServo.setPosition(0.7);
+            //markoBot.phoneServo.setPosition(0.7);
             //Center
             if(random == 0){
                 markoBot.forward(24, 0.5);
                 setStep(1);
                 if(step == 1){
-                    markoBot.phoneServo.setPosition(0.2);
+                    //markoBot.phoneServo.setPosition(0.2);
                 }
             }
             //Left
@@ -52,7 +52,7 @@ public class RandAuto extends OpMode {
                     setStep(4);
                 }
                 if(step == 4){
-                    markoBot.phoneServo.setPosition(0.2);
+                   // markoBot.phoneServo.setPosition(0.2);
                 }
             }
             //Right
@@ -72,7 +72,7 @@ public class RandAuto extends OpMode {
                     setStep(4);
                 }
                 if(step == 4){
-                    markoBot.phoneServo.setPosition(0.2);
+                    //markoBot.phoneServo.setPosition(0.2);
                 }
             }
         }

@@ -308,7 +308,6 @@ public class AutoBot extends Robot {
         }
         else
         {
-
             stop();
         }
     }
@@ -324,7 +323,6 @@ public class AutoBot extends Robot {
         else
         {
             stop();
-
         }
     }
 
@@ -338,7 +336,6 @@ public class AutoBot extends Robot {
         }
         else {
             stop();
-
         }
     }
 
@@ -416,7 +413,7 @@ public class AutoBot extends Robot {
 
             once++;
         }
-        if(time.milliseconds() < 1000 && once == 2)
+        if(time.milliseconds() < 500 && once == 2)
         {
             topLeft.setPower(0);
             botRight.setPower(0);

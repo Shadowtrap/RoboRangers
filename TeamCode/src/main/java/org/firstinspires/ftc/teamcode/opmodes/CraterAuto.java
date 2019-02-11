@@ -20,7 +20,6 @@ public class CraterAuto extends OpMode{
         shamsBot.resetEncoder();
         shamsBot.setupTensorCV();
         shamsBot.setupliftmotor();
-        shamsBot.setupservo();
         telemetry.addData("TopLeft Encoder", shamsBot.topLeft.getCurrentPosition());
         step =0;
     }
@@ -79,7 +78,6 @@ public class CraterAuto extends OpMode{
             shamsBot.backward(5, 0.3);
         }
         else if(step == 6) {
-            shamsBot.phoneServo.setPosition(0.55);
             shamsBot.forward(0,0);
         }
         //Middle

@@ -51,7 +51,6 @@ public class MarkerDoge extends OpMode{
         shamsBot.resetEncoder();
         shamsBot.setDogeCV();
         shamsBot.setupliftmotor();
-        shamsBot.setupservo();
         telemetry.addData("TopLeft Encoder", shamsBot.topLeft.getCurrentPosition());
         step =0;
         pos1= SamplingOrderDetector.GoldLocation.UNKNOWN;
@@ -111,7 +110,6 @@ public class MarkerDoge extends OpMode{
             shamsBot.backward(5, 0.3);
         }
         else if(step == 6) {
-            shamsBot.phoneServo.setPosition(0.55);
             shamsBot.forward(0,0);
         }
         //Middle
@@ -120,7 +118,6 @@ public class MarkerDoge extends OpMode{
                 shamsBot.forward(39, 0.5);
             }
             else if(step == 8){
-                shamsBot.phoneServo.setPosition(0);
                 shamsBot.forward(0,0);
             }
             else if(step == 9) {
@@ -150,7 +147,6 @@ public class MarkerDoge extends OpMode{
                 shamsBot.straferight(24, 0.02);
             }
             else if(step == 12){
-                shamsBot.phoneServo.setPosition(0.4);
                 shamsBot.forward(0,0);
             }
             else if(step == 13){
@@ -177,7 +173,6 @@ public class MarkerDoge extends OpMode{
                 shamsBot.straferight(24, 0.02);
             }
             else if(step == 12){
-                shamsBot.phoneServo.setPosition(0.4);
                 shamsBot.forward(0,0);
             }
             else if(step == 13){
