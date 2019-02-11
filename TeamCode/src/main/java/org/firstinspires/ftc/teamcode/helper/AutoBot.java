@@ -242,9 +242,8 @@ public class AutoBot extends Robot {
         }
         else
         {
-
-            stop();
-
+            //stop();
+            MarkerAuto.step++;
         }
     }
 
@@ -258,7 +257,8 @@ public class AutoBot extends Robot {
         }
         else
         {
-            stop();
+            //stop();
+            MarkerAuto.step++;
 
         }
     }
@@ -277,8 +277,8 @@ public class AutoBot extends Robot {
                 isMoving = true;
             }
             else {
-
-                stop();
+                MarkerAuto.step++;
+                //stop();
             }
         } else if (str.equals("Left")==true||str.equals("left")==true) {
             if (topLeft.getCurrentPosition() < (int) (deg * 17.75) && once == 1) {
@@ -288,12 +288,13 @@ public class AutoBot extends Robot {
                 botLeft.setPower(pow);
                 isMoving = true;
             } else {
-
-                stop();
+                MarkerAuto.step++;
+                //stop();
             }
         }
         else {
-            stop();
+            MarkerAuto.step++;
+            //stop();
         }
     }
 
@@ -308,7 +309,8 @@ public class AutoBot extends Robot {
         }
         else
         {
-            stop();
+            MarkerAuto.step++;
+            //stop();
         }
     }
     public void rotateRight(){
@@ -322,7 +324,8 @@ public class AutoBot extends Robot {
         }
         else
         {
-            stop();
+            MarkerAuto.step++;
+            //stop();
         }
     }
 
@@ -335,7 +338,8 @@ public class AutoBot extends Robot {
             isMoving = true;
         }
         else {
-            stop();
+            MarkerAuto.step++;
+            //stop();
         }
     }
 
@@ -348,7 +352,8 @@ public class AutoBot extends Robot {
             isMoving = true;
         }
         else{
-            stop();
+            MarkerAuto.step++;
+            //stop();
         }
     }
 
@@ -359,7 +364,8 @@ public class AutoBot extends Robot {
             isMoving = true;
         }
         else{
-            stop();
+            MarkerAuto.step++;
+            //stop();
         }
     }
     public void retract()
@@ -369,7 +375,8 @@ public class AutoBot extends Robot {
             isMoving = true;
         }
         else{
-            stop();
+            MarkerAuto.step++;
+            //stop();
         }
     }
 
@@ -384,8 +391,8 @@ public class AutoBot extends Robot {
         }
         else
         {
-            stop();
-
+            MarkerAuto.step++;
+            //stop();
         }
     }
 
@@ -400,7 +407,8 @@ public class AutoBot extends Robot {
         }
         else
         {
-            stop();
+            MarkerAuto.step++;
+            //stop();
 
         }
     }
