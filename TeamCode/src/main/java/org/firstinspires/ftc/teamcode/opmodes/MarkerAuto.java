@@ -76,13 +76,14 @@ public class MarkerAuto extends OpMode{
     @Override
     public void loop()
     {
-        //Displaying the En+coder Values nad Step(Debugging)
+        //Displaying the Encoder Values and Step
         telemetry.addData("TopLeft Encoder", shamsBot.topLeft.getCurrentPosition());
         telemetry.addData("TopRight Encoder", shamsBot.topRight.getCurrentPosition());
         telemetry.addData("BottomLeft Encoder", shamsBot.botLeft.getCurrentPosition());
         telemetry.addData("BottomRight Encoder", shamsBot.botRight.getCurrentPosition());
         telemetry.addData("liftMotor Encoder", shamsBot.liftMotor.getCurrentPosition());
         telemetry.addData("Step", step);
+        telemetry.addData("Aligned", shamsBot.alignedTensor);
 
         //Start Detecting with Tensor
         shamsBot.detectTensor();
@@ -103,6 +104,10 @@ public class MarkerAuto extends OpMode{
         else if(step == 1){
             shamsBot.forward(24,0.5);
         }
+        else if(step == 2){
+            shamsBot.backward(24,0.5);
+        }
+        telemetry.update();
 /*
         //Latching Down & Aligning
         if (step == 0){
@@ -211,24 +216,6 @@ public class MarkerAuto extends OpMode{
             telemetry.addLine(shamsBot.pos+"");
         }*/
     }
-
-    //Debugging
-    /*
-    @Override
-    public void loop(){
-        if(step == 0) {
-            shamsBot.strafeleft(10, 1.0);
-        }
-        else if(step == 1)
-        {
-            shamsBot.rotate("Right",65,0.5);
-            //shamsBot.topLeft.setPower(-0.5);
-            //shamsBot.botRight.setPower(-0.5);
-            //shamsBot.topRight.setPower(-0.5);
-            //shamsBot.botLeft.setPower(-0.5);
-        }
-    }
-    */
 
     @Override
     public void stop()

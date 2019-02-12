@@ -29,6 +29,7 @@ public class AutoBot extends Robot {
     private static final String VUFORIA_KEY = "ATMeJeb/////AAAAGaZ47DzTRUyOhcXnfJD+z89ATBWAF+fi+oOutLvXaf0YT/RPuf2mu6VJsJowCDiWiOzGMHUjXKsLBqA4Ziar76oZY/juheUactiQaY6Z3qPHnGmchAMlYuqgKErvggTuqmFca8VvTjtB6YOheJmAbllTDTaCudODpnIDkuFNTa36WCTr4L8HcCnIsB7bjF8pZoivYEBwPkfCVtfAiEpqxbyDAZgNXnuCyp6v/oi3FYZbp7JkFVorcM182+q0PVN5gIr14SKEMlDcDFDiv/sQwNeQOs5iNBd1OSkCoTe9CYbdmtE0gUXxKN2w9NqwATYC6YRJP9uoopxqmr9zkepI10peh2/RnU6pHOmR0KKRAVh8";
     private VuforiaLocalizer vuforia;
     public TFObjectDetector tfod;
+
     public boolean alignedTensor = false;
     public boolean isMoving = false;
     public int encoderForTopLeft = 0;
@@ -127,7 +128,7 @@ public class AutoBot extends Robot {
     }
 
     public void detectTensor(){
-        if (tfod != null && pos == 2) {
+        if (tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
@@ -304,8 +305,8 @@ public class AutoBot extends Robot {
             botRight.setPower(0.02);
             topRight.setPower(0.02);
             botLeft.setPower(0.02);
-            isMoving= true;
-            encoderForTopLeft = topLeft.getCurrentPosition();
+            //isMoving= true;
+            //encoderForTopLeft = topLeft.getCurrentPosition();
         }
         else
         {
@@ -319,8 +320,8 @@ public class AutoBot extends Robot {
             botRight.setPower(-0.02);
             topRight.setPower(-0.02);
             botLeft.setPower(-0.02);
-            isMoving = true;
-            encoderForTopLeft = topLeft.getCurrentPosition();
+            //isMoving = true;
+            //encoderForTopLeft = topLeft.getCurrentPosition();
         }
         else
         {
