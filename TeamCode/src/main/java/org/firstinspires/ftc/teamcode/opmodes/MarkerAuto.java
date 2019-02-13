@@ -86,7 +86,7 @@ public class MarkerAuto extends OpMode{
         telemetry.addData("Aligned", shamsBot.alignedTensor);
 
         //Start Detecting with Tensor
-        shamsBot.detectTensor();
+        shamsBot.detectTensor1();
         if(step == 0){
             if(shamsBot.pos == 0){
                 shamsBot.forward(0, 0);

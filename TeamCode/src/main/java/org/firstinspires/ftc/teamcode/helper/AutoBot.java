@@ -127,7 +127,7 @@ public class AutoBot extends Robot {
         tfod.activate();
     }
 
-    public void detectTensor(){
+    public void detectTensor1(){
         if (tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
@@ -150,7 +150,6 @@ public class AutoBot extends Robot {
                         }
                     }
                 }
-
                 if (updatedRecognitions.size() == 3) {
                     goldMineralX = -1;
                     int silverMineral1X = -1;
@@ -183,7 +182,7 @@ public class AutoBot extends Robot {
                 //distance = (int) (((2 * focalLength) / goldHeight) + 2);
                 t.addLine("Gold Center: (" + goldCenterX + ", " + goldCenterY + ")");
                 t.addLine("Aligned: " + alignedTensor);
-                t.addLine("Pos: "+pos);
+                t.addLine("Pos: "+ pos);
                 //t.update();
             }
         }
@@ -193,6 +192,114 @@ public class AutoBot extends Robot {
          * Initialize the Vuforia localization engine.
          */
     }
+
+
+    public void detectTensor2(){
+        if (tfod != null) {
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if (updatedRecognitions != null) {
+                t.addData("# Object Detected", updatedRecognitions.size());
+                int goldCenterX = -1;
+                int goldCenterY = -1;
+                alignedTensor = false;
+                if (updatedRecognitions.size() >= 1) {
+                    for (Recognition r : updatedRecognitions) {
+                        if (r.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                            goldCenterX = center((int) r.getLeft(), (int) r.getRight());
+                            if(goldCenterX < 426){
+                                pos = -1;
+                            }
+                            else if(goldCenterX > 426 && goldCenterX < 853){
+                                pos = 0;
+                            }
+                            else if(goldCenterX > 853){
+                                pos = 1;
+                            }
+                            alignedTensor = isAligned(goldCenterX);
+                        }
+                    }
+                }
+
+                //distance = (int) (((2 * focalLength) / goldHeight) + 2);
+                t.addLine("Gold Center: (" + goldCenterX + ", " + goldCenterY + ")");
+                t.addLine("Aligned: " + alignedTensor);
+                t.addLine("Pos: " + pos);
+                //t.update();
+            }
+        }
+    }
+
+    public void detectTensor3(){
+        if (tfod != null) {
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if (updatedRecognitions != null) {
+                t.addData("# Object Detected", updatedRecognitions.size());
+                int goldCenterX = -1;
+                int goldCenterY = -1;
+                alignedTensor = false;
+                if (updatedRecognitions.size() >= 1) {
+                    for (Recognition r : updatedRecognitions) {
+                        if (r.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                            goldCenterX = center((int) r.getLeft(), (int) r.getRight());
+                            if(isAligned(goldCenterX) && phoneServo.setPosition(0.1)){
+                                pos = -1;
+                            }
+                            else if(isAligned(goldCenterX) && phoneServo.setPosition(0.5)){
+                                pos = 0;
+                            }
+                            else if(isAligned(goldCenterX) && phoneServo.setPosition(0.9)){
+                                pos = 1;
+                            }
+                            alignedTensor = isAligned(goldCenterX);
+                        }
+                    }
+                }
+
+                //distance = (int) (((2 * focalLength) / goldHeight) + 2);
+                t.addLine("Gold Center: (" + goldCenterX + ", " + goldCenterY + ")");
+                t.addLine("Aligned: " + alignedTensor);
+                t.addLine("Pos: " + pos);
+                //t.update();
+            }
+        }
+    }
+
+    public void detectTensor4(){
+        if (tfod != null) {
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if (updatedRecognitions != null) {
+                t.addData("# Object Detected", updatedRecognitions.size());
+                int goldCenterX = -1;
+                int goldCenterY = -1;
+                alignedTensor = false;
+                if (updatedRecognitions.size() == 1) {
+                    for (Recognition r : updatedRecognitions) {
+                        if (r.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                            goldCenterX = center((int) r.getLeft(), (int) r.getRight());
+                            if(isAligned(goldCenterX) && phoneServo.setPosition(0.1)){
+                                pos = -1;
+                            }
+                            else if(isAligned(goldCenterX) && phoneServo.setPosition(0.5)){
+                                pos = 0;
+                            }
+                            else if(isAligned(goldCenterX) && phoneServo.setPosition(0.9)){
+                                pos = 1;
+                            }
+                            alignedTensor = isAligned(goldCenterX);
+                        }
+                    }
+                }
+
+                //distance = (int) (((2 * focalLength) / goldHeight) + 2);
+                t.addLine("Gold Center: (" + goldCenterX + ", " + goldCenterY + ")");
+                t.addLine("Aligned: " + alignedTensor);
+                t.addLine("Pos: " + pos);
+                //t.update();
+            }
+        }
+    }
+
+
     private void initVuforia() {
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
@@ -345,7 +452,7 @@ public class AutoBot extends Robot {
     }
 
     public void rotateRight(int ticks) {
-        if(topLeft.getCurrentPosition()> -ticks && once == 1){
+        if(topLeft.getCurrentPosition() > -ticks && once == 1){
             topLeft.setPower(-0.2);
             botRight.setPower(-0.2);
             topRight.setPower(-0.2);
